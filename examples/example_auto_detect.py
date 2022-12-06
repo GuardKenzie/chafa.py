@@ -1,4 +1,5 @@
 import pyvips
+import sys
 from chafa import *
 
 FONT_WIDTH  = 11
@@ -8,8 +9,8 @@ FONT_HEIGHT = 24
 config = CanvasConfig()
 
 # Set canvas height, width and cell geometry
-config.height = 30 
-config.width  = 30
+config.height = 50 
+config.width  = 50
 
 config.cell_width  = FONT_WIDTH
 config.cell_height = FONT_HEIGHT
@@ -31,7 +32,7 @@ config.pixel_mode  = term_capabilities.pixel_mode
 config.canvas_mode = term_capabilities.canvas_mode
 
 # Open image with vips
-image = pyvips.Image.new_from_file("/tmp/aartminip.png")
+image = pyvips.Image.new_from_file("./snake.jpg")
 
 width  = image.width
 height = image.height

@@ -1,4 +1,5 @@
 import pyvips
+import sys
 from chafa import *
 
 # Init canvas config
@@ -22,7 +23,7 @@ height = image.height
 bands  = image.bands
 
 # Init the canvas
-canvas = Canvas(config, term_info=term_info)
+canvas = Canvas(config)
 
 # Draw to canvas
 canvas.draw_all_pixels(
@@ -34,5 +35,4 @@ canvas.draw_all_pixels(
 )
 
 # Write picture
-sys.stdout.buffer.write(canvas.print())
-sys.stdout.flush()
+print(canvas.print().decode())
