@@ -515,6 +515,8 @@ class CanvasConfig():
     def set_symbol_map(self, symbol_map: SymbolMap):
         """
             Wrapper for chafa_canvas_config_set_symbol_map
+
+            TODO: Make into a property
         """
 
         # Specify types
