@@ -38,8 +38,16 @@ html_static_path = ['_static']
 
 html_theme_options = {
     "link": "var(--peach)",
-    "link_hover": "var(--peach)" 
+    "link_hover": "var(--peach)", 
+    "body_text": "var(--bg)",
+    "sidebar_link": "var(--bg)",
+
+    "head_font_family": "Eczar",
+    "font_family": "Signika Negative",
+    "code_font_family": "JetBrains Mono"
 }
+
+pygments_style = "dracula"
 
 #html_sidebars = {
 #    '**': {

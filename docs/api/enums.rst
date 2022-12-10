@@ -2,8 +2,8 @@
 Enumerators
 ===========
 
-CanvasMode
-__________
+Canvas Mode
+___________
 
 An enumerator for canvas modes. This determines how colours (and colour control codes) are used in the output from a canvas.An enumerator for canvas modes. This determines how colours (and colour control codes) are used in the output from a canvas.
 
@@ -47,8 +47,116 @@ An enumerator for canvas modes. This determines how colours (and colour control 
 
         Last supported canvas mode plus one.
 
-SymbolTags
+
+Pixel Mode
 __________
+An enumerator for pixel modes. This determines how pixel graphics are rendered in the output.
+
+.. py:class:: PixelMode
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_PIXEL_MODE_SYMBOLS
+
+        Pixel data is approximated using character symbols ("ANSI art").
+
+
+    .. py:attribute:: CHAFA_PIXEL_MODE_SIXELS
+
+        Pixel data is encoded as sixels.
+
+
+    .. py:attribute:: CHAFA_PIXEL_MODE_KITTY
+
+        Pixel data is encoded using the Kitty terminal protocol.
+
+
+    .. py:attribute:: CHAFA_PIXEL_MODE_ITERM2
+
+        Pixel data is encoded using the iTerm2 terminal protocol.
+
+
+    .. py:attribute:: CHAFA_PIXEL_MODE_MAX
+
+        Last supported pixel mode plus one.
+
+
+Color Extractor
+_______________
+
+An enumerator for colour extractors. This determines how colours are approximated in character symbol output.
+
+.. py:class:: ColorExtractor
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_COLOR_EXTRACTOR_AVERAGE
+
+        Use the average colors of each symbol's coverage area.
+
+    .. py:attribute:: CHAFA_COLOR_EXTRACTOR_MEDIAN
+
+        Use the median colors of each symbol's coverage area.
+
+    .. py:attribute:: CHAFA_COLOR_EXTRACTOR_MAX
+
+        Last supported color extractor plus one.
+
+
+Color Space
+___________
+
+An enumerator for colour spaces.
+
+.. py:class:: ColorSpace
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_COLOR_SPACE_RGB
+
+        RGB color space. Fast but imprecise.
+
+    .. py:attribute:: CHAFA_COLOR_SPACE_DIN99D
+
+        DIN99d color space. Slower, but good perceptual color precision.
+
+    .. py:attribute:: CHAFA_COLOR_SPACE_MAX
+
+        Last supported color space plus one.
+
+
+Optimizations
+_____________
+
+An enumerator for optimizations. When enabled, these may produce more compact output at the cost of reduced compatibility and increased CPU use. Output quality is unaffected.
+
+.. py:class:: Optimizations
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_OPTIMIZATION_REUSE_ATTRIBUTES
+
+        Suppress redundant SGR control sequences.
+
+    .. py:attribute:: CHAFA_OPTIMIZATION_SKIP_CELLS
+
+        Reserved for future use.
+
+    .. py:attribute:: CHAFA_OPTIMIZATION_REPEAT_CELLS
+
+        Use REP sequence to compress repeated runs of similar cells.
+
+    .. py:attribute:: CHAFA_OPTIMIZATION_NONE
+
+        All optimizations disabled.
+
+    .. py:attribute:: CHAFA_OPTIMIZATION_ALL
+
+        All optimizations enabled.
+
+
+Symbol Tags
+___________
 An enumerator for symbol tags. This can be used in :py:meth:`SymbolMap.add_by_tags` to specify which symbols to use in the output of a :py:class:`Canvas`.
 
 .. py:class:: SymbolTags
@@ -56,8 +164,8 @@ An enumerator for symbol tags. This can be used in :py:meth:`SymbolMap.add_by_ta
     :bases: :py:class:`enum.IntEnum`
 
     .. py:attribute:: CHAFA_SYMBOL_TAG_NONE
-	
-	    Special value meaning no symbols.
+
+        Special value meaning no symbols.
 
     .. py:attribute:: CHAFA_SYMBOL_TAG_SPACE
         
@@ -181,8 +289,8 @@ An enumerator for symbol tags. This can be used in :py:meth:`SymbolMap.add_by_ta
         Special value meaning all supported symbols.
 
 
-TermSeq
-_______
+Terminal Sequences
+__________________
 
 An enumeration of the control sequences supported by :py:class:`TermInfo`.
 

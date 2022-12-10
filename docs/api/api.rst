@@ -57,11 +57,41 @@ Note that it is not possible to change a canvas' configuration after the canvas 
         Sets config's cell height in pixels.
 
     .. py:property:: cell_width
-
+ 
         :type: int
 
         Sets config's cell width in pixels.
 
+    .. py:property:: color_extractor
+
+        :type: ColorExtractor
+
+        The config's stored :py:class:`ColorExtractor`. This determines how colours are approximated in character symbol output.
+
+    .. py:property:: color_space
+
+        :type: ColorSpace
+
+        The config's stored :py:class:`ColorSpace`.
+
+    .. py:property:: preprocessing
+
+        :type: bool
+
+        Indicates whether automatic image preprocessing should be enabled. This allows Chafa to boost contrast and saturation in an attempt to improve legibility. 
+        
+        .. note::
+
+            The type of preprocessing applied (if any) depends on the :py:attr:`canvas_mode`.
+
+
+    .. py:method:: copy()
+
+        Creates a new :py:class:`CanvasConfig` that's a copy of this one.
+
+        :rtype: CanvasConfig
+
+    
     .. py:method:: set_symbol_map(symbol_map: SymbolMap)
 
         Assigns a copy of symbol_map to config.
