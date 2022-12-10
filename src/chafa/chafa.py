@@ -207,58 +207,38 @@ class CanvasConfig():
         self._chafa.chafa_canvas_config_new.restype = ctypes.c_void_p
         self._canvas_config = self._chafa.chafa_canvas_config_new()
 
-        # Gete default geometry
-        self._width, self._height = self.get_geometry()
-
-        # Get default pixel mode
-        self._pixel_mode = self._get_pixel_mode()
-
-        # Get default canvas mode
-        self._canvas_mode = self._get_canvas_mode()
-
-        self._symbol_map = None
-
-        # Get default dither size
-        self._dither_width, self._dither_height = self._get_dither_grain_size()
-
-        # Get default cell geometry
-        self._cell_width, self._cell_height = self._get_cell_geometry()
-
-
     # === Width & Height property ===
 
     @property
     def height(self) -> int:
-        return self._height
+        _, height = self.get_geometry()
+
+        return height
 
     @height.setter
     def height(self, value: int):
-        self._height = value
-
-        self._set_geometry(self._width, value)
+        self._set_geometry(self.width, value)
 
 
     @property
     def width(self) -> int:
-        return self._width
+        width, _ = self.get_geometry()
+
+        return width
 
     @width.setter
     def width(self, value: int):
-        self._width = value
-
-        self._set_geometry(value, self._height)
+        self._set_geometry(value, self.height)
 
 
     # === pixel mode property ===
 
     @property
     def pixel_mode(self) -> PixelMode:
-        return self._pixel_mode
+        return self._get_pixel_mode()
 
     @pixel_mode.setter
     def pixel_mode(self, mode: PixelMode):
-        self._pixel_mode = mode
-
         self._set_pixel_mode(mode)
 
 
@@ -266,12 +246,10 @@ class CanvasConfig():
 
     @property
     def canvas_mode(self) -> CanvasMode:
-        return self._canvas_mode
+        return self._get_canvas_mode()
 
     @canvas_mode.setter
     def canvas_mode(self, mode: CanvasMode):
-        self._canvas_mode = mode
-
         self._set_canvas_mode(mode)
 
 
@@ -279,23 +257,21 @@ class CanvasConfig():
 
     @property
     def dither_width(self) -> int:
-        return self._dither_width
+        width, _, = self._get_dither_grain_size()
+        return width
     
     @dither_width.setter
     def dither_width(self, width: int):
-        self._dither_width = width
-
-        self._set_dither_grain_size(width, self._dither_height)
+        self._set_dither_grain_size(width, self.dither_height)
 
     @property
     def dither_height(self) -> int:
-        return self._dither_height
+        _, height, = self._get_dither_grain_size()
+        return height 
     
     @dither_height.setter
     def dither_height(self, height: int):
-        self._dither_height = height 
-
-        self._set_dither_grain_size(self._dither_width, height)
+        self._set_dither_grain_size(self.dither_width, height)
 
 
 
@@ -303,23 +279,21 @@ class CanvasConfig():
 
     @property
     def cell_width(self) -> int:
-        return self._cell_width
+        width, _ = self._get_cell_geometry()
+        return width
     
     @cell_width.setter
     def cell_width(self, width: int):
-        self._cell_width = width
-
-        self._set_cell_geometry(width, self._cell_height)
+        self._set_cell_geometry(width, self.cell_height)
 
     @property
     def cell_height(self) -> int:
-        return self._cell_height
+        _, height = self._get_cell_geometry()
+        return height 
     
     @cell_height.setter
     def cell_height(self, height: int):
-        self._cell_height = height 
-
-        self._set_cell_geometry(self._cell_width, height)
+        self._set_cell_geometry(self.cell_width, height)
         
 
     def _set_geometry(self, width: int, height: int):
@@ -335,8 +309,8 @@ class CanvasConfig():
 
         self._chafa.chafa_canvas_config_set_geometry(
             self._canvas_config, 
-            self.width, 
-            self.height
+            width, 
+            height
         )
 
 
@@ -344,9 +318,6 @@ class CanvasConfig():
         """
             Set the canvas geometry.
         """
-
-        self._height = height
-        self._width  = width
 
         self._set_geometry(width, height)
 
