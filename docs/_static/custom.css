@@ -29,6 +29,11 @@ pre {
     border-bottom: 3px solid var(--green);
 }
 
+.attribute .descname {
+    border-bottom: 3px solid var(--green);
+}
+
+
 .method .descname {
     border-bottom: 3px solid var(--blue);
 }
