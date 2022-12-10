@@ -617,7 +617,7 @@ class TermInfo():
 
 
     @dataclass
-    class _TerminalCapabilities:
+    class TerminalCapabilities:
         canvas_mode: CanvasMode
         pixel_mode: PixelMode
 
@@ -635,7 +635,7 @@ class TermInfo():
         self._chafa.chafa_term_info_supplement(self._term_info, source)
 
 
-    def _have_seq(self, seq: TermSeq) -> bool:
+    def have_seq(self, seq: TermSeq) -> bool:
         """
             Wrapper for chafa_term_info_have_seq
         """
@@ -652,27 +652,27 @@ class TermInfo():
         return self._chafa.chafa_term_info_have_seq(self._term_info, seq)
 
 
-    def detect_capabilities(self) -> _TerminalCapabilities:
+    def detect_capabilities(self) -> TerminalCapabilities:
         """
             A function that tries to detect the capabilities of the
             terminal and return the appropriate canvas and pixel modes
         """
         # === Canvas mode ===
 
-        color_direct = self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FGBG_DIRECT) \
-            and        self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FG_DIRECT) \
-            and        self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_BG_DIRECT)
+        color_direct = self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FGBG_DIRECT) \
+            and        self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FG_DIRECT) \
+            and        self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_BG_DIRECT)
 
-        color_256    = self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FGBG_256) \
-            and        self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FG_256) \
-            and        self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_BG_256)
+        color_256    = self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FGBG_256) \
+            and        self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FG_256) \
+            and        self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_BG_256)
 
-        color_16     = self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FGBG_16) \
-            and        self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FG_16) \
-            and        self._have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_BG_16)
+        color_16     = self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FGBG_16) \
+            and        self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FG_16) \
+            and        self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_BG_16)
 
-        color_2      = self._have_seq(TermSeq.CHAFA_TERM_SEQ_INVERT_COLORS) \
-            and        self._have_seq(TermSeq.CHAFA_TERM_SEQ_RESET_ATTRIBUTES)
+        color_2      = self.have_seq(TermSeq.CHAFA_TERM_SEQ_INVERT_COLORS) \
+            and        self.have_seq(TermSeq.CHAFA_TERM_SEQ_RESET_ATTRIBUTES)
 
         if color_direct:
             canvas_mode = CanvasMode.CHAFA_CANVAS_MODE_TRUECOLOR
@@ -708,7 +708,7 @@ class TermInfo():
             pixel_mode = PixelMode.CHAFA_PIXEL_MODE_SYMBOLS
 
         # Init capabilities
-        terminal_capabilities = self._TerminalCapabilities(canvas_mode, pixel_mode)
+        terminal_capabilities = self.TerminalCapabilities(canvas_mode, pixel_mode)
 
         return terminal_capabilities
 
