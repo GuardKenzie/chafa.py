@@ -39,10 +39,10 @@ Here is `the example program`_ from the Chafa C API docs written in chafa.py::
    # Set up a configuration with the symbols and the canvas size in characters
    config = CanvasConfig()
 
-   config.height = 23
-   config.width  = 12
+   config.width  = 23
+   config.height = 12
 
-   config.symbol_map = symbol_map
+   config.set_symbol_map(symbol_map)
 
    # Create the canvas
    canvas = Canvas(config)
