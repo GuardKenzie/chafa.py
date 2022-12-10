@@ -298,6 +298,19 @@ class CanvasConfig():
     @color_extractor.setter
     def color_extractor(self, extractor: ColorExtractor):
         self._set_color_extractor(extractor)
+
+
+    # === color space property ===
+
+    @property
+    def color_space(self) -> ColorSpace:
+        return self._get_color_space()
+
+    @color_space.setter
+    def color_space(self, space: ColorSpace):
+        self._set_color_space(space)
+
+
     # === canvas mode property ===
 
     @property
@@ -567,6 +580,35 @@ class CanvasConfig():
         ]
 
         self._chafa.chafa_canvas_config_set_color_extractor(self._canvas_config, extractor)
+
+
+    def _get_color_space(self) -> ColorSpace:
+        """
+            Wrapper for chafa_canvas_config_get_color_space
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_color_space.argtypes = [ctypes.c_void_p]
+        self._chafa.chafa_canvas_config_get_color_space.restype  = ctypes.c_uint
+
+        # Get space
+        space = self._chafa.chafa_canvas_config_get_color_space(self._canvas_config)
+
+        return ColorSpace(space)
+
+    
+    def _set_color_space(self, space: ColorSpace):
+        """
+            Wrapper for chafa_canvas_config_set_color_space
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_color_space.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_color_space(self._canvas_config, space)
     def set_symbol_map(self, symbol_map: SymbolMap):
         """
             Wrapper for chafa_canvas_config_set_symbol_map
