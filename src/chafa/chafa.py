@@ -855,11 +855,11 @@ class TermInfo():
         # === Pixel mode ===
 
         # Check for sixels
-        sixel_capable = self._have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_SIXELS) \
-            and         self._have_seq(TermSeq.CHAFA_TERM_SEQ_END_SIXELS)
+        sixel_capable = self.have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_SIXELS) \
+            and         self.have_seq(TermSeq.CHAFA_TERM_SEQ_END_SIXELS)
 
         # Check for kitty
-        kitty_capable = self._have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_KITTY_IMMEDIATE_IMAGE_V1)
+        kitty_capable = self.have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_KITTY_IMMEDIATE_IMAGE_V1)
 
         if kitty_capable:
             pixel_mode = PixelMode.CHAFA_PIXEL_MODE_KITTY
