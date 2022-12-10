@@ -4,6 +4,28 @@ dl.py {
     margin-bottom: 1.5em;
 }
 
+h1 {
+    white-space: nowrap;
+}
+
+h1.logo a {
+    font-family: Eczar;
+    border: none;
+    background: var(--green);
+    padding-right: 1rem;
+    padding-left: 1rem;
+    color: white;
+    font-size: 2.2rem;
+}
+
+h1.logo a:hover {
+    border-bottom: none;
+}
+
+div.sphinxsidebarwrapper h1.logo {
+    margin-bottom: .5em;
+}
+
 pre {
     padding: 30px;
     border-radius: 10px;
