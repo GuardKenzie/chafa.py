@@ -1,0 +1,34 @@
+dl.py {
+    margin-bottom: 15px;
+}
+
+pre {
+    padding: 30px;
+    border-radius: 10px;
+}
+
+:root {
+    --fg:        #cdd6f4;
+    --bg:        #1e1e2e;
+    --rosewater: #f2d5cf;
+    --green:     #a6d189;
+    --peach:     #ef9f76;
+    --maroon:    #ea999c;
+    --blue:      #8ba9ed;
+
+    --crust:     #232634;
+}
+
+.class > dt {
+    background: var(--rosewater);
+    padding: .5em;
+    display: inline-block;
+}
+
+.property .descname {
+    border-bottom: 3px solid var(--green);
+}
+
+.method .descname {
+    border-bottom: 3px solid var(--blue);
+}

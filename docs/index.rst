@@ -60,30 +60,24 @@ Here is `the example program`_ from the Chafa C API docs written in chafa.py::
 
    print(output)
 
-
+Getting started
+===============
 .. toctree::
    :maxdepth: 2
-   :caption: Getting started:
+   :caption: Here are some links to get you going:
 
+   usage/installation
    usage/tutorial
    usage/examples
-   usage/installation
 
-
+API Reference
+===============
 .. toctree::
-   :maxdepth: 1
-   :caption: Api docs:
+   :maxdepth: 2
+   :caption: If you are looking for a specific class or function, look no further:
 
-   api/canvas_config
-   api/canvas
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   api/api
+   api/enums
 
 .. _`Hans Petter Jansson`: https://hpjansson.org/blag/
 .. _`the example program`: https://hpjansson.org/chafa/ref/chafa-using.html
