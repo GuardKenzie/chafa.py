@@ -183,7 +183,7 @@ class SymbolMap():
         self._symbol_map = self._chafa.chafa_symbol_map_new()
 
 
-    def add_by_tags(self, tags: int):
+    def add_by_tags(self, tags: SymbolTags):
         """
             wrapper for chafa_symbol_map_add_by_tags
         """
