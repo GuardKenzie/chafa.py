@@ -289,6 +289,15 @@ class CanvasConfig():
         self._set_pixel_mode(mode)
 
 
+    # === color extractor property ===
+
+    @property
+    def color_extractor(self) -> ColorExtractor:
+        return self._get_color_extractor()
+
+    @color_extractor.setter
+    def color_extractor(self, extractor: ColorExtractor):
+        self._set_color_extractor(extractor)
     # === canvas mode property ===
 
     @property
@@ -530,6 +539,34 @@ class CanvasConfig():
 
         self._chafa.chafa_canvas_config_set_canvas_mode(self._canvas_config, mode)
 
+
+    def _get_color_extractor(self) -> ColorExtractor:
+        """
+            Wrapper for chafa_canvas_config_get_color_extractor
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_color_extractor.argtypes = [ctypes.c_void_p]
+        self._chafa.chafa_canvas_config_get_color_extractor.restype  = ctypes.c_uint
+
+        # Get extractor
+        extractor = self._chafa.chafa_canvas_config_get_color_extractor(self._canvas_config)
+
+        return ColorExtractor(extractor)
+
+    
+    def _set_color_extractor(self, extractor: ColorExtractor):
+        """
+            Wrapper for chafa_canvas_config_set_color_extractor
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_color_extractor.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_color_extractor(self._canvas_config, extractor)
     def set_symbol_map(self, symbol_map: SymbolMap):
         """
             Wrapper for chafa_canvas_config_set_symbol_map
