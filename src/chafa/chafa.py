@@ -322,6 +322,17 @@ class CanvasConfig():
         self._set_canvas_mode(mode)
 
 
+    # === preprocessing property ===
+
+    @property
+    def preprocessing(self) -> bool:
+        return self._get_preprocessing_enabled()
+
+    @preprocessing.setter
+    def preprocessing(self, preproc: bool):
+        self._set_preprocessing_enabled(preproc)
+
+    
     # === dither grain width & height ===
 
     @property
@@ -609,6 +620,37 @@ class CanvasConfig():
         ]
 
         self._chafa.chafa_canvas_config_set_color_space(self._canvas_config, space)
+
+
+    def _get_preprocessing_enabled(self) -> bool:
+        """
+            Wrapper for chafa_canvas_config_get_preprocessing_enabled
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_preprocessing_enabled.argtypes = [ctypes.c_void_p]
+        self._chafa.chafa_canvas_config_get_preprocessing_enabled.restype  = ctypes.c_bool
+
+        # Get preprocessing value 
+        preprocessing = self._chafa.chafa_canvas_config_get_preprocessing_enabled(self._canvas_config)
+
+        return preprocessing 
+
+    
+    def _set_preprocessing_enabled(self, preproc: bool):
+        """
+            Wrapper for chafa_canvas_config_set_preprocessing_enabled
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_preprocessing_enabled.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_bool
+        ]
+
+        self._chafa.chafa_canvas_config_set_preprocessing_enabled(self._canvas_config, preproc)
+
+
     def set_symbol_map(self, symbol_map: SymbolMap):
         """
             Wrapper for chafa_canvas_config_set_symbol_map
