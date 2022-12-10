@@ -17,7 +17,7 @@ class PixelMode(IntEnum):
 
 
 #
-# === CANVAS MODES
+# === CANVAS MODES ===
 #
 
 class CanvasMode(IntEnum):
@@ -31,6 +31,53 @@ class CanvasMode(IntEnum):
     CHAFA_CANVAS_MODE_INDEXED_16_8  = 7
 
     CHAFA_CANVAS_MODE_MAX           = 8
+
+
+#
+# === DITHER MODES ===
+#
+
+class DitherMode(IntEnum):
+    CHAFA_DITHER_MODE_NONE      = 0
+    CHAFA_DITHER_MODE_ORDERED   = 1
+    CHAFA_DITHER_MODE_DIFFUSION = 2
+
+    CHAFA_DITHER_MODE_MAX       = 3
+
+
+#
+# === COLOR SPACE ===
+#
+
+class ColorSpace(IntEnum):
+    CHAFA_COLOR_SPACE_RGB    = 0
+    CHAFA_COLOR_SPACE_DIN99D = 1
+
+    CHAFA_COLOR_SPACE_MAX    = 2
+
+
+#
+# === COLOR EXTRACTOR ===
+#
+
+class ColorExtractor(IntEnum):
+    CHAFA_COLOR_EXTRACTOR_AVERAGE = 0
+    CHAFA_COLOR_EXTRACTOR_MEDIAN  = 1
+
+    CHAFA_COLOR_SPACE_MAX         = 2
+
+
+#
+# === OPTIMIZATIONS ===
+#
+
+class Optimizations(IntEnum):
+    CHAFA_OPTIMIZATION_REUSE_ATTRIBUTES = (1 << 0),
+    CHAFA_OPTIMIZATION_SKIP_CELLS       = (1 << 1),
+    CHAFA_OPTIMIZATION_REPEAT_CELLS     = (1 << 2),
+
+    CHAFA_OPTIMIZATION_NONE             = 0,
+    CHAFA_OPTIMIZATION_ALL              = 0x7fffffff
 
 
 #
@@ -207,95 +254,104 @@ class CanvasConfig():
         self._chafa.chafa_canvas_config_new.restype = ctypes.c_void_p
         self._canvas_config = self._chafa.chafa_canvas_config_new()
 
-        # Gete default geometry
-        self._width, self._height = self.get_geometry()
-
-        # Get default pixel mode
-        self._pixel_mode = self._get_pixel_mode()
-
-        # Get default canvas mode
-        self._canvas_mode = self._get_canvas_mode()
-
-        self._symbol_map = None
-
-        # Get default dither size
-        self._dither_width, self._dither_height = self._get_dither_grain_size()
-
-        # Get default cell geometry
-        self._cell_width, self._cell_height = self._get_cell_geometry()
-
-
     # === Width & Height property ===
 
     @property
     def height(self) -> int:
-        return self._height
+        _, height = self.get_geometry()
+
+        return height
 
     @height.setter
     def height(self, value: int):
-        self._height = value
-
-        self._set_geometry(self._width, value)
+        self._set_geometry(self.width, value)
 
 
     @property
     def width(self) -> int:
-        return self._width
+        width, _ = self.get_geometry()
+
+        return width
 
     @width.setter
     def width(self, value: int):
-        self._width = value
-
-        self._set_geometry(value, self._height)
+        self._set_geometry(value, self.height)
 
 
     # === pixel mode property ===
 
     @property
     def pixel_mode(self) -> PixelMode:
-        return self._pixel_mode
+        return self._get_pixel_mode()
 
     @pixel_mode.setter
     def pixel_mode(self, mode: PixelMode):
-        self._pixel_mode = mode
-
         self._set_pixel_mode(mode)
+
+
+    # === color extractor property ===
+
+    @property
+    def color_extractor(self) -> ColorExtractor:
+        return self._get_color_extractor()
+
+    @color_extractor.setter
+    def color_extractor(self, extractor: ColorExtractor):
+        self._set_color_extractor(extractor)
+
+
+    # === color space property ===
+
+    @property
+    def color_space(self) -> ColorSpace:
+        return self._get_color_space()
+
+    @color_space.setter
+    def color_space(self, space: ColorSpace):
+        self._set_color_space(space)
 
 
     # === canvas mode property ===
 
     @property
     def canvas_mode(self) -> CanvasMode:
-        return self._canvas_mode
+        return self._get_canvas_mode()
 
     @canvas_mode.setter
     def canvas_mode(self, mode: CanvasMode):
-        self._canvas_mode = mode
-
         self._set_canvas_mode(mode)
 
 
+    # === preprocessing property ===
+
+    @property
+    def preprocessing(self) -> bool:
+        return self._get_preprocessing_enabled()
+
+    @preprocessing.setter
+    def preprocessing(self, preproc: bool):
+        self._set_preprocessing_enabled(preproc)
+
+    
     # === dither grain width & height ===
 
     @property
     def dither_width(self) -> int:
-        return self._dither_width
+        width, _, = self._get_dither_grain_size()
+        return width
     
     @dither_width.setter
     def dither_width(self, width: int):
-        self._dither_width = width
-
-        self._set_dither_grain_size(width, self._dither_height)
+        self._set_dither_grain_size(width, self.dither_height)
 
     @property
     def dither_height(self) -> int:
-        return self._dither_height
+        _, height, = self._get_dither_grain_size()
+        return height 
     
     @dither_height.setter
     def dither_height(self, height: int):
-        self._dither_height = height 
-
-        self._set_dither_grain_size(self._dither_width, height)
+        self._set_dither_grain_size(self.dither_width, height)
 
 
 
@@ -303,23 +359,21 @@ class CanvasConfig():
 
     @property
     def cell_width(self) -> int:
-        return self._cell_width
+        width, _ = self._get_cell_geometry()
+        return width
     
     @cell_width.setter
     def cell_width(self, width: int):
-        self._cell_width = width
-
-        self._set_cell_geometry(width, self._cell_height)
+        self._set_cell_geometry(width, self.cell_height)
 
     @property
     def cell_height(self) -> int:
-        return self._cell_height
+        _, height = self._get_cell_geometry()
+        return height 
     
     @cell_height.setter
     def cell_height(self, height: int):
-        self._cell_height = height 
-
-        self._set_cell_geometry(self._cell_width, height)
+        self._set_cell_geometry(self.cell_width, height)
         
 
     def _set_geometry(self, width: int, height: int):
@@ -335,8 +389,8 @@ class CanvasConfig():
 
         self._chafa.chafa_canvas_config_set_geometry(
             self._canvas_config, 
-            self.width, 
-            self.height
+            width, 
+            height
         )
 
 
@@ -344,9 +398,6 @@ class CanvasConfig():
         """
             Set the canvas geometry.
         """
-
-        self._height = height
-        self._width  = width
 
         self._set_geometry(width, height)
 
@@ -512,6 +563,94 @@ class CanvasConfig():
 
         self._chafa.chafa_canvas_config_set_canvas_mode(self._canvas_config, mode)
 
+
+    def _get_color_extractor(self) -> ColorExtractor:
+        """
+            Wrapper for chafa_canvas_config_get_color_extractor
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_color_extractor.argtypes = [ctypes.c_void_p]
+        self._chafa.chafa_canvas_config_get_color_extractor.restype  = ctypes.c_uint
+
+        # Get extractor
+        extractor = self._chafa.chafa_canvas_config_get_color_extractor(self._canvas_config)
+
+        return ColorExtractor(extractor)
+
+    
+    def _set_color_extractor(self, extractor: ColorExtractor):
+        """
+            Wrapper for chafa_canvas_config_set_color_extractor
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_color_extractor.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_color_extractor(self._canvas_config, extractor)
+
+
+    def _get_color_space(self) -> ColorSpace:
+        """
+            Wrapper for chafa_canvas_config_get_color_space
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_color_space.argtypes = [ctypes.c_void_p]
+        self._chafa.chafa_canvas_config_get_color_space.restype  = ctypes.c_uint
+
+        # Get space
+        space = self._chafa.chafa_canvas_config_get_color_space(self._canvas_config)
+
+        return ColorSpace(space)
+
+    
+    def _set_color_space(self, space: ColorSpace):
+        """
+            Wrapper for chafa_canvas_config_set_color_space
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_color_space.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_color_space(self._canvas_config, space)
+
+
+    def _get_preprocessing_enabled(self) -> bool:
+        """
+            Wrapper for chafa_canvas_config_get_preprocessing_enabled
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_preprocessing_enabled.argtypes = [ctypes.c_void_p]
+        self._chafa.chafa_canvas_config_get_preprocessing_enabled.restype  = ctypes.c_bool
+
+        # Get preprocessing value 
+        preprocessing = self._chafa.chafa_canvas_config_get_preprocessing_enabled(self._canvas_config)
+
+        return preprocessing 
+
+    
+    def _set_preprocessing_enabled(self, preproc: bool):
+        """
+            Wrapper for chafa_canvas_config_set_preprocessing_enabled
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_preprocessing_enabled.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_bool
+        ]
+
+        self._chafa.chafa_canvas_config_set_preprocessing_enabled(self._canvas_config, preproc)
+
+
     def set_symbol_map(self, symbol_map: SymbolMap):
         """
             Wrapper for chafa_canvas_config_set_symbol_map
@@ -563,6 +702,30 @@ class CanvasConfig():
 
         self.width  = new_width. contents.value
         self.height = new_height.contents.value
+
+    def copy(self) -> 'CanvasConfig':
+        """
+            Creates a new :py:class:`CanvasConfig` that is a copy of this config.
+
+            :rtype: CanvasConfig
+        """
+
+        # define types
+        self._chafa.chafa_canvas_config_copy.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_copy.restype = ctypes.c_void_p
+
+        # Init new config
+        new_config = CanvasConfig()
+
+        # Get new pointer
+        config_copy = self._chafa.chafa_canvas_config_copy(self._canvas_config)
+
+        new_config._canvas_config = config_copy
+
+        return new_config
 
 
 class TermDb():
