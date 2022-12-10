@@ -17,7 +17,7 @@ class PixelMode(IntEnum):
 
 
 #
-# === CANVAS MODES
+# === CANVAS MODES ===
 #
 
 class CanvasMode(IntEnum):
@@ -31,6 +31,53 @@ class CanvasMode(IntEnum):
     CHAFA_CANVAS_MODE_INDEXED_16_8  = 7
 
     CHAFA_CANVAS_MODE_MAX           = 8
+
+
+#
+# === DITHER MODES ===
+#
+
+class DitherMode(IntEnum):
+    CHAFA_DITHER_MODE_NONE      = 0
+    CHAFA_DITHER_MODE_ORDERED   = 1
+    CHAFA_DITHER_MODE_DIFFUSION = 2
+
+    CHAFA_DITHER_MODE_MAX       = 3
+
+
+#
+# === COLOR SPACE ===
+#
+
+class ColorSpace(IntEnum):
+    CHAFA_COLOR_SPACE_RGB    = 0
+    CHAFA_COLOR_SPACE_DIN99D = 1
+
+    CHAFA_COLOR_SPACE_MAX    = 2
+
+
+#
+# === COLOR EXTRACTOR ===
+#
+
+class ColorExtractor(IntEnum):
+    CHAFA_COLOR_EXTRACTOR_AVERAGE = 0
+    CHAFA_COLOR_EXTRACTOR_MEDIAN  = 1
+
+    CHAFA_COLOR_SPACE_MAX         = 2
+
+
+#
+# === OPTIMIZATIONS ===
+#
+
+class Optimizations(IntEnum):
+    CHAFA_OPTIMIZATION_REUSE_ATTRIBUTES = (1 << 0),
+    CHAFA_OPTIMIZATION_SKIP_CELLS       = (1 << 1),
+    CHAFA_OPTIMIZATION_REPEAT_CELLS     = (1 << 2),
+
+    CHAFA_OPTIMIZATION_NONE             = 0,
+    CHAFA_OPTIMIZATION_ALL              = 0x7fffffff
 
 
 #
