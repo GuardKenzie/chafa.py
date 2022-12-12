@@ -7,6 +7,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
       - name: Install dependencies
         run: |
@@ -15,8 +16,6 @@ jobs:
         working-directory: docs
         run: |
           make clean html
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
