@@ -98,6 +98,21 @@ Note that it is not possible to change a canvas' configuration after the canvas 
 
         :param SymbolMap symbol_map: The symbol_map.
 
+
+    .. py:method:: get_canvas_geometry()
+
+        Gives the config's width and height in character cells.
+
+        :rtype: typing.Tuple[int, int] of width and height.
+
+    .. py:method:: set_canvas_geometry(width: int, height: int)
+
+        Sets the config's width and height in character cells to width by height.
+
+        :param int width: Width in character cells.
+        :param int height: Height in character cells.
+
+
     .. py:method:: calc_canvas_geometry(src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False)
 
         Calculates an optimal geometry for a :py:class:`Canvas` given the width and height of an input image, font ratio, zoom and stretch preferences. This will then set the config's width and height to the calculated values.
@@ -108,6 +123,7 @@ Note that it is not possible to change a canvas' configuration after the canvas 
         :param bool zoom: Upscale the image to fit the canvas.
         :param bool stretch: Ignore the aspect ratio of source.
         :raises ValueError: if src_width or src_height are <= 0
+
 
 SymbolMap
 =========

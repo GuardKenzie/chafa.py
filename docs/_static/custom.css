@@ -222,7 +222,7 @@ th span.methods {
 
 .class_contents td:empty, .class_contents th:empty {
     padding: 0;
-    display: block;
+    /* display: block; */
     background-color: none;
 }
 

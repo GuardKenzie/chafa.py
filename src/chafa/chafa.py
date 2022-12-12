@@ -258,6 +258,12 @@ class CanvasConfig():
 
     @property
     def height(self) -> int:
+        """
+        :type: int
+
+        Sets the config's height in character cells.
+        """
+
         _, height = self.get_geometry()
 
         return height
@@ -269,6 +275,11 @@ class CanvasConfig():
 
     @property
     def width(self) -> int:
+        """
+        :type: int
+
+        Sets the config's width in character cells.
+        """
         width, _ = self.get_geometry()
 
         return width
@@ -282,6 +293,14 @@ class CanvasConfig():
 
     @property
     def pixel_mode(self) -> PixelMode:
+        """
+        :type: PixelMode
+
+        Sets config's stored :py:class:`PixelMode`. 
+        This determines how pixel graphics are rendered 
+        in the output.
+        """
+
         return self._get_pixel_mode()
 
     @pixel_mode.setter
@@ -293,6 +312,13 @@ class CanvasConfig():
 
     @property
     def color_extractor(self) -> ColorExtractor:
+        """
+        :type: ColorExtractor
+
+        The config's stored :py:class:`ColorExtractor`. 
+        This determines how colours are approximated in 
+        character symbol output.
+        """
         return self._get_color_extractor()
 
     @color_extractor.setter
@@ -304,6 +330,11 @@ class CanvasConfig():
 
     @property
     def color_space(self) -> ColorSpace:
+        """
+        :type: ColorSpace
+
+        The config's stored :py:class:`ColorSpace`.
+        """
         return self._get_color_space()
 
     @color_space.setter
@@ -315,6 +346,13 @@ class CanvasConfig():
 
     @property
     def canvas_mode(self) -> CanvasMode:
+        """
+        :type: CanvasMode
+
+        Sets config's stored `CanvasMode`. 
+        This determines how colours (and colour control codes) 
+        are used in the output.
+        """
         return self._get_canvas_mode()
 
     @canvas_mode.setter
@@ -326,6 +364,13 @@ class CanvasConfig():
 
     @property
     def preprocessing(self) -> bool:
+        """
+        :type: bool
+
+        Indicates whether automatic image preprocessing should 
+        be enabled. This allows Chafa to boost contrast and 
+        saturation in an attempt to improve legibility. 
+        """
         return self._get_preprocessing_enabled()
 
     @preprocessing.setter
@@ -337,6 +382,15 @@ class CanvasConfig():
 
     @property
     def dither_width(self) -> int:
+        """
+        :type: int
+
+        Sets config's stored dither grain width in pixels. These 
+        values can be 1, 2, 4 or 8. 8 corresponds to the size of 
+        an entire character cell. 
+
+        The default is 4 pixels.
+        """
         width, _, = self._get_dither_grain_size()
         return width
     
@@ -346,6 +400,16 @@ class CanvasConfig():
 
     @property
     def dither_height(self) -> int:
+        """
+        :type: int
+
+        Sets config's stored dither grain width in pixels. These 
+        values can be 1, 2, 4 or 8. 8 corresponds to the size of 
+        an entire character cell. 
+
+        The default is 4 pixels.
+
+        """
         _, height, = self._get_dither_grain_size()
         return height 
     
@@ -359,6 +423,11 @@ class CanvasConfig():
 
     @property
     def cell_width(self) -> int:
+        """
+        :type: int
+
+        Sets config's cell width in pixels.
+        """
         width, _ = self._get_cell_geometry()
         return width
     
@@ -368,6 +437,11 @@ class CanvasConfig():
 
     @property
     def cell_height(self) -> int:
+        """
+        :type: int
+
+        Sets config's cell height in pixels.
+        """
         _, height = self._get_cell_geometry()
         return height 
     
@@ -404,11 +478,9 @@ class CanvasConfig():
 
     def get_geometry(self) -> Tuple[int, int]:
         """
-            Get the canvas geometry.
+        Get the config's canvas geometry.
 
-            Returns: (width, height)
-            
-            Wrapper for chafa_canvas_config_get_geometry
+        :rtype: Tuple[int, int] of width and height.
         """
 
         # Init pointers
@@ -653,7 +725,9 @@ class CanvasConfig():
 
     def set_symbol_map(self, symbol_map: SymbolMap):
         """
-            Wrapper for chafa_canvas_config_set_symbol_map
+            Assigns a copy of symbol_map to config.
+
+            :param SymbolMap symbol_map: The symbol_map.
         """
 
         # Specify types
@@ -667,10 +741,18 @@ class CanvasConfig():
 
     def calc_canvas_geometry(self, src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False):
         """
-            Automatically calculates the optimal geometry for a canvas
-                - src_width:  width of source image (>0)
-                - src_height: height of source image (>0)
-                - font_ratio: font width / font height
+        Calculates an optimal geometry for a :py:class:`Canvas` given 
+        the width and height of an input image, font ratio, zoom and 
+        stretch preferences. This will then set the config's width and 
+        height to the calculated values.
+
+        :param int src_width: Width of the input image in pixels.
+        :param int src_height: Height of the input image in pixels.
+        :param float font_ratio: The font's width divided by its height.
+        :param bool zoom: Upscale the image to fit the canvas.
+        :param bool stretch: Ignore the aspect ratio of source.
+
+        :raises ValueError: if src_width or src_height are <= 0
         """
 
         if src_width <= 0:
@@ -705,9 +787,9 @@ class CanvasConfig():
 
     def copy(self) -> 'CanvasConfig':
         """
-            Creates a new :py:class:`CanvasConfig` that is a copy of this config.
+        Creates a new :py:class:`CanvasConfig` that is a copy of this config.
 
-            :rtype: CanvasConfig
+        :rtype: CanvasConfig
         """
 
         # define types
@@ -915,7 +997,8 @@ class Canvas():
         ]
 
         # Init array
-        pixels = (ctypes.c_uint8 * len(src_pixels)).from_buffer(src_pixels)
+        pixels = (ctypes.c_uint8 * len(src_pixels))()
+        pixels[:] = src_pixels
 
         # Draw pixels
         self._chafa.chafa_canvas_draw_all_pixels(
