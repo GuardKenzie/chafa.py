@@ -4,16 +4,17 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@latest
+      - uses: actions/setup-python@latest
       - name: Install dependencies
         run: |
           pip install sphinx sphinxemoji
       - name: Sphinx build
+        working-directory: ./docs
         run: |
           make clean html
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@latest
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
           publish_branch: built-docs
