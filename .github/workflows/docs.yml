@@ -12,7 +12,7 @@ jobs:
         run: |
           pip install sphinx sphinxemoji
       - name: Sphinx build
-        working-directory: ./docs
+        working-directory: docs
         run: |
           make clean html
       - name: Checkout
