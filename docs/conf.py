@@ -20,8 +20,8 @@ release = '0.0.1-pre'
 extensions = [
     'sphinxemoji.sphinxemoji',
     'sphinx.ext.intersphinx',
-    'pallets_sphinx_themes',
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary'
 ]
 
 templates_path = ['_templates']
@@ -37,10 +37,10 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 html_theme_options = {
-    "link": "var(--peach)",
-    "link_hover": "var(--peach)", 
-    "body_text": "var(--bg)",
-    "sidebar_link": "var(--bg)",
+    "link": "var(--links)",
+    "link_hover": "var(--links)", 
+    "body_text": "var(--fg)",
+    "sidebar_link": "var(--fg)",
 
     "head_font_family": "Eczar",
     "font_family": "Signika Negative",
@@ -48,6 +48,10 @@ html_theme_options = {
 }
 
 pygments_style = "dracula"
+
+html_js_files = [
+    'table.js'
+]
 
 #html_sidebars = {
 #    '**': {

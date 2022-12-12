@@ -1,4 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Eczar:wght@500&family=JetBrains+Mono&family=Signika+Negative&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;700&family=JetBrains+Mono&family=Signika+Negative&display=swap');
+
+:root {
+    --fg:        #4c4f69;
+    --bg:        #eff1f5;
+    --rosewater: #f2d5cf;
+    --flamingo:  #eebebe;
+    --pink:      #f4b8e4;
+    --mauve:     #ca9ee6;
+    --red:       #e78284;
+    --peach:     #ef9f76;
+    --maroon:    #ea999c;
+    --yellow:    #e5c890;
+    --green:     #a6d189;
+    --teal:      #81c8be;
+    --sky:       #99d1db;
+    --sapphire:  #85c1dc;
+    --blue:      #8ba9ed;
+    --lavender:  #babbf1;
+
+    --lavenderd: #7287fd;
+    --flamingod: #dd7878;
+    --peachd:    #fe640b;
+
+    --crust:     #232634;
+
+    --method:    var(--sky);
+    --property:  var(--green);
+    --attribute: var(--green);
+
+    --links: var(--peach);
+}
 
 dl.py {
     margin-bottom: 1.5em;
@@ -8,14 +39,29 @@ h1 {
     white-space: nowrap;
 }
 
+div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
+    font-weight: 500;
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+    font-weight: 500;
+}
+
+.class > .sig-object .sig-param a.reference.external {
+    color: var(--fg);
+    background-color: var(--flamingo);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
 h1.logo a {
     font-family: Eczar;
+    font-weight: 700;
     border: none;
-    background: var(--green);
-    padding-right: 1rem;
-    padding-left: 1rem;
-    color: white;
-    font-size: 2.2rem;
+    background: var(--bg);
+    padding: .2em 1em;
+    color: var(--fg);
+    font-size: 2rem;
 }
 
 h1.logo a:hover {
@@ -24,41 +70,198 @@ h1.logo a:hover {
 
 div.sphinxsidebarwrapper h1.logo {
     margin-bottom: .5em;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 1em;
 }
 
 pre {
     padding: 30px;
-    border-radius: 10px;
-    background-color: var(--bg);
+    border-radius: .5rem;
+    background-color: var(--crust);
 }
 
-:root {
-    --fg:        #cdd6f4;
-    --bg:        #1e1e2e;
-    --rosewater: #f2d5cf;
-    --green:     #a6d189;
-    --peach:     #ef9f76;
-    --maroon:    #ea999c;
-    --blue:      #8ba9ed;
+.search {
+    border-radius: .5rem;
+    font-size: 1.2em;
+}
 
-    --crust:     #232634;
+
+div.sphinxsidebar #searchbox input[type="text"] {
+    color: var(--fg);
+    background-color: var(--bg);
+    border-color: var(--bg);
+    padding-left: .5em;
+}
+
+div.sphinxsidebar input[type="submit"] {
+    color: var(--fg);
+    background-color: var(--rosewater);
+    border-color: var(--rosewater);
 }
 
 .class > dt {
     background: var(--rosewater);
-    padding: .5em;
+    padding: .7em 0em .7em 1em;
     display: inline-block;
+    line-height: 1em;
+}
+
+div.admonition code.xref, code.xref {
+    background-color: inherit;
+    color: var(--fg);
+    border: none;
+}
+
+
+code.xref.py-class:hover {
+    background-color: var(--rosewater);
+}
+
+code.xref.py-meth:hover {
+    background-color: var(--method);
+}
+
+code.xref.py-attr:hover {
+    background-color: var(--attribute);
+}
+
+code.xref.py-prop:hover {
+    background-color: var(--property);
+}
+
+
+div.admonition code.xref:hover, code.xref:hover {
+    background-color: var(--bg);
+    border: none;
+}
+
+div.admonition code.xref.py-class:hover {
+    background-color: var(--rosewater);
+}
+
+div.admonition code.xref.py-meth:hover {
+    background-color: var(--method);
+}
+
+div.admonition code.xref.py-attr:hover {
+    background-color: var(--attribute);
+}
+
+div.admonition code.xref.py-prop:hover {
+    background-color: var(--property);
+}
+
+div.admonition, a.reference, a.reference:hover {
+    border: none;
+}
+
+div.admonition {
+    border-radius: .5rem;
+    border: none;
+    padding: 1.5em;
+}
+
+div.attention {
+    background-color: var(--yellow);
+}
+
+div.warning {
+    background-color: var(--red);
+}
+
+div.note {
+    background-color: var(--bg);
 }
 
 .property .descname {
-    border-bottom: 3px solid var(--green);
+    border-bottom: 3px solid var(--property);
 }
 
 .attribute .descname {
-    border-bottom: 3px solid var(--green);
+    border-bottom: 3px solid var(--attribute);
 }
 
 
 .method .descname {
-    border-bottom: 3px solid var(--blue);
+    border-bottom: 3px solid var(--method);
+}
+
+.class_contents td {
+    padding-right: 1em;
+}
+
+.class_contents td:last-child {
+    padding-right: 0;
+}
+
+.class_contents th span {
+    font-family: Eczar;
+    font-weight: 500;
+    font-size: 1.2em;
+    line-height: 1em;
+
+    padding: .2em 1em;
+}
+
+.class_contents th {
+    padding-bottom: 1em;
+}
+
+th span.properties {
+    background-color: var(--property);
+}
+
+th span.attributes {
+    background-color: var(--attribute);
+}
+
+th span.methods {
+    background-color: var(--method);
+}
+
+.class_contents td:empty, .class_contents th:empty {
+    padding: 0;
+    display: block;
+    background-color: none;
+}
+
+.class_contents {
+    border-collapse: collapse;
+    margin: 1em;
+    margin-left: 2em;
+    width: 100%;
+}
+
+@media screen and (max-width: 875px) {
+    div.sphinxsidebar h1.logo a {
+        color: var(--fg);
+        background-color: var(--bg);
+    }
+
+    div.sphinxsidebar {
+        background-color: var(--crust);
+        padding-top: 3em;
+    }
+
+    div.sphinxsidebar a {
+        color: var(--bg);
+    }
+
+    div.sphinxsidebar ul {
+        color: var(--bg)
+    }
+
+    div.sphinxsidebar #searchbox input[type="text"] {
+        color: var(--bg);
+        background-color: var(--fg);
+        border-color: var(--fg);
+        padding-left: .5em;
+    }
+    
+    div.sphinxsidebar input[type="submit"] {
+        color: var(--fg);
+        background-color: var(--bg);
+        border-color: var(--bg);
+    }
 }
