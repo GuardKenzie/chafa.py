@@ -1,6 +1,9 @@
-======================================
-Chafa but now with 20% more |:snake:|!
-======================================
+.. raw:: html
+
+   <h1 class="blocked-header">
+      <span class="break-block">Chafa, </span>
+      <span class="break-block">now with 20% more 🐍!</span>
+   </h1>
 
 
 `Chafa <https://hpjansson.org/chafa/>`_ is a wonderful command-line utility, created by `Hans Petter Jansson`_, for visualizing images (and GIFs) in the terminal. In Jansson's own words:

@@ -31,12 +31,19 @@
     --links: var(--peach);
 }
 
-dl.py {
-    margin-bottom: 1.5em;
+
+
+.break-block {
+    display: inline-block;
 }
 
-h1 {
-    white-space: nowrap;
+div.body h1.blocked-header {
+    line-height: 1em;
+    margin: .6em 0;
+}
+
+dl.py {
+    margin-bottom: 1.5em;
 }
 
 div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
