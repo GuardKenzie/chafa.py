@@ -497,6 +497,20 @@ class CanvasConfig():
     @cell_height.setter
     def cell_height(self, height: int):
         self._set_cell_geometry(self.cell_width, height)
+
+
+    # === Transparency threshold ===
+
+    @property
+    def transparency_threshold(self) -> float:
+        return self._get_transparency_threshold()
+
+    @transparency_threshold.setter
+    def transparency_threshold(self, threshold: float):
+        if 1 < threshold or threshold < 0:
+            raise ValueError("Transparency threshold must be in range [0,1]")
+
+        self._set_transparency_threshold(threshold)
         
 
     def _set_geometry(self, width: int, height: int):
@@ -551,6 +565,40 @@ class CanvasConfig():
 
         return width.contents.value, height.contents.value
 
+    def _get_transparency_threshold(self) -> float:
+        """
+            Wrapper for chafa_canvas_config_get_transparency_threshold
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_transparency_threshold.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_get_transparency_threshold.restype = ctypes.c_float
+
+        # Get threshold
+        threshold = self._chafa.chafa_canvas_config_get_transparency_threshold(self._canvas_config)
+
+        return threshold
+
+
+    def _set_transparency_threshold(self, threshold: float):
+        """
+            Wrapper for chafa_canvas_config_set_transparency_threshold
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_transparency_threshold.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_float
+        ]
+
+        # Set threshold
+        self._chafa.chafa_canvas_config_set_transparency_threshold(
+            self._canvas_config,
+            threshold
+        )
 
     def _get_pixel_mode(self) -> PixelMode:
         """
