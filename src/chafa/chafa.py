@@ -1375,14 +1375,14 @@ class Canvas():
         ]
 
         # Init array
-        pixels = (ctypes.c_uint8 * len(src_pixels))()
-        pixels[:] = src_pixels
+        # pixels = (ctypes.c_uint8 * len(src_pixels))()
+        # pixels[:] = src_pixels
 
         # Draw pixels
         self._chafa.chafa_canvas_draw_all_pixels(
             self._canvas,
             src_pixel_type,
-            pixels,
+            src_pixels,
             src_width,
             src_height,
             src_rowstride,
