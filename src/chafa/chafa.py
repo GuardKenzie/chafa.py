@@ -527,6 +527,16 @@ class CanvasConfig():
         self._set_work_factor(factor)
         
 
+    # === fg only ===
+
+    @property
+    def fg_only(self) -> bool:
+        return self._get_fg_only_enabled()
+
+    @fg_only.setter
+    def fg_only(self, fg_only: bool):
+        self._set_fg_only_enabled(fg_only)
+        
     def _set_geometry(self, width: int, height: int):
         """
             Wrapper for chafa_canvas_config_set_geometry
@@ -578,6 +588,41 @@ class CanvasConfig():
         )
 
         return width.contents.value, height.contents.value
+
+    def _get_fg_only_enabled(self) -> bool:
+        """
+            Wrapper for chafa_canvas_config_get_fg_only_enabled
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_fg_only_enabled.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_get_fg_only_enabled.restype = ctypes.c_bool
+
+        # Get fg_only 
+        fg_only = self._chafa.chafa_canvas_config_get_fg_only_enabled(self._canvas_config)
+
+        return fg_only
+
+
+    def _set_fg_only_enabled(self, fg_only: bool):
+        """
+            Wrapper for chafa_canvas_config_set_fg_only_enabled
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_fg_only_enabled.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_bool
+        ]
+
+        # Set threshold
+        self._chafa.chafa_canvas_config_set_fg_only_enabled(
+            self._canvas_config,
+            fg_only
+        )
 
     def _get_transparency_threshold(self) -> float:
         """
