@@ -81,7 +81,7 @@ class Optimizations(IntEnum):
 
 
 #
-# === PIXEL TYPE
+# === PIXEL TYPE ===
 #
 
 class PixelType(IntEnum):
@@ -417,6 +417,54 @@ class CanvasConfig():
     def dither_height(self, height: int):
         self._set_dither_grain_size(self.dither_width, height)
 
+    
+    # === optimizations ===
+
+    @property
+    def optimizations(self) -> Tuple:
+        """
+        :type: Tuple 
+
+        Returns config's optimization flags.
+        When enabled, these may produce more 
+        compact output at the cost of reduced 
+        compatibility and increased CPU use. 
+
+        The flags will be returned as a tuple
+        containing all enabled flags.
+
+        Output quality is unaffected.
+        """
+
+        out = []
+
+        flags = self._get_optimizations()
+
+        # Check if all optimizations are being used
+        if flags == Optimizations.CHAFA_OPTIMIZATION_ALL:
+            return (Optimizations.CHAFA_OPTIMIZATION_ALL, )
+        
+        # Loop to decipher which optimizations are in use
+        for optimization in Optimizations:
+            # Check if we have reached the end
+            if optimization == Optimizations.CHAFA_OPTIMIZATION_NONE:
+                break
+
+            # Check if flag is set
+            if flags & optimization == optimization:
+                out.append(optimization)
+
+        return tuple(map(Optimizations, out))
+
+    @optimizations.setter
+    def optimizations(self, optimizations: Tuple):
+        # Or all optimizations together
+
+        compounded = 0
+        for flag in optimizations:
+            compounded |= flag
+
+        self._set_optimizations(compounded)
 
 
     # === cell width & height ===
@@ -428,6 +476,7 @@ class CanvasConfig():
 
         Sets config's cell width in pixels.
         """
+
         width, _ = self._get_cell_geometry()
         return width
     
@@ -721,6 +770,38 @@ class CanvasConfig():
         ]
 
         self._chafa.chafa_canvas_config_set_preprocessing_enabled(self._canvas_config, preproc)
+
+
+    def _get_optimizations(self) -> int:
+        """
+            Wrapper for chafa_canvas_config_get_optimizations
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_get_optimizations.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_get_optimizations.restype = ctypes.c_uint
+
+        return self._chafa.chafa_canvas_config_get_optimizations(self._canvas_config)
+
+    def _set_optimizations(self, optimizations: int):
+        """
+            Wrapper for chafa_canvas_config_set_optimizations
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_optimizations.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        # Set optimizations
+        self._chafa.chafa_canvas_config_set_optimizations(
+            self._canvas_config,
+            optimizations
+        )
 
 
     def set_symbol_map(self, symbol_map: SymbolMap):
