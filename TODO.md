@@ -2,15 +2,15 @@
 
 - [ ] Peaking at symbol maps?
 
-- [ ] fill_symbol_map
-- [ ] transparency_threshold
-- [ ] fg_only
-- [ ] fg and bg color
-- [ ] work factor
+- [x] fill_symbol_map
+- [x] transparency_threshold
+- [x] fg_only
+- [x] fg and bg color
+- [x] work factor
 - [ ] dithering
     - [ ] mode
     - [ ] intensity
-- [ ] optimizations
+- [x] optimizations
 
 # Canvas
 
