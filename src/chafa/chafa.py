@@ -594,6 +594,7 @@ class CanvasConfig():
         color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
 
         self._set_bg_color(color)
+
     def _set_geometry(self, width: int, height: int):
         """
             Wrapper for chafa_canvas_config_set_geometry
@@ -1096,6 +1097,24 @@ class CanvasConfig():
         ]
 
         self._chafa.chafa_canvas_config_set_symbol_map(self._canvas_config, symbol_map._symbol_map)
+
+
+    def set_fill_symbol_map(self, fill_symbol_map: SymbolMap):
+        """
+            Assigns a copy of fill_symbol_map to config.
+
+            Fill symbols are assigned according to their overall foreground to background coverage, disregarding shape. ???
+
+            :param SymbolMap fill_symbol_map: The fill symbol map.
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_fill_symbol_map.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_set_fill_symbol_map(self._canvas_config, fill_symbol_map._symbol_map)
 
 
     def calc_canvas_geometry(self, src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False):
