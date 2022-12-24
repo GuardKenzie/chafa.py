@@ -537,6 +537,63 @@ class CanvasConfig():
     def fg_only(self, fg_only: bool):
         self._set_fg_only_enabled(fg_only)
         
+
+    # === fg and bg colors ===
+
+    @property
+    def fg_color(self) -> Tuple[int, int, int]:
+        # Get the color
+        color = self._get_fg_color()
+
+        # Convert to bytes
+        bit_length = 3 
+        order      = "big"
+        
+        color = color.to_bytes(bit_length, order)
+
+        return (color[0], color[1], color[2])
+
+    @fg_color.setter
+    def fg_color(self, fg_color: Tuple[int, int, int]):
+
+        if len(fg_color) != 3:
+            raise ValueError("fg_color must have exactly 3 values")
+
+        if any([255 < col or col < 0 for col in fg_color]):
+            raise ValueError("Each value of fg_color must in the range [0,255]")
+
+        # Calculate packed color
+        color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+
+        self._set_fg_color(color)
+
+
+    @property
+    def bg_color(self) -> Tuple[int, int, int]:
+        # Get the color
+        color = self._get_bg_color()
+
+        # Convert to bytes
+        bit_length = 3
+        order      = "big"
+        
+        color = color.to_bytes(bit_length, order)
+
+        return (color[0], color[1], color[2])
+
+    @bg_color.setter
+    def bg_color(self, bg_color: Tuple[int, int, int]):
+
+        if len(bg_color) != 3:
+            raise ValueError("bg_color must have exactly 3 values")
+
+        if any([255 < col or col < 0 for col in bg_color]):
+            raise ValueError("Each value of bg_color must in the range [0,255]")
+
+        # Calculate packed color
+        color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+
+        self._set_bg_color(color)
     def _set_geometry(self, width: int, height: int):
         """
             Wrapper for chafa_canvas_config_set_geometry
@@ -624,6 +681,83 @@ class CanvasConfig():
             fg_only
         )
 
+
+    def _get_fg_color(self) -> int:
+        """
+            Wrapper for chafa_canvas_config_get_fg_color
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_fg_color.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_get_fg_color.restype = ctypes.c_uint32
+
+        # Get fg_color
+        color = self._chafa.chafa_canvas_config_get_fg_color(
+            self._canvas_config 
+        )
+
+        return color
+
+
+    def _set_fg_color(self, fg_color: int):
+        """
+            Wrapper for chafa_canvas_config_set_fg_color
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_fg_color.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint32
+        ]
+
+        # Set fg_color
+        color = self._chafa.chafa_canvas_config_set_fg_color(
+            self._canvas_config,
+            fg_color
+        )
+
+
+    def _get_bg_color(self) -> int:
+        """
+            Wrapper for chafa_canvas_config_get_bg_color
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_bg_color.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_get_bg_color.restype = ctypes.c_uint32
+
+        # Get bg_color
+        color = self._chafa.chafa_canvas_config_get_bg_color(
+            self._canvas_config 
+        )
+
+        return color
+
+
+    def _set_bg_color(self, bg_color: int):
+        """
+            Wrapper for chafa_canvas_config_set_bg_color
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_bg_color.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint32
+        ]
+
+        # Set bg_color
+        color = self._chafa.chafa_canvas_config_set_bg_color(
+            self._canvas_config,
+            bg_color
+        )
+
+
     def _get_transparency_threshold(self) -> float:
         """
             Wrapper for chafa_canvas_config_get_transparency_threshold
@@ -694,6 +828,7 @@ class CanvasConfig():
             self._canvas_config,
             factor
         )
+
 
     def _get_pixel_mode(self) -> PixelMode:
         """
