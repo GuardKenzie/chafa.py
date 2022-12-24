@@ -511,6 +511,20 @@ class CanvasConfig():
             raise ValueError("Transparency threshold must be in range [0,1]")
 
         self._set_transparency_threshold(threshold)
+
+
+    # === Work factor ===
+
+    @property
+    def work_factor(self) -> float:
+        return self._get_work_factor()
+
+    @work_factor.setter
+    def work_factor(self, factor: float):
+        if 1 < factor or factor < 0:
+            raise ValueError("Work factor must be in range [0,1]")
+
+        self._set_work_factor(factor)
         
 
     def _set_geometry(self, width: int, height: int):
@@ -598,6 +612,42 @@ class CanvasConfig():
         self._chafa.chafa_canvas_config_set_transparency_threshold(
             self._canvas_config,
             threshold
+        )
+
+
+    def _get_work_factor(self) -> float:
+        """
+            Wrapper for chafa_canvas_config_get_work_factor
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_get_work_factor.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_get_work_factor.restype = ctypes.c_float
+
+        # Get factor
+        factor = self._chafa.chafa_canvas_config_get_work_factor(self._canvas_config)
+
+        return factor
+
+
+    def _set_work_factor(self, factor: float):
+        """
+            Wrapper for chafa_canvas_config_set_work_factor
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_work_factor.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_float
+        ]
+
+        # Set factor
+        self._chafa.chafa_canvas_config_set_work_factor(
+            self._canvas_config,
+            factor
         )
 
     def _get_pixel_mode(self) -> PixelMode:
