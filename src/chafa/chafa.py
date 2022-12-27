@@ -428,6 +428,17 @@ class CanvasConfig():
     def dither_height(self, height: int):
         self._set_dither_grain_size(self.dither_width, height)
 
+
+    # === dither mode property ===
+
+    @property
+    def dither_mode(self) -> DitherMode:
+        return self._get_dither_mode()
+
+    @dither_mode.setter
+    def dither_mode(self, mode: DitherMode):
+        self._set_dither_mode(mode)
+
     
     # === optimizations ===
 
@@ -946,6 +957,34 @@ class CanvasConfig():
         return (width_out.contents.value, height_out.contents.value)
 
 
+    def _get_dither_mode(self) -> DitherMode:
+        """
+            Wrapper for chafa_canvas_config_get_cnavas_mode
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_get_dither_mode.argtypes = [ctypes.c_void_p]
+        self._chafa.chafa_canvas_config_get_dither_mode.restype  = ctypes.c_uint
+
+        # Get mode
+        mode = self._chafa.chafa_canvas_config_get_dither_mode(self._canvas_config)
+
+        return DitherMode(mode)
+
+    
+    def _set_dither_mode(self, mode: DitherMode):
+        """
+            wrapper for chafa_canvas_config_set_dither_mode
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_dither_mode.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_dither_mode(self._canvas_config, mode)
+        
     def _get_canvas_mode(self) -> CanvasMode:
         """
             Wrapper for chafa_canvas_config_get_cnavas_mode
