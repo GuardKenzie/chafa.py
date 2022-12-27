@@ -1,4 +1,5 @@
 from .chafa import PixelMode
+from .chafa import DitherMode
 from .chafa import CanvasMode
 from .chafa import PixelType
 from .chafa import SymbolTags
