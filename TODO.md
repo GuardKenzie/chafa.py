@@ -7,9 +7,9 @@
 - [x] fg_only
 - [x] fg and bg color
 - [x] work factor
-- [ ] dithering
-    - [ ] mode
-    - [ ] intensity
+- [x] dithering
+    - [x] mode
+    - [x] intensity
 - [x] optimizations
 
 # Canvas
