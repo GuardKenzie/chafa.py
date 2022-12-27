@@ -439,7 +439,21 @@ class CanvasConfig():
     def dither_mode(self, mode: DitherMode):
         self._set_dither_mode(mode)
 
+
+    # === dither intensity ===
+
+    @property
+    def dither_intensity(self) -> float:
+        return self._get_dither_intensity()
+
+    @dither_intensity.setter
+    def dither_intensity(self, intensity: float):
+        if intensity < 0:
+            raise ValueError("Dither intensity must be positive.")
+
+        self._set_dither_intensity(intensity)
     
+
     # === optimizations ===
 
     @property
@@ -985,6 +999,43 @@ class CanvasConfig():
 
         self._chafa.chafa_canvas_config_set_dither_mode(self._canvas_config, mode)
         
+
+    def _get_dither_intensity(self) -> float:
+        """
+            Wrapper for chafa_canvas_config_get_dither_intensity
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_get_dither_intensity.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_get_dither_intensity.restype = ctypes.c_float
+
+        # Get intensity
+        intensity = self._chafa.chafa_canvas_config_get_dither_intensity(self._canvas_config)
+
+        return intensity
+
+
+    def _set_dither_intensity(self, intensity: float):
+        """
+        Wrapper for chafa_canvas_config_set_dither_intensity
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_dither_intensity.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_float
+        ]
+
+        # Set intensity
+        self._chafa.chafa_canvas_config_set_dither_intensity(
+            self._canvas_config,
+            intensity
+        )
+
+
     def _get_canvas_mode(self) -> CanvasMode:
         """
             Wrapper for chafa_canvas_config_get_cnavas_mode
