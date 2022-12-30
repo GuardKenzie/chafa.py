@@ -1481,6 +1481,28 @@ class Canvas():
         )
 
         return char
+
+
+    def _set_char_at(self, x:int, y:int, char: str):
+        """
+        Wrapper for chafa_canvas_set_char_at
+        """
+
+        # Define types
+        self._chafa.chafa_canvas_set_char_at.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.c_wchar
+        ]
+
+        # Set char
+        self._chafa.chafa_canvas_set_char_at(
+            self._canvas,
+            x, y,
+            char
+        )
+
     def draw_all_pixels(self, src_pixel_type: PixelType, src_pixels: Sequence, src_width: int, src_height: int, src_rowstride: int):
         """
             Wrapper for chafa_canvas_draw_all_pixels
