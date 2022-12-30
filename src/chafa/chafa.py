@@ -1503,6 +1503,58 @@ class Canvas():
             char
         )
 
+
+    def _get_colors_at(self, x: int, y:int) -> Tuple[int, int]:
+        """
+        Wrapper for chafa_canvas_get_colors_at
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_get_colors_at.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int)
+        ]
+
+        # Define storage
+        bg_color = ctypes.pointer(ctypes.c_int(0))
+        fg_color = ctypes.pointer(ctypes.c_int(0))
+
+        # Get colors
+        self._chafa.chafa_canvas_get_colors_at(
+            self._canvas,
+            x, y,
+            fg_color,
+            bg_color
+        )
+
+        return fg_color.contents.value, bg_color.contents.value
+
+
+    def _set_colors_at(self, x:int, y: int, fg: int, bg: int):
+        """
+        Wrapper for chafa_canvas_set_colors_at
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_set_colors_at.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.c_int
+        ]
+
+        # Set colors
+        self._chafa.chafa_canvas_set_colors_at(
+            self._canvas,
+            x, y,
+            fg,
+            bg
+        )
+
     def draw_all_pixels(self, src_pixel_type: PixelType, src_pixels: Sequence, src_width: int, src_height: int, src_rowstride: int):
         """
             Wrapper for chafa_canvas_draw_all_pixels
