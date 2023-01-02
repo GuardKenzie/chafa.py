@@ -1,6 +1,6 @@
 import ctypes
 from dataclasses import dataclass
-from typing import Tuple, Sequence
+from typing import Tuple, Sequence, Union # PEP 484 
 from enum import IntEnum
 import sys
 
