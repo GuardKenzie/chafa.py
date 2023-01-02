@@ -1437,13 +1437,13 @@ class TermInfo():
         return terminal_capabilities
 
     
-class Canvas():
+class Canvas:
     def __init__(self, config: CanvasConfig, term_info: TermInfo=None):
         # Init chafa
         self._chafa = ctypes.CDLL("libchafa.so")
 
         # Init config
-        self.config = config
+        self._config = config
 
         # Check for term info
         if term_info is None:
