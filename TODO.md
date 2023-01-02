@@ -16,8 +16,8 @@
 # Canvas
 
 - [ ] copy
-- [ ] inspect characters at (x, y)
-- [ ] inspect color at (x, y)
+- [x] inspect characters at (x, y)
+- [x] inspect color at (x, y)
 - [ ] raw color
 - [ ] **DOCS**
 - [ ] What argument type should `draw_pixels` accept for the pixel array?
