@@ -1459,6 +1459,112 @@ class Canvas:
 
         self._canvas = self._chafa.chafa_canvas_new(config._canvas_config)
 
+    def _canvas_slice(self, y_slice=slice(None), x_slice=slice(None), axis=0, y=None, x=None):
+        # Get slice of rows
+        # Check slice component types
+
+        # Define the hard stop
+        hard_stop = (self._config.height, self._config.width)
+        hard_stop = hard_stop[axis]
+
+        which_slice = (y_slice, x_slice)[axis]
+        
+        # Evaluate defaults
+        start = which_slice.start or 0
+        stop  = which_slice.stop  or hard_stop
+        step  = which_slice.step  or 1
+
+        # Check 0 step
+        if step == 0:
+            raise ValueError("Slice step cannot be zero.")
+        
+        # Evaluate negative start and stop
+        if start < 0:
+            start = hard_stop + start
+        
+        if stop < 0:
+            stop = hard_stop + stop
+
+        # Evaluators for when to stop the while loop
+        def positive_stop_evaluator(index):
+            return index < min(hard_stop, stop)
+
+        def negative_stop_evaluator(index):
+            return index >= 0
+
+        stop_evaluator = positive_stop_evaluator
+
+        # Negative step means we reverse start and stop
+        if step < 0:
+            aux   = start
+            start = stop - 1
+            stop  = aux
+
+            stop_evaluator = negative_stop_evaluator
+
+        if any([not isinstance(val, int) for val in (start, stop, step)]):
+            raise TypeError("Slice indices must be integers or None.")
+
+        # We are slicing over y
+        if axis == 0:
+            y = start
+
+            while stop_evaluator(y):
+                yield self[y, x_slice] if x is None else self[y, x]
+                y += step
+
+            return
+
+        # We are slicing over x
+        if axis == 1:
+            x = start
+
+            while stop_evaluator(x):
+                yield self[y, x]
+                x += step
+
+            return
+
+    def __getitem__(self, pos):
+
+        if isinstance(pos, int):
+            return self[pos, :]
+
+        
+        if isinstance(pos, slice):
+            return self._canvas_slice(y_slice=pos)
+
+        if not isinstance(pos, tuple):
+            raise TypeError(f"Indices of invalid type. Got {type(pos)}")
+
+        # None of the above means tuple
+
+        # Check for size
+        if len(pos) > 2:
+            raise IndexError(f"Too many indices for Canvas. Canvas is 2-dimensional, but got {len(pos)} indices.")
+        
+        # Empty tuple should return all rows
+        if len(pos) == 0:
+            return self[:]
+        
+        # Exact coordinates
+        if isinstance(pos[0], int) and isinstance(pos[1], int):
+            return CanvasInspector(self, *pos)
+        
+        # Slice of rows and columns
+        if isinstance(pos[0], slice) and isinstance(pos[1], slice):
+            return self._canvas_slice(y_slice=pos[0], x_slice=pos[1])
+        
+        # Slice of rows with exact x coordinate
+        if isinstance(pos[0], slice):
+            return self._canvas_slice(y_slice=pos[0], x=pos[1])
+        
+        # Slice of columns with exact y coordinate
+        if isinstance(pos[1], slice):
+            return self._canvas_slice(x_slice=pos[1], axis=1, y=pos[0])
+
+        return
+
 
     def _get_char_at(self, x:int, y:int) -> str:
         """
@@ -1607,4 +1713,65 @@ class Canvas:
 
         return output.str
 
+class CanvasInspector:
+    def __init__(self, canvas: Canvas, y: int, x: int):
+        # Get the configured height and width of the canvas
+        width  = canvas._config.width
+        height = canvas._config.height
 
+        # Check if x and y are within bounds
+
+        if x >= width or y >= height:
+            raise ValueError(
+                f"Coordinates ({x},{y}) are out of bounds for canvas with dimensions {width}x{height}."
+            )
+        
+        self._canvas = canvas
+        self._x = x
+        self._y = y
+
+    @property
+    def color(self):
+        return self._canvas._get_colors_at(self.x, self.y)
+    
+    @color.setter
+    def color(self, color: Tuple[int, int, int]):
+        self._canvas._set_colors_at(self.x, self.y, color[0], color[1])
+
+    @property
+    def char(self):
+        return self._canvas._get_char_at(self.x, self.y)
+
+    @char.setter
+    def char(self, char: str):
+        self._canvas._set_char_at(self.x, self.y, char)
+
+    @property
+    def x(self):
+        return self._x
+
+    @x.setter
+    def x(self, value: int):
+        width = self._canvas._config.width
+
+        if value >= width:
+            raise ValueError(
+                f"x-coordinate {value} is out of bounds for canvas with width {width}."
+            )
+        
+        self._x = value
+
+    @property
+    def y(self):
+        return self._y
+
+    @y.setter
+    def y(self, value: int):
+        height = self._canvas._config.height
+
+        if value >= height:
+            raise ValueError(
+                f"y-coordinate {value} is out of bounds for canvas with width {height}."
+            )
+        
+        self._y = value
