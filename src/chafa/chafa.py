@@ -1713,6 +1713,8 @@ class Canvas:
 
         return output.str
 
+
+
 class CanvasInspector:
     def __init__(self, canvas: Canvas, y: int, x: int):
         # Get the configured height and width of the canvas
@@ -1730,13 +1732,99 @@ class CanvasInspector:
         self._x = x
         self._y = y
 
+
+    # === FG COLOR ===
+
     @property
-    def color(self):
-        return self._canvas._get_colors_at(self.x, self.y)
+    def fg_color(self) -> Union[Tuple[int, int, int], None]:
+        # Get the color at pixel
+        color = self._canvas._get_colors_at(self.x, self.y)[0]
+
+        # Return None for transparency
+        if color == -1:
+            return None
+
+        # Convert to bytes
+        bit_length = 3 
+        order      = "big"
+        
+        color = color.to_bytes(bit_length, order)
+
+        return (color[0], color[1], color[2])
     
-    @color.setter
-    def color(self, color: Tuple[int, int, int]):
-        self._canvas._set_colors_at(self.x, self.y, color[0], color[1])
+    @fg_color.setter
+    def fg_color(self, color: Tuple[int, int, int]):
+
+        # Remove foreground if we get none
+        if color is None:
+            self.remove_foreground()
+
+        if len(color) != 3:
+            raise ValueError("fg_color must have exactly 3 values")
+
+        if any([255 < col or col < 0 for col in color]):
+            raise ValueError("Each value of fg_color must in the range [0,255]")
+
+        # Convert to int
+        color = color[0] * 16**4 + color[1] * 16 ** 2 + color[2]
+
+        bg_color = self.bg_color
+
+        if bg_color is None:
+            bg_color = -1
+
+        else:
+            bg_color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+
+        self._canvas._set_colors_at(self.x, self.y, color, bg_color)
+
+
+    # === BG COLOR ===
+    
+    @property
+    def bg_color(self) -> Union[Tuple[int, int, int], None]:
+        # Get the color at pixel
+        color = self._canvas._get_colors_at(self.x, self.y)[1]
+
+        if color == -1:
+            return None
+
+        # Convert to bytes
+        bit_length = 3 
+        order      = "big"
+        
+        color = color.to_bytes(bit_length, order)
+
+        return (color[0], color[1], color[2])
+    
+    @bg_color.setter
+    def bg_color(self, color: Tuple[int, int, int]):
+
+        # Remove background if we get none
+        if color is None:
+            self.remove_background()
+
+        if len(color) != 3:
+            raise ValueError("bg_color must have exactly 3 values")
+
+        if any([255 < col or col < 0 for col in color]):
+            raise ValueError("Each value of bg_color must in the range [0,255]")
+
+        # Convert to int
+        color = color[0] * 16**4 + color[1] * 16 ** 2 + color[2]
+
+        fg_color = self.fg_color
+
+        if fg_color is None:
+            fg_color = -1
+
+        else:
+            fg_color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+
+        self._canvas._set_colors_at(self.x, self.y, fg_color, color)
+
+
+    # === CHAR ===
 
     @property
     def char(self):
@@ -1745,6 +1833,9 @@ class CanvasInspector:
     @char.setter
     def char(self, char: str):
         self._canvas._set_char_at(self.x, self.y, char)
+
+
+    # === Coordinates ===
 
     @property
     def x(self):
