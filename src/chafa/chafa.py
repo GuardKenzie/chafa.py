@@ -1866,3 +1866,24 @@ class CanvasInspector:
             )
         
         self._y = value
+
+    
+    def remove_background(self):
+        """
+        A function that makes background of pixel transparent
+        """
+
+        fg_color = self.fg_color
+        fg_color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+
+        self._canvas._set_colors_at(self.x, self.y, fg_color, -1)
+
+    def remove_foreground(self):
+        """
+        A function that makes foreground of pixel transparent
+        """
+
+        bg_color = self.bg_color
+        bg_color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+
+        self._canvas._set_colors_at(self.x, self.y, -1, bg_color)
