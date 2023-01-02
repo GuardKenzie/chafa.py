@@ -11,6 +11,7 @@
     - [x] mode
     - [x] intensity
 - [x] optimizations
+- [ ] **DOCS**
 
 # Canvas
 
@@ -18,6 +19,12 @@
 - [ ] inspect characters at (x, y)
 - [ ] inspect color at (x, y)
 - [ ] raw color
+- [ ] **DOCS**
+- [ ] What argument type should `draw_pixels` accept for the pixel array?
+    1. array (pretty fast)
+    2. python list and convert to array (slower than array)
+    3. Look into `from_buffer` for use with pyvips (faster than array)
+    4. Only ctypes array and make user handle conversion (This would be bad)
 
 # Symbol map
 
@@ -34,11 +41,13 @@
 - [ ] allow builtin glyphs
 - [ ] get glyph
 - [ ] add glyph
+- [ ] **DOCS**
 
 # TermDb
 
 - [ ] copy
 - [ ] fallback info
+- [ ] **DOCS**
 
 # TermInfo
 
@@ -48,3 +57,8 @@
     - [ ] set
 - [ ] supplement
 - [ ] **emitters!!!**
+- [ ] **DOCS**
+
+# Misc
+- [ ] Properly figure out how the loader should work
+- [ ] Error handling
