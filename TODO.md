@@ -16,6 +16,7 @@
 # Canvas
 
 - [ ] copy
+- [ ] Peeking at config
 - [x] inspect characters at (x, y)
 - [x] inspect color at (x, y)
 - [ ] raw color
@@ -29,14 +30,14 @@
 # Symbol map
 
 - [ ] copy
-- [ ] adding
+- [x] adding
     - [x] by tags
-    - [ ] by range
-- [ ] removing
-    - [ ] by tags
-    - [ ] by range
+    - [x] by range
+- [x] removing
+    - [x] by tags
+    - [x] by range
 
-- [ ] selectors
+- [x] selectors
 
 - [ ] allow builtin glyphs
 - [ ] get glyph
@@ -62,3 +63,4 @@
 # Misc
 - [ ] Properly figure out how the loader should work
 - [ ] Error handling
+- [ ] Splitting classes into separate files?
