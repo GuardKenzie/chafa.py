@@ -1887,7 +1887,8 @@ class Canvas:
         # Check slice component types
 
         # Define the hard stop
-        hard_stop = (self._config.height, self._config.width)
+        config = self.peek_config()
+        hard_stop = (config.height, config.width)
         hard_stop = hard_stop[axis]
 
         which_slice = (y_slice, x_slice)[axis]
@@ -2141,8 +2142,9 @@ class Canvas:
 class CanvasInspector:
     def __init__(self, canvas: Canvas, y: int, x: int):
         # Get the configured height and width of the canvas
-        width  = canvas._config.width
-        height = canvas._config.height
+        canvas_config = canvas.peek_config()
+        width  = canvas_config.width
+        height = canvas_config.height
 
         # Check if x and y are within bounds
 
