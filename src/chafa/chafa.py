@@ -2,8 +2,8 @@ import ctypes
 from dataclasses import dataclass
 from typing import Tuple, Sequence, Union # PEP 484 
 from enum import IntEnum
-import sys
 from collections.abc import Iterable
+import array
 
 #
 # === PIXEL MODES ===
@@ -2091,11 +2091,39 @@ class Canvas:
             bg
         )
 
-    def draw_all_pixels(self, src_pixel_type: PixelType, src_pixels: Sequence, src_width: int, src_height: int, src_rowstride: int):
+    def draw_all_pixels(self, src_pixel_type: PixelType, src_pixels: Union[list, Tuple, array.ArrayType, ctypes.Array], src_width: int, src_height: int, src_rowstride: int):
         # TODO Errors
         """
             Wrapper for chafa_canvas_draw_all_pixels
         """
+
+        # Convert src_pixels to appropriate format
+        if isinstance(src_pixels, ctypes.Array):
+            src_pixels = src_pixels
+        else:
+            try:
+                src_pixels = (ctypes.c_uint8 * len(src_pixels)).from_buffer(src_pixels)
+
+            except TypeError:
+                src_pixels = array.array("B", src_pixels)
+                src_pixels = (ctypes.c_uint8 * len(src_pixels)).from_buffer(src_pixels)
+
+        # Make sure types match
+        src_pixel_type = PixelType(src_pixel_type)
+
+        src_width     = int(src_width)
+        src_height    = int(src_height)
+        src_rowstride = int(src_rowstride)
+
+        # Value errors
+        if src_width <= 0:
+            raise ValueError("src_width must be greater than 0")
+
+        if src_height <= 0:
+            raise ValueError("src_height must be greater than 0")
+
+        if src_rowstride <= 0:
+            raise ValueError("src_rowstride must be greater than 0")
         
         # Specify types
         self._chafa.chafa_canvas_draw_all_pixels.argtypes = [
@@ -2106,10 +2134,6 @@ class Canvas:
             ctypes.c_uint,
             ctypes.c_uint
         ]
-
-        # Init array
-        # pixels = (ctypes.c_uint8 * len(src_pixels))()
-        # pixels[:] = src_pixels
 
         # Draw pixels
         self._chafa.chafa_canvas_draw_all_pixels(
