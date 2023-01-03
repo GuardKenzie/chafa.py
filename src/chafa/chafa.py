@@ -1979,7 +1979,12 @@ class CanvasInspector:
         """
 
         fg_color = self.fg_color
-        fg_color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+
+        if fg_color is None:
+            fg_color = -1
+
+        else:
+            fg_color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
 
         self._canvas._set_colors_at(self.x, self.y, fg_color, -1)
 
@@ -1989,6 +1994,11 @@ class CanvasInspector:
         """
 
         bg_color = self.bg_color
-        bg_color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+
+        if bg_color is None:
+            bg_color = -1
+
+        else:
+            bg_color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
 
         self._canvas._set_colors_at(self.x, self.y, -1, bg_color)
