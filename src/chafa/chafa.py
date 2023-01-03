@@ -1529,6 +1529,51 @@ class TermDb():
         return term_info
 
 
+    def get_fallback_info(self) -> 'TermInfo':
+        """
+        Builds a new ChafaTermInfo with fallback control 
+        sequences. This can be used with unknown but 
+        presumably modern terminals, or to supplement 
+        missing capabilities in a detected terminal.
+        """
+
+        # Define types
+        self._chafa.chafa_term_db_get_fallback_info.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_term_db_get_fallback_info.restype = ctypes.c_void_p
+
+        # Get pointer to fallback info
+        fallback_info_pointer = self._chafa.chafa_term_db_get_fallback_info(self._term_db)
+
+        # Init fallback info
+        fallback_info = TermInfo()
+        fallback_info._term_info = fallback_info_pointer
+
+        return fallback_info
+
+
+    def copy(self) -> 'TermDb':
+        """
+        Wrapper for chafa_term_db_copy
+        """
+
+        # Argtypes
+        self._chafa.chafa_term_db_copy.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_term_db_copy.restype = ctypes.c_void_p
+
+        # Grab new pointer
+        new_pointer = self._chafa.chafa_term_db_copy(self._term_db)
+
+        # Init new term_db
+        term_db = TermDb()
+        term_db._term_db = new_pointer
+
+        return term_db
 
 
 class TermInfo():
