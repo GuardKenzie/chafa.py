@@ -254,6 +254,19 @@ class SymbolMap():
 
         self._chafa.chafa_symbol_map_add_by_tags(self._symbol_map, tags)
 
+    
+    def remove_by_tags(self, tags: SymbolTags):
+        """
+        wrapper for chafa_symbol_map_remove_by_tags
+        """
+
+        # Set types
+        self._chafa.chafa_symbol_map_remove_by_tags.argtypes = [
+            ctypes.c_void_p, 
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_symbol_map_remove_by_tags(self._symbol_map, tags)
 
     
     def add_by_range(self, first: str, last: str):
