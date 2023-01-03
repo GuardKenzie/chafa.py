@@ -2178,7 +2178,7 @@ class CanvasInspector:
     @fg_color.setter
     def fg_color(self, fg_color: Tuple[int, int, int]):
         # Remove foreground if we get none
-        if color is None:
+        if fg_color is None:
             self.remove_foreground()
             return
     	
