@@ -1026,30 +1026,6 @@ class ReadOnlyCanvasConfig:
         self.width  = new_width. contents.value
         self.height = new_height.contents.value
 
-    def copy(self) -> 'CanvasConfig':
-        """
-        Creates a new :py:class:`CanvasConfig` that is a copy of this config.
-
-        :rtype: CanvasConfig
-        """
-
-        # define types
-        self._chafa.chafa_canvas_config_copy.argtypes = [
-            ctypes.c_void_p
-        ]
-
-        self._chafa.chafa_canvas_config_copy.restype = ctypes.c_void_p
-
-        # Init new config
-        new_config = CanvasConfig()
-
-        # Get new pointer
-        config_copy = self._chafa.chafa_canvas_config_copy(self._canvas_config)
-
-        new_config._canvas_config = config_copy
-
-        return new_config
-
 
     def peek_symbol_map(self) -> ReadOnlySymbolMap:
         """
@@ -1299,6 +1275,32 @@ class CanvasConfig(ReadOnlyCanvasConfig):
             offset *= 16**2
 
         self._set_bg_color(color)
+
+
+
+    def copy(self) -> 'CanvasConfig':
+        """
+        Creates a new :py:class:`CanvasConfig` that is a copy of this config.
+
+        :rtype: CanvasConfig
+        """
+
+        # define types
+        self._chafa.chafa_canvas_config_copy.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_copy.restype = ctypes.c_void_p
+
+        # Init new config
+        new_config = CanvasConfig()
+
+        # Get new pointer
+        config_copy = self._chafa.chafa_canvas_config_copy(self._canvas_config)
+
+        new_config._canvas_config = config_copy
+
+        return new_config
 
 
     def _set_geometry(self, width: int, height: int):
