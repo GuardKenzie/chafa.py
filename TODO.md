@@ -1,6 +1,6 @@
 # CanvasConfig
 
-- [ ] Peaking at symbol maps?
+- [x] Peaking at symbol maps?
 
 - [x] fill_symbol_map
 - [x] transparency_threshold
@@ -16,7 +16,7 @@
 # Canvas
 
 - [ ] copy
-- [ ] Peeking at config
+- [x] Peeking at config
 - [x] inspect characters at (x, y)
 - [x] inspect color at (x, y)
 - [ ] raw color
@@ -29,7 +29,7 @@
 
 # Symbol map
 
-- [ ] copy
+- [x] copy
 - [x] adding
     - [x] by tags
     - [x] by range
@@ -46,17 +46,17 @@
 
 # TermDb
 
-- [ ] copy
-- [ ] fallback info
+- [x] copy
+- [x] fallback info
 - [ ] **DOCS**
 
 # TermInfo
 
-- [ ] copy
+- [x] copy
 - [ ] sequences
     - [ ] get
     - [ ] set
-- [ ] supplement
+- [x] supplement
 - [ ] **emitters!!!**
 - [ ] **DOCS**
 
