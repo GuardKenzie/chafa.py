@@ -255,6 +255,33 @@ class SymbolMap():
         self._chafa.chafa_symbol_map_add_by_tags(self._symbol_map, tags)
 
 
+    
+    def add_by_range(self, first: str, last: str):
+        """
+        Wrapper for chafa_symbol_map_add_by_range
+        """
+
+        # check for chars
+        if len(first) != 1:
+            raise ValueError("code point 'first' must be of length 1")
+
+        if len(last) != 1:
+            raise ValueError("code point 'last' must be of length 1")
+
+        # Set types
+        self._chafa.chafa_symbol_map_add_by_range.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_wchar,
+            ctypes.c_wchar
+        ]
+
+        # add tags
+        self._chafa.chafa_symbol_map_add_by_range(
+            self._symbol_map,
+            first,
+            last
+        )
+
 
 class CanvasConfig():
     def __init__(self):
