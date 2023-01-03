@@ -1,6 +1,7 @@
 import ctypes.util
 import ctypes
 from pathlib import Path
+from chafa import PixelType
 
 def _get_library_name():
     """
@@ -47,8 +48,6 @@ class Loader:
 
         self.path = str(path)
 
-    def get_pixels(self):
-
         # === Argtypes ===
 
         self._wand.PixelSetColor.argtypes = [
@@ -91,6 +90,8 @@ class Loader:
         self._wand.MagickGetImageWidth. restype = ctypes.c_int;
         self._wand.MagickGetImageHeight.restype = ctypes.c_int;
 
+        # === Load necessary image information ===
+
         # Enum for uint8 pixel values
         CharPixel = 1
 
@@ -117,6 +118,7 @@ class Loader:
         width  = self._wand.MagickGetImageWidth (magick_wand)
         height = self._wand.MagickGetImageHeight(magick_wand)
 
+        # We will have 4 channels because we are outputting RGBA
         rowstride = width * 4
 
         # Get pixels
@@ -131,4 +133,32 @@ class Loader:
             pixels
         )
 
-        return pixels
+        self._height        = height
+        self._width         = width
+        self._rowstride     = rowstride
+        self._channels      = 4
+        self._pixel_type    = PixelType.CHAFA_PIXEL_RGBA8_UNASSOCIATED
+        self._pixels        = pixels
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
+
+    @property
+    def channels(self):
+        return self._channels
+
+    @property
+    def pixel_type(self):
+        return self._pixel_type
+
+    @property
+    def rowstride(self):
+        return self._rowstride
+
+    def get_pixels(self):
+        return self._pixels
