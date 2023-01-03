@@ -240,6 +240,28 @@ class ReadOnlySymbolMap():
         self._chafa.chafa_symbol_map_new.restype = ctypes.c_void_p
         self._symbol_map = self._chafa.chafa_symbol_map_new()
 
+    
+    def copy(self) -> 'SymbolMap':
+        """
+        Wrapper for chafa_symbol_map_copy
+        """
+
+        # Argtypes
+        self._chafa.chafa_symbol_map_copy.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_symbol_map_copy.restype = ctypes.c_void_p
+
+        # Get new pointer
+        new_pointer = self._chafa.chafa_symbol_map_copy(self._symbol_map)
+
+        # Init symbol map
+        symbol_map = SymbolMap()
+        symbol_map._symbol_map = new_pointer
+
+        return symbol_map
+
 
 
 class SymbolMap(ReadOnlySymbolMap):
