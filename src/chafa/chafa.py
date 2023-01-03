@@ -1838,28 +1838,33 @@ class Canvas:
         # Init chafa
         self._chafa = ctypes.CDLL("libchafa.so")
 
-        # Init config
-        if not isinstance(config, CanvasConfig):
-            raise TypeError(f"config must be of type CanvasConfig, not {type(config)}")
-
-        self._config = config
-
         # Check for term info
         if term_info is None:
             term_db = TermDb()
             self._term_info = term_db.detect()
 
         elif not isinstance(term_info, TermInfo):
-            raise TypeError(f"term_info must be None or of type TermInfo, not {type(term_info)}")
+            raise TypeError(f"term_info must be None or of type TermInfo or None, not {type(term_info)}")
 
         else:
             self._term_info = term_info 
 
+        # Init config
+        if config is None:
+            self._chafa.chafa_canvas_new.argtypes = [ctypes.c_size_t]
+            config = ctypes.c_size_t(0)
+
+        elif not isinstance(config, CanvasConfig):
+            raise TypeError(f"config must be of type CanvasConfig or None, not {type(config)}")
+
+        else:
+            self._chafa.chafa_canvas_new.argtypes = [ctypes.c_void_p]
+            config = config._canvas_config
+
         # Init canvas
-        self._chafa.chafa_canvas_new.argtypes = [ctypes.c_void_p]
         self._chafa.chafa_canvas_new.restype  =  ctypes.c_void_p
 
-        self._canvas = self._chafa.chafa_canvas_new(config._canvas_config)
+        self._canvas = self._chafa.chafa_canvas_new(config)
 
     
     def peek_config(self) -> ReadOnlyCanvasConfig:
