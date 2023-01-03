@@ -1,4 +1,3 @@
-import sys
 from chafa import *
 from wand.image import Image
 

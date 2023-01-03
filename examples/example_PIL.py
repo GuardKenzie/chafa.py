@@ -1,7 +1,5 @@
-import sys
 from chafa import *
 from PIL import Image
-from array import array
 import numpy as np
 
 FONT_WIDTH  = 11

@@ -1,5 +1,4 @@
 import pyvips
-import sys
 from chafa import *
 
 FONT_WIDTH  = 11
@@ -54,5 +53,4 @@ canvas.draw_all_pixels(
 )
 
 # Write picture
-sys.stdout.buffer.write(canvas.print())
-sys.stdout.flush()
+print(canvas.print().decode())
