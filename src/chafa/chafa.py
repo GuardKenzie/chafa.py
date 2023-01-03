@@ -385,7 +385,7 @@ class SymbolMap(ReadOnlySymbolMap):
         return success
 
 
-class CanvasConfig():
+class ReadOnlyCanvasConfig:
     def __init__(self):
         # Init chafa
         self._chafa = ctypes.CDLL("libchafa.so")
@@ -393,6 +393,7 @@ class CanvasConfig():
         # Init config
         self._chafa.chafa_canvas_config_new.restype = ctypes.c_void_p
         self._canvas_config = self._chafa.chafa_canvas_config_new()
+
 
     # === Width & Height property ===
 
@@ -408,11 +409,6 @@ class CanvasConfig():
 
         return height
 
-    @height.setter
-    def height(self, value: int):
-        self._set_geometry(self.width, value)
-
-
     @property
     def width(self) -> int:
         """
@@ -423,10 +419,6 @@ class CanvasConfig():
         width, _ = self.get_geometry()
 
         return width
-
-    @width.setter
-    def width(self, value: int):
-        self._set_geometry(value, self.height)
 
 
     # === pixel mode property ===
@@ -443,10 +435,6 @@ class CanvasConfig():
 
         return self._get_pixel_mode()
 
-    @pixel_mode.setter
-    def pixel_mode(self, mode: PixelMode):
-        self._set_pixel_mode(mode)
-
 
     # === color extractor property ===
 
@@ -461,11 +449,7 @@ class CanvasConfig():
         """
         return self._get_color_extractor()
 
-    @color_extractor.setter
-    def color_extractor(self, extractor: ColorExtractor):
-        self._set_color_extractor(extractor)
-
-
+    
     # === color space property ===
 
     @property
@@ -476,10 +460,6 @@ class CanvasConfig():
         The config's stored :py:class:`ColorSpace`.
         """
         return self._get_color_space()
-
-    @color_space.setter
-    def color_space(self, space: ColorSpace):
-        self._set_color_space(space)
 
 
     # === canvas mode property ===
@@ -495,10 +475,6 @@ class CanvasConfig():
         """
         return self._get_canvas_mode()
 
-    @canvas_mode.setter
-    def canvas_mode(self, mode: CanvasMode):
-        self._set_canvas_mode(mode)
-
 
     # === preprocessing property ===
 
@@ -512,10 +488,6 @@ class CanvasConfig():
         saturation in an attempt to improve legibility. 
         """
         return self._get_preprocessing_enabled()
-
-    @preprocessing.setter
-    def preprocessing(self, preproc: bool):
-        self._set_preprocessing_enabled(preproc)
 
     
     # === dither grain width & height ===
@@ -533,10 +505,7 @@ class CanvasConfig():
         """
         width, _, = self._get_dither_grain_size()
         return width
-    
-    @dither_width.setter
-    def dither_width(self, width: int):
-        self._set_dither_grain_size(width, self.dither_height)
+
 
     @property
     def dither_height(self) -> int:
@@ -551,22 +520,14 @@ class CanvasConfig():
 
         """
         _, height, = self._get_dither_grain_size()
-        return height 
+        return height
+
     
-    @dither_height.setter
-    def dither_height(self, height: int):
-        self._set_dither_grain_size(self.dither_width, height)
-
-
     # === dither mode property ===
 
     @property
     def dither_mode(self) -> DitherMode:
         return self._get_dither_mode()
-
-    @dither_mode.setter
-    def dither_mode(self, mode: DitherMode):
-        self._set_dither_mode(mode)
 
 
     # === dither intensity ===
@@ -575,13 +536,6 @@ class CanvasConfig():
     def dither_intensity(self) -> float:
         return self._get_dither_intensity()
 
-    @dither_intensity.setter
-    def dither_intensity(self, intensity: float):
-        if intensity < 0:
-            raise ValueError("Dither intensity must be positive.")
-
-        self._set_dither_intensity(intensity)
-    
 
     # === optimizations ===
 
@@ -621,16 +575,6 @@ class CanvasConfig():
 
         return tuple(map(Optimizations, out))
 
-    @optimizations.setter
-    def optimizations(self, optimizations: Tuple):
-        # Or all optimizations together
-
-        compounded = 0
-        for flag in optimizations:
-            compounded |= flag
-
-        self._set_optimizations(compounded)
-
 
     # === cell width & height ===
 
@@ -644,10 +588,7 @@ class CanvasConfig():
 
         width, _ = self._get_cell_geometry()
         return width
-    
-    @cell_width.setter
-    def cell_width(self, width: int):
-        self._set_cell_geometry(width, self.cell_height)
+
 
     @property
     def cell_height(self) -> int:
@@ -658,10 +599,6 @@ class CanvasConfig():
         """
         _, height = self._get_cell_geometry()
         return height 
-    
-    @cell_height.setter
-    def cell_height(self, height: int):
-        self._set_cell_geometry(self.cell_width, height)
 
 
     # === Transparency threshold ===
@@ -670,13 +607,6 @@ class CanvasConfig():
     def transparency_threshold(self) -> float:
         return self._get_transparency_threshold()
 
-    @transparency_threshold.setter
-    def transparency_threshold(self, threshold: float):
-        if 1 < threshold or threshold < 0:
-            raise ValueError("Transparency threshold must be in range [0,1]")
-
-        self._set_transparency_threshold(threshold)
-
 
     # === Work factor ===
 
@@ -684,24 +614,13 @@ class CanvasConfig():
     def work_factor(self) -> float:
         return self._get_work_factor()
 
-    @work_factor.setter
-    def work_factor(self, factor: float):
-        if 1 < factor or factor < 0:
-            raise ValueError("Work factor must be in range [0,1]")
-
-        self._set_work_factor(factor)
-        
-
+    
     # === fg only ===
 
     @property
     def fg_only(self) -> bool:
         return self._get_fg_only_enabled()
 
-    @fg_only.setter
-    def fg_only(self, fg_only: bool):
-        self._set_fg_only_enabled(fg_only)
-        
 
     # === fg and bg colors ===
 
@@ -718,21 +637,7 @@ class CanvasConfig():
 
         return (color[0], color[1], color[2])
 
-    @fg_color.setter
-    def fg_color(self, fg_color: Tuple[int, int, int]):
-
-        if len(fg_color) != 3:
-            raise ValueError("fg_color must have exactly 3 values")
-
-        if any([255 < col or col < 0 for col in fg_color]):
-            raise ValueError("Each value of fg_color must in the range [0,255]")
-
-        # Calculate packed color
-        color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
-
-        self._set_fg_color(color)
-
-
+    
     @property
     def bg_color(self) -> Tuple[int, int, int]:
         # Get the color
@@ -745,45 +650,6 @@ class CanvasConfig():
         color = color.to_bytes(bit_length, order)
 
         return (color[0], color[1], color[2])
-
-    @bg_color.setter
-    def bg_color(self, bg_color: Tuple[int, int, int]):
-
-        if len(bg_color) != 3:
-            raise ValueError("bg_color must have exactly 3 values")
-
-        if any([255 < col or col < 0 for col in bg_color]):
-            raise ValueError("Each value of bg_color must in the range [0,255]")
-
-        # Calculate packed color
-        color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
-
-        self._set_bg_color(color)
-
-    def _set_geometry(self, width: int, height: int):
-        """
-            Wrapper for chafa_canvas_config_set_geometry
-        """
-
-        self._chafa.chafa_canvas_config_set_geometry.argtypes = [
-            ctypes.c_void_p, 
-            ctypes.c_uint, 
-            ctypes.c_uint
-        ]
-
-        self._chafa.chafa_canvas_config_set_geometry(
-            self._canvas_config, 
-            width, 
-            height
-        )
-
-
-    def set_geometry(self, width: int, height: int):
-        """
-            Set the canvas geometry.
-        """
-
-        self._set_geometry(width, height)
 
 
     def get_geometry(self) -> Tuple[int, int]:
@@ -830,24 +696,6 @@ class CanvasConfig():
         return fg_only
 
 
-    def _set_fg_only_enabled(self, fg_only: bool):
-        """
-            Wrapper for chafa_canvas_config_set_fg_only_enabled
-        """
-
-        # Set types
-        self._chafa.chafa_canvas_config_set_fg_only_enabled.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_bool
-        ]
-
-        # Set threshold
-        self._chafa.chafa_canvas_config_set_fg_only_enabled(
-            self._canvas_config,
-            fg_only
-        )
-
-
     def _get_fg_color(self) -> int:
         """
             Wrapper for chafa_canvas_config_get_fg_color
@@ -867,25 +715,7 @@ class CanvasConfig():
 
         return color
 
-
-    def _set_fg_color(self, fg_color: int):
-        """
-            Wrapper for chafa_canvas_config_set_fg_color
-        """
-
-        # Set types
-        self._chafa.chafa_canvas_config_set_fg_color.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32
-        ]
-
-        # Set fg_color
-        color = self._chafa.chafa_canvas_config_set_fg_color(
-            self._canvas_config,
-            fg_color
-        )
-
-
+    
     def _get_bg_color(self) -> int:
         """
             Wrapper for chafa_canvas_config_get_bg_color
@@ -905,25 +735,7 @@ class CanvasConfig():
 
         return color
 
-
-    def _set_bg_color(self, bg_color: int):
-        """
-            Wrapper for chafa_canvas_config_set_bg_color
-        """
-
-        # Set types
-        self._chafa.chafa_canvas_config_set_bg_color.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32
-        ]
-
-        # Set bg_color
-        color = self._chafa.chafa_canvas_config_set_bg_color(
-            self._canvas_config,
-            bg_color
-        )
-
-
+    
     def _get_transparency_threshold(self) -> float:
         """
             Wrapper for chafa_canvas_config_get_transparency_threshold
@@ -940,24 +752,6 @@ class CanvasConfig():
         threshold = self._chafa.chafa_canvas_config_get_transparency_threshold(self._canvas_config)
 
         return threshold
-
-
-    def _set_transparency_threshold(self, threshold: float):
-        """
-            Wrapper for chafa_canvas_config_set_transparency_threshold
-        """
-
-        # Set types
-        self._chafa.chafa_canvas_config_set_transparency_threshold.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float
-        ]
-
-        # Set threshold
-        self._chafa.chafa_canvas_config_set_transparency_threshold(
-            self._canvas_config,
-            threshold
-        )
 
 
     def _get_work_factor(self) -> float:
@@ -978,24 +772,6 @@ class CanvasConfig():
         return factor
 
 
-    def _set_work_factor(self, factor: float):
-        """
-            Wrapper for chafa_canvas_config_set_work_factor
-        """
-
-        # Set types
-        self._chafa.chafa_canvas_config_set_work_factor.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float
-        ]
-
-        # Set factor
-        self._chafa.chafa_canvas_config_set_work_factor(
-            self._canvas_config,
-            factor
-        )
-
-
     def _get_pixel_mode(self) -> PixelMode:
         """
             Wrapper for chafa_canvas_config_get_pixel_mode
@@ -1011,36 +787,6 @@ class CanvasConfig():
         return PixelMode(pixel_mode)
 
     
-    def _set_pixel_mode(self, mode: PixelMode):
-        """
-            Wrapper for chafa_canvas_config_set_pixel_mode
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_pixel_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint
-        ]
-
-        self._chafa.chafa_canvas_config_set_pixel_mode(self._canvas_config, mode)
-
-
-    def _set_dither_grain_size(self, width: int, height: int):
-        """
-            Wrapper for chafa_canvas_config_set_dither_grain_size
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_dither_grain_size.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int,
-            ctypes.c_int
-        ]
-
-        # Set grain size
-        self._chafa.chafa_canvas_config_set_dither_grain_size(self._canvas_config, width, height)
-        
-
     def _get_dither_grain_size(self) -> Tuple[int, int]:
         """
             Wrapper for chafa_canvas_config_get_dither_grain_size
@@ -1061,24 +807,7 @@ class CanvasConfig():
 
         return (width_out.contents.value, height_out.contents.value)
 
-
-
-    def _set_cell_geometry(self, width: int, height: int):
-        """
-            Wrapper for chafa_canvas_config_set_cell_geometry
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_cell_geometry.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int,
-            ctypes.c_int
-        ]
-
-        # Set grain size
-        self._chafa.chafa_canvas_config_set_cell_geometry(self._canvas_config, width, height)
-        
-
+    
     def _get_cell_geometry(self) -> Tuple[int, int]:
         """
             Wrapper for chafa_canvas_config_get_dither_grain_size
@@ -1099,7 +828,7 @@ class CanvasConfig():
 
         return (width_out.contents.value, height_out.contents.value)
 
-
+    
     def _get_dither_mode(self) -> DitherMode:
         """
             Wrapper for chafa_canvas_config_get_cnavas_mode
@@ -1114,20 +843,6 @@ class CanvasConfig():
 
         return DitherMode(mode)
 
-    
-    def _set_dither_mode(self, mode: DitherMode):
-        """
-            wrapper for chafa_canvas_config_set_dither_mode
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_dither_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint
-        ]
-
-        self._chafa.chafa_canvas_config_set_dither_mode(self._canvas_config, mode)
-        
 
     def _get_dither_intensity(self) -> float:
         """
@@ -1146,25 +861,7 @@ class CanvasConfig():
 
         return intensity
 
-
-    def _set_dither_intensity(self, intensity: float):
-        """
-        Wrapper for chafa_canvas_config_set_dither_intensity
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_dither_intensity.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float
-        ]
-
-        # Set intensity
-        self._chafa.chafa_canvas_config_set_dither_intensity(
-            self._canvas_config,
-            intensity
-        )
-
-
+    
     def _get_canvas_mode(self) -> CanvasMode:
         """
             Wrapper for chafa_canvas_config_get_cnavas_mode
@@ -1180,20 +877,6 @@ class CanvasConfig():
         return CanvasMode(mode)
 
     
-    def _set_canvas_mode(self, mode: CanvasMode):
-        """
-            wrapper for chafa_canvas_config_set_canvas_mode
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_canvas_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint
-        ]
-
-        self._chafa.chafa_canvas_config_set_canvas_mode(self._canvas_config, mode)
-
-
     def _get_color_extractor(self) -> ColorExtractor:
         """
             Wrapper for chafa_canvas_config_get_color_extractor
@@ -1209,20 +892,6 @@ class CanvasConfig():
         return ColorExtractor(extractor)
 
     
-    def _set_color_extractor(self, extractor: ColorExtractor):
-        """
-            Wrapper for chafa_canvas_config_set_color_extractor
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_color_extractor.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint
-        ]
-
-        self._chafa.chafa_canvas_config_set_color_extractor(self._canvas_config, extractor)
-
-
     def _get_color_space(self) -> ColorSpace:
         """
             Wrapper for chafa_canvas_config_get_color_space
@@ -1237,20 +906,6 @@ class CanvasConfig():
 
         return ColorSpace(space)
 
-    
-    def _set_color_space(self, space: ColorSpace):
-        """
-            Wrapper for chafa_canvas_config_set_color_space
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_color_space.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint
-        ]
-
-        self._chafa.chafa_canvas_config_set_color_space(self._canvas_config, space)
-
 
     def _get_preprocessing_enabled(self) -> bool:
         """
@@ -1264,21 +919,7 @@ class CanvasConfig():
         # Get preprocessing value 
         preprocessing = self._chafa.chafa_canvas_config_get_preprocessing_enabled(self._canvas_config)
 
-        return preprocessing 
-
-    
-    def _set_preprocessing_enabled(self, preproc: bool):
-        """
-            Wrapper for chafa_canvas_config_set_preprocessing_enabled
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_preprocessing_enabled.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_bool
-        ]
-
-        self._chafa.chafa_canvas_config_set_preprocessing_enabled(self._canvas_config, preproc)
+        return preprocessing
 
 
     def _get_optimizations(self) -> int:
@@ -1295,58 +936,7 @@ class CanvasConfig():
 
         return self._chafa.chafa_canvas_config_get_optimizations(self._canvas_config)
 
-    def _set_optimizations(self, optimizations: int):
-        """
-            Wrapper for chafa_canvas_config_set_optimizations
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_optimizations.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint
-        ]
-
-        # Set optimizations
-        self._chafa.chafa_canvas_config_set_optimizations(
-            self._canvas_config,
-            optimizations
-        )
-
-
-    def set_symbol_map(self, symbol_map: SymbolMap):
-        """
-            Assigns a copy of symbol_map to config.
-
-            :param SymbolMap symbol_map: The symbol_map.
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_symbol_map.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._chafa.chafa_canvas_config_set_symbol_map(self._canvas_config, symbol_map._symbol_map)
-
-
-    def set_fill_symbol_map(self, fill_symbol_map: SymbolMap):
-        """
-            Assigns a copy of fill_symbol_map to config.
-
-            Fill symbols are assigned according to their overall foreground to background coverage, disregarding shape. ???
-
-            :param SymbolMap fill_symbol_map: The fill symbol map.
-        """
-
-        # Specify types
-        self._chafa.chafa_canvas_config_set_fill_symbol_map.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._chafa.chafa_canvas_config_set_fill_symbol_map(self._canvas_config, fill_symbol_map._symbol_map)
-
-
+    
     def calc_canvas_geometry(self, src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False):
         """
         Calculates an optimal geometry for a :py:class:`Canvas` given 
@@ -1416,6 +1006,489 @@ class CanvasConfig():
         new_config._canvas_config = config_copy
 
         return new_config
+
+
+    def peek_symbol_map(self) -> ReadOnlySymbolMap:
+        """
+        Wrapper for chafa_canvas_config_peek_symbol_map
+        """
+
+        # define types
+        self._chafa.chafa_canvas_config_peek_symbol_map.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_peek_symbol_map.restype = ctypes.c_void_p
+
+        # Get new pointer
+        new_pointer = self._chafa.chafa_canvas_config_peek_symbol_map(self._canvas_config)
+
+        # Init RO SymbolMap
+        symbol_map = ReadOnlySymbolMap()
+        symbol_map._symbol_map = new_pointer
+
+        return symbol_map
+
+
+
+class CanvasConfig(ReadOnlyCanvasConfig):
+    # === Width & Height property ===
+    @ReadOnlyCanvasConfig.height.setter
+    def height(self, value: int):
+        self._set_geometry(self.width, value)
+
+    @ReadOnlyCanvasConfig.width.setter
+    def width(self, value: int):
+        self._set_geometry(value, self.height)
+
+
+    # === pixel mode property ===
+    @ReadOnlyCanvasConfig.pixel_mode.setter
+    def pixel_mode(self, mode: PixelMode):
+        self._set_pixel_mode(mode)
+
+    
+    # === color extractor property ===
+
+    @ReadOnlyCanvasConfig.color_extractor.setter
+    def color_extractor(self, extractor: ColorExtractor):
+        self._set_color_extractor(extractor)
+
+
+    # === color space property ===
+
+    @ReadOnlyCanvasConfig.color_space.setter
+    def color_space(self, space: ColorSpace):
+        self._set_color_space(space)
+
+
+    # === canvas mode property ===
+
+    @ReadOnlyCanvasConfig.canvas_mode.setter
+    def canvas_mode(self, mode: CanvasMode):
+        self._set_canvas_mode(mode)
+
+
+    # === preprocessing property ===
+
+    @ReadOnlyCanvasConfig.preprocessing.setter
+    def preprocessing(self, preproc: bool):
+        self._set_preprocessing_enabled(preproc)
+    
+    
+    # === dither grain width & height ===
+    
+    @ReadOnlyCanvasConfig.dither_width.setter
+    def dither_width(self, width: int):
+        self._set_dither_grain_size(width, self.dither_height)
+
+    
+    @ReadOnlyCanvasConfig.dither_height.setter
+    def dither_height(self, height: int):
+        self._set_dither_grain_size(self.dither_width, height)
+
+
+    # === dither mode property ===
+    
+    @ReadOnlyCanvasConfig.dither_mode.setter
+    def dither_mode(self, mode: DitherMode):
+        self._set_dither_mode(mode)
+
+    
+    # === dither intensity ===
+
+    @ReadOnlyCanvasConfig.dither_intensity.setter
+    def dither_intensity(self, intensity: float):
+        if intensity < 0:
+            raise ValueError("Dither intensity must be positive.")
+
+        self._set_dither_intensity(intensity)
+    
+
+    # === optimizations ===
+
+    @ReadOnlyCanvasConfig.optimizations.setter
+    def optimizations(self, optimizations: Tuple):
+        # Or all optimizations together
+
+        compounded = 0
+        for flag in optimizations:
+            compounded |= flag
+
+        self._set_optimizations(compounded)
+
+
+    # === cell width & height ===
+    
+    @ReadOnlyCanvasConfig.cell_width.setter
+    def cell_width(self, width: int):
+        self._set_cell_geometry(width, self.cell_height)
+
+    
+    @ReadOnlyCanvasConfig.cell_height.setter
+    def cell_height(self, height: int):
+        self._set_cell_geometry(self.cell_width, height)
+
+
+    # === Transparency threshold ===
+    
+    @ReadOnlyCanvasConfig.transparency_threshold.setter
+    def transparency_threshold(self, threshold: float):
+        if 1 < threshold or threshold < 0:
+            raise ValueError("Transparency threshold must be in range [0,1]")
+
+        self._set_transparency_threshold(threshold)
+
+
+    # === Work factor ===
+
+    @ReadOnlyCanvasConfig.work_factor.setter
+    def work_factor(self, factor: float):
+        if 1 < factor or factor < 0:
+            raise ValueError("Work factor must be in range [0,1]")
+
+        self._set_work_factor(factor)
+        
+
+    # === fg only ===
+
+    @ReadOnlyCanvasConfig.fg_only.setter
+    def fg_only(self, fg_only: bool):
+        self._set_fg_only_enabled(fg_only)
+        
+
+    # === fg and bg colors ===
+
+    @ReadOnlyCanvasConfig.fg_color.setter
+    def fg_color(self, fg_color: Tuple[int, int, int]):
+
+        if len(fg_color) != 3:
+            raise ValueError("fg_color must have exactly 3 values")
+
+        if any([255 < col or col < 0 for col in fg_color]):
+            raise ValueError("Each value of fg_color must in the range [0,255]")
+
+        # Calculate packed color
+        color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+
+        self._set_fg_color(color)
+
+
+    @ReadOnlyCanvasConfig.bg_color.setter
+    def bg_color(self, bg_color: Tuple[int, int, int]):
+
+        if len(bg_color) != 3:
+            raise ValueError("bg_color must have exactly 3 values")
+
+        if any([255 < col or col < 0 for col in bg_color]):
+            raise ValueError("Each value of bg_color must in the range [0,255]")
+
+        # Calculate packed color
+        color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+
+        self._set_bg_color(color)
+
+
+    def _set_geometry(self, width: int, height: int):
+        """
+            Wrapper for chafa_canvas_config_set_geometry
+        """
+
+        self._chafa.chafa_canvas_config_set_geometry.argtypes = [
+            ctypes.c_void_p, 
+            ctypes.c_uint, 
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_geometry(
+            self._canvas_config, 
+            width, 
+            height
+        )
+
+
+    def set_geometry(self, width: int, height: int):
+        """
+            Set the canvas geometry.
+        """
+
+        self._set_geometry(width, height)
+
+
+    def _set_fg_only_enabled(self, fg_only: bool):
+        """
+            Wrapper for chafa_canvas_config_set_fg_only_enabled
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_fg_only_enabled.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_bool
+        ]
+
+        # Set threshold
+        self._chafa.chafa_canvas_config_set_fg_only_enabled(
+            self._canvas_config,
+            fg_only
+        )
+
+
+    def _set_fg_color(self, fg_color: int):
+        """
+            Wrapper for chafa_canvas_config_set_fg_color
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_fg_color.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint32
+        ]
+
+        # Set fg_color
+        color = self._chafa.chafa_canvas_config_set_fg_color(
+            self._canvas_config,
+            fg_color
+        )
+
+
+    def _set_bg_color(self, bg_color: int):
+        """
+            Wrapper for chafa_canvas_config_set_bg_color
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_bg_color.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint32
+        ]
+
+        # Set bg_color
+        color = self._chafa.chafa_canvas_config_set_bg_color(
+            self._canvas_config,
+            bg_color
+        )
+
+
+    def _set_transparency_threshold(self, threshold: float):
+        """
+            Wrapper for chafa_canvas_config_set_transparency_threshold
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_transparency_threshold.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_float
+        ]
+
+        # Set threshold
+        self._chafa.chafa_canvas_config_set_transparency_threshold(
+            self._canvas_config,
+            threshold
+        )
+
+
+    def _set_work_factor(self, factor: float):
+        """
+            Wrapper for chafa_canvas_config_set_work_factor
+        """
+
+        # Set types
+        self._chafa.chafa_canvas_config_set_work_factor.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_float
+        ]
+
+        # Set factor
+        self._chafa.chafa_canvas_config_set_work_factor(
+            self._canvas_config,
+            factor
+        )
+
+    
+    def _set_pixel_mode(self, mode: PixelMode):
+        """
+            Wrapper for chafa_canvas_config_set_pixel_mode
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_pixel_mode.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_pixel_mode(self._canvas_config, mode)
+
+
+    def _set_dither_grain_size(self, width: int, height: int):
+        """
+            Wrapper for chafa_canvas_config_set_dither_grain_size
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_dither_grain_size.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_int
+        ]
+
+        # Set grain size
+        self._chafa.chafa_canvas_config_set_dither_grain_size(self._canvas_config, width, height)
+
+
+    def _set_cell_geometry(self, width: int, height: int):
+        """
+            Wrapper for chafa_canvas_config_set_cell_geometry
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_cell_geometry.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_int
+        ]
+
+        # Set grain size
+        self._chafa.chafa_canvas_config_set_cell_geometry(self._canvas_config, width, height)
+
+    
+    def _set_dither_mode(self, mode: DitherMode):
+        """
+            wrapper for chafa_canvas_config_set_dither_mode
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_dither_mode.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_dither_mode(self._canvas_config, mode)
+
+
+    def _set_dither_intensity(self, intensity: float):
+        """
+        Wrapper for chafa_canvas_config_set_dither_intensity
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_dither_intensity.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_float
+        ]
+
+        # Set intensity
+        self._chafa.chafa_canvas_config_set_dither_intensity(
+            self._canvas_config,
+            intensity
+        )
+
+    
+    def _set_canvas_mode(self, mode: CanvasMode):
+        """
+            wrapper for chafa_canvas_config_set_canvas_mode
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_canvas_mode.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_canvas_mode(self._canvas_config, mode)
+
+    
+    def _set_color_extractor(self, extractor: ColorExtractor):
+        """
+            Wrapper for chafa_canvas_config_set_color_extractor
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_color_extractor.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_color_extractor(self._canvas_config, extractor)
+
+    
+    def _set_color_space(self, space: ColorSpace):
+        """
+            Wrapper for chafa_canvas_config_set_color_space
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_color_space.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        self._chafa.chafa_canvas_config_set_color_space(self._canvas_config, space)
+
+    
+    def _set_preprocessing_enabled(self, preproc: bool):
+        """
+            Wrapper for chafa_canvas_config_set_preprocessing_enabled
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_preprocessing_enabled.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_bool
+        ]
+
+        self._chafa.chafa_canvas_config_set_preprocessing_enabled(self._canvas_config, preproc)
+
+
+    def _set_optimizations(self, optimizations: int):
+        """
+            Wrapper for chafa_canvas_config_set_optimizations
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_optimizations.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        # Set optimizations
+        self._chafa.chafa_canvas_config_set_optimizations(
+            self._canvas_config,
+            optimizations
+        )
+
+
+    def set_symbol_map(self, symbol_map: SymbolMap):
+        """
+            Assigns a copy of symbol_map to config.
+
+            :param SymbolMap symbol_map: The symbol_map.
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_symbol_map.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_set_symbol_map(self._canvas_config, symbol_map._symbol_map)
+
+
+    def set_fill_symbol_map(self, fill_symbol_map: SymbolMap):
+        """
+            Assigns a copy of fill_symbol_map to config.
+
+            Fill symbols are assigned according to their overall foreground to background coverage, disregarding shape. ???
+
+            :param SymbolMap fill_symbol_map: The fill symbol map.
+        """
+
+        # Specify types
+        self._chafa.chafa_canvas_config_set_fill_symbol_map.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_config_set_fill_symbol_map(self._canvas_config, fill_symbol_map._symbol_map)
 
 
 class TermDb():
