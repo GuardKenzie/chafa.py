@@ -231,7 +231,7 @@ class TermSeq(IntEnum):
     CHAFA_TERM_SEQ_MAX = 55
 
 
-class SymbolMap():
+class ReadOnlySymbolMap():
     def __init__(self):
         # Init chafa
         self._chafa = ctypes.CDLL("libchafa.so")
@@ -241,6 +241,8 @@ class SymbolMap():
         self._symbol_map = self._chafa.chafa_symbol_map_new()
 
 
+
+class SymbolMap(ReadOnlySymbolMap):
     def add_by_tags(self, tags: SymbolTags):
         """
             wrapper for chafa_symbol_map_add_by_tags
