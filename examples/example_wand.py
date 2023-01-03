@@ -1,7 +1,6 @@
 import sys
 from chafa import *
 from wand.image import Image
-from array import array
 
 FONT_WIDTH  = 11
 FONT_HEIGHT = 24
@@ -24,7 +23,7 @@ with Image(filename="./snake.jpg") as image:
 
     width  = image.width
     height = image.height
-    bands = 3
+    bands  = 4
 
     pixels = image.export_pixels(storage='char')
 
@@ -36,7 +35,7 @@ canvas = Canvas(config)
 
 # Draw to canvas
 canvas.draw_all_pixels(
-    PixelType.CHAFA_PIXEL_RGB8,
+    PixelType.CHAFA_PIXEL_RGBA8_UNASSOCIATED,
     pixels,
     height,
     width,

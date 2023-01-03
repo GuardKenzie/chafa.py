@@ -31,9 +31,6 @@ bands  = len(image.getbands())
 pixels = np.array(image)
 pixels = np.reshape(pixels, pixels.size)
 
-# Make a buffer for chafa
-pixels = array("B", pixels)
-
 # Calculate canvas size
 config.calc_canvas_geometry(width, height, FONT_WIDTH/FONT_HEIGHT)
 
