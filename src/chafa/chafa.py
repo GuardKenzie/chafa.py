@@ -1736,6 +1736,29 @@ class Canvas:
 
         self._canvas = self._chafa.chafa_canvas_new(config._canvas_config)
 
+    
+    def peek_config(self) -> ReadOnlyCanvasConfig:
+        """
+        Wrapper for chafa_canvas_peek_config
+        """
+
+        # Types
+        self._chafa.chafa_canvas_peek_config.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_canvas_peek_config.restype = ctypes.c_void_p
+
+        # Get the new pointer
+        new_pointer = self._chafa.chafa_canvas_peek_config(self._canvas)
+
+        # Init RO CanvasConfig
+        config = ReadOnlyCanvasConfig()
+        config._canvas_config = new_pointer
+
+        return config
+
+
     def _canvas_slice(self, y_slice=slice(None), x_slice=slice(None), axis=0, y=None, x=None):
         # Get slice of rows
         # Check slice component types
