@@ -1593,6 +1593,36 @@ class TermInfo():
         pixel_mode: PixelMode
 
 
+    def copy(self) -> 'TermInfo':
+        """
+        Wrapper for chafa_term_info_copy
+        """
+
+        # Argtypes
+        self._chafa.chafa_term_info_copy.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        self._chafa.chafa_term_info_copy.restype = ctypes.c_void_p
+
+        # Grab new pointer
+        new_pointer = self._chafa.chafa_term_info_copy(self._term_info)
+
+        # Init new term_info
+        term_info = TermInfo()
+        term_info._term_info = new_pointer
+
+        return term_info
+
+    
+    def supplement(self, source: 'TermInfo'):
+        """
+        Supplements missing sequences in term_info with ones copied from source.
+        """
+
+        self._supplement(source._term_info)
+
+
     def _supplement(self, source: ctypes.c_void_p):
         """
             Wrapper for chafa_term_info_supplement
