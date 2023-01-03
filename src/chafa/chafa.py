@@ -323,6 +323,44 @@ class SymbolMap():
         )
 
     
+    def apply_selectors(self, selectors: str):
+        """
+        Wrapper for chafa_symbol_map_apply_selectors
+        """
+
+        class GError(ctypes.Structure):
+            _fields_ = [('domain',   ctypes.c_uint32),
+                        ('code',     ctypes.c_int),
+                        ('message',  ctypes.c_char_p)]
+
+        # Set types
+
+        self._chafa.chafa_symbol_map_apply_selectors.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_char_p,
+            ctypes.POINTER(ctypes.POINTER(GError))
+        ]
+
+        self._chafa.chafa_symbol_map_apply_selectors.restype = ctypes.c_bool
+
+        selectors = ctypes.c_char_p(bytes(selectors, "utf8"))
+
+        # Init error
+        error = ctypes.POINTER(GError)()
+
+        success = self._chafa.chafa_symbol_map_apply_selectors(
+            self._symbol_map,
+            selectors,
+            ctypes.byref(error)
+        )
+        
+        if not success:
+            error = error.contents.message.decode()
+            raise ValueError(error)
+
+        return success
+
+
 class CanvasConfig():
     def __init__(self):
         # Init chafa
