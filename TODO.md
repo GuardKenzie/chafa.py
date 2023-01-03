@@ -62,5 +62,5 @@
 
 # Misc
 - [ ] Properly figure out how the loader should work
-- [x] Error handling (I think)
+- [x] Error handling (I think this is done?)
 - [ ] Splitting classes into separate files?
