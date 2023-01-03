@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Tuple, Sequence, Union # PEP 484 
 from enum import IntEnum
 import sys
+from collections.abc import Iterable
 
 #
 # === PIXEL MODES ===
@@ -284,6 +285,12 @@ class SymbolMap(ReadOnlySymbolMap):
         wrapper for chafa_symbol_map_remove_by_tags
         """
 
+        # If we did not get passed a SymbolTags
+        # try to convert to SymbolTags which will give
+        # an appropriate error if invalid
+        if not isinstance(tags, SymbolTags):
+            tags = SymbolTags(SymbolTags)
+
         # Set types
         self._chafa.chafa_symbol_map_remove_by_tags.argtypes = [
             ctypes.c_void_p, 
@@ -297,6 +304,13 @@ class SymbolMap(ReadOnlySymbolMap):
         """
         Wrapper for chafa_symbol_map_add_by_range
         """
+
+        # Check types
+        if not isinstance(first, str):
+            raise TypeError(f"code point 'first' must be of type str. Got {type(first)}")
+
+        if not isinstance(last, str):
+            raise TypeError(f"code point 'last' must be of type str. Got {type(last)}")
 
         # check for chars
         if len(first) != 1:
@@ -325,6 +339,13 @@ class SymbolMap(ReadOnlySymbolMap):
         Wrapper for chafa_symbol_map_remove_by_range
         """
 
+        # Check types
+        if not isinstance(first, str):
+            raise TypeError(f"code point 'first' must be of type str. Got {type(first)}")
+
+        if not isinstance(last, str):
+            raise TypeError(f"code point 'last' must be of type str. Got {type(last)}")
+
         # check for chars
         if len(first) != 1:
             raise ValueError("code point 'first' must be of length 1")
@@ -351,6 +372,10 @@ class SymbolMap(ReadOnlySymbolMap):
         """
         Wrapper for chafa_symbol_map_apply_selectors
         """
+
+        # Check type
+        if not isinstance(selectors, str):
+            raise TypeError(f"selectors must be of type str. Got {type(selectors)}")
 
         class GError(ctypes.Structure):
             _fields_ = [('domain',   ctypes.c_uint32),
@@ -953,11 +978,29 @@ class ReadOnlyCanvasConfig:
         :raises ValueError: if src_width or src_height are <= 0
         """
 
+        src_width  = int(src_width)
+        src_height = int(src_height)
+
+        font_ratio = float(font_ratio)
+
+        if zoom is None:
+            raise TypeError("zoom must not be None")
+
+        if stretch is None:
+            raise TypeError("stretch must not be None")
+
+        zoom       = bool(zoom)
+        stretch    = bool(stretch)
+
+
         if src_width <= 0:
             raise ValueError("src_width must be greater than 0")
 
         if src_height <= 0:
             raise ValueError("src_height must be greater than 0")
+
+        if font_ratio <= 0:
+            raise ValueError("font_ratio must be greater than 0")
 
         self._chafa.chafa_calc_canvas_geometry.argtypes = [
             ctypes.c_uint,
@@ -1035,16 +1078,22 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     # === Width & Height property ===
     @ReadOnlyCanvasConfig.height.setter
     def height(self, value: int):
+        value = int(value)
+
         self._set_geometry(self.width, value)
 
     @ReadOnlyCanvasConfig.width.setter
     def width(self, value: int):
+        value = int(value)
+
         self._set_geometry(value, self.height)
 
 
     # === pixel mode property ===
     @ReadOnlyCanvasConfig.pixel_mode.setter
     def pixel_mode(self, mode: PixelMode):
+        mode = PixelMode(mode)
+
         self._set_pixel_mode(mode)
 
     
@@ -1052,6 +1101,8 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.color_extractor.setter
     def color_extractor(self, extractor: ColorExtractor):
+        extractor = ColorExtractor(extractor)
+
         self._set_color_extractor(extractor)
 
 
@@ -1059,6 +1110,8 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.color_space.setter
     def color_space(self, space: ColorSpace):
+        space = ColorSpace(space)
+
         self._set_color_space(space)
 
 
@@ -1066,6 +1119,8 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.canvas_mode.setter
     def canvas_mode(self, mode: CanvasMode):
+        mode = CanvasMode(mode)
+
         self._set_canvas_mode(mode)
 
 
@@ -1073,6 +1128,11 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.preprocessing.setter
     def preprocessing(self, preproc: bool):
+        if preproc is None:
+            raise TypeError("preprocessing must not be None")
+
+        preproc = bool(preproc)
+
         self._set_preprocessing_enabled(preproc)
     
     
@@ -1080,11 +1140,15 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     @ReadOnlyCanvasConfig.dither_width.setter
     def dither_width(self, width: int):
+        width = int(width)
+
         self._set_dither_grain_size(width, self.dither_height)
 
     
     @ReadOnlyCanvasConfig.dither_height.setter
     def dither_height(self, height: int):
+        height = int(height)
+
         self._set_dither_grain_size(self.dither_width, height)
 
 
@@ -1092,6 +1156,8 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     @ReadOnlyCanvasConfig.dither_mode.setter
     def dither_mode(self, mode: DitherMode):
+        mode = DitherMode(mode)
+
         self._set_dither_mode(mode)
 
     
@@ -1099,6 +1165,8 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.dither_intensity.setter
     def dither_intensity(self, intensity: float):
+        intensity = float(intensity)
+
         if intensity < 0:
             raise ValueError("Dither intensity must be positive.")
 
@@ -1109,10 +1177,17 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.optimizations.setter
     def optimizations(self, optimizations: Tuple):
-        # Or all optimizations together
+        # Convert optimizations to proper type to
+        # raise appropriate errors
+        if not isinstance(optimizations, Iterable):
+            raise TypeError(f"optimizations must be iterable, not {type(optimizations)}")
 
+        # Or all optimizations together
         compounded = 0
         for flag in optimizations:
+            # Convert flag to Optimizations to get error if invalid
+            flag = Optimizations(flag)
+
             compounded |= flag
 
         self._set_optimizations(compounded)
@@ -1122,11 +1197,15 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     @ReadOnlyCanvasConfig.cell_width.setter
     def cell_width(self, width: int):
+        width = int(width)
+
         self._set_cell_geometry(width, self.cell_height)
 
     
     @ReadOnlyCanvasConfig.cell_height.setter
     def cell_height(self, height: int):
+        height = int(height)
+
         self._set_cell_geometry(self.cell_width, height)
 
 
@@ -1134,6 +1213,8 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     @ReadOnlyCanvasConfig.transparency_threshold.setter
     def transparency_threshold(self, threshold: float):
+        threshold = float(threshold)
+
         if 1 < threshold or threshold < 0:
             raise ValueError("Transparency threshold must be in range [0,1]")
 
@@ -1144,6 +1225,8 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.work_factor.setter
     def work_factor(self, factor: float):
+        factor = float(factor)
+
         if 1 < factor or factor < 0:
             raise ValueError("Work factor must be in range [0,1]")
 
@@ -1154,6 +1237,11 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     @ReadOnlyCanvasConfig.fg_only.setter
     def fg_only(self, fg_only: bool):
+        if fg_only is None:
+            raise TypeError("fg_only must not be None")
+
+        fg_only = bool(fg_only)
+
         self._set_fg_only_enabled(fg_only)
         
 
@@ -1162,14 +1250,26 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     @ReadOnlyCanvasConfig.fg_color.setter
     def fg_color(self, fg_color: Tuple[int, int, int]):
 
+        if isinstance(fg_color, str):
+            raise TypeError(f"fg_color must not be a string")
+
+        if not isinstance(fg_color, Iterable):
+            raise TypeError(f"fg_color must be iterable, not {type(fg_color)}")
+
         if len(fg_color) != 3:
             raise ValueError("fg_color must have exactly 3 values")
 
-        if any([255 < col or col < 0 for col in fg_color]):
-            raise ValueError("Each value of fg_color must in the range [0,255]")
+        offset = 1
+        color  = 0
 
-        # Calculate packed color
-        color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+        for col in fg_color[::-1]:
+            col = int(col)
+
+            if 255 < col or col < 0:
+                raise ValueError("Each value of fg_color must be in the range [0,255]")
+            
+            color  += offset * col
+            offset *= 16**2
 
         self._set_fg_color(color)
 
@@ -1177,14 +1277,26 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     @ReadOnlyCanvasConfig.bg_color.setter
     def bg_color(self, bg_color: Tuple[int, int, int]):
 
+        if isinstance(bg_color, str):
+            raise TypeError(f"bg_color must not be a string")
+
+        if not isinstance(bg_color, Iterable):
+            raise TypeError(f"bg_color must be iterable, not {type(bg_color)}")
+
         if len(bg_color) != 3:
             raise ValueError("bg_color must have exactly 3 values")
 
-        if any([255 < col or col < 0 for col in bg_color]):
-            raise ValueError("Each value of bg_color must in the range [0,255]")
+        offset = 1
+        color  = 0
 
-        # Calculate packed color
-        color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+        for col in bg_color[::-1]:
+            col = int(col)
+
+            if 255 < col or col < 0:
+                raise ValueError("Each value of bg_color must be in the range [0,255]")
+            
+            color  += offset * col
+            offset *= 16**2
 
         self._set_bg_color(color)
 
@@ -1205,14 +1317,6 @@ class CanvasConfig(ReadOnlyCanvasConfig):
             width, 
             height
         )
-
-
-    def set_geometry(self, width: int, height: int):
-        """
-            Set the canvas geometry.
-        """
-
-        self._set_geometry(width, height)
 
 
     def _set_fg_only_enabled(self, fg_only: bool):
@@ -1463,6 +1567,9 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
             :param SymbolMap symbol_map: The symbol_map.
         """
+        
+        if not isinstance(symbol_map, SymbolMap):
+            raise TypeError(f"symbol_map must be a SymbolMap, not {type(symbol_map)}")
 
         # Specify types
         self._chafa.chafa_canvas_config_set_symbol_map.argtypes = [
@@ -1482,6 +1589,9 @@ class CanvasConfig(ReadOnlyCanvasConfig):
             :param SymbolMap fill_symbol_map: The fill symbol map.
         """
 
+        if not isinstance(fill_symbol_map, SymbolMap):
+            raise TypeError(f"fill_symbol_map must be a SymbolMap, not {type(fill_symbol_map)}")
+
         # Specify types
         self._chafa.chafa_canvas_config_set_fill_symbol_map.argtypes = [
             ctypes.c_void_p,
@@ -1495,6 +1605,8 @@ class TermDb():
     def __init__(self, no_defaults: bool=False):
         # Init chafa
         self._chafa = ctypes.CDLL("libchafa.so")
+
+        no_defaults = bool(no_defaults)
 
         # Init term db
         if no_defaults:
@@ -1620,6 +1732,9 @@ class TermInfo():
         Supplements missing sequences in term_info with ones copied from source.
         """
 
+        if not isinstance(source, TermInfo):
+            raise TypeError(f"source must be of type TermInfo, not {type(source)}")
+
         self._supplement(source._term_info)
 
 
@@ -1640,6 +1755,8 @@ class TermInfo():
         """
             Wrapper for chafa_term_info_have_seq
         """
+
+        seq = TermSeq(seq)
 
         # Set types
         self._chafa.chafa_term_info_have_seq.argtypes = [
@@ -1720,12 +1837,18 @@ class Canvas:
         self._chafa = ctypes.CDLL("libchafa.so")
 
         # Init config
+        if not isinstance(config, CanvasConfig):
+            raise TypeError(f"config must be of type CanvasConfig, not {type(config)}")
+
         self._config = config
 
         # Check for term info
         if term_info is None:
             term_db = TermDb()
             self._term_info = term_db.detect()
+
+        elif not isinstance(term_info, TermInfo):
+            raise TypeError(f"term_info must be None or of type TermInfo, not {type(term_info)}")
 
         else:
             self._term_info = term_info 
@@ -1829,7 +1952,6 @@ class Canvas:
 
         if isinstance(pos, int):
             return self[pos, :]
-
         
         if isinstance(pos, slice):
             return self._canvas_slice(y_slice=pos)
@@ -1863,7 +1985,7 @@ class Canvas:
         if isinstance(pos[1], slice):
             return self._canvas_slice(x_slice=pos[1], axis=1, y=pos[0])
 
-        return
+        raise TypeError(f"Indices of invalid type. Got {type(pos)}")
 
 
     def _get_char_at(self, x:int, y:int) -> str:
@@ -1962,6 +2084,7 @@ class Canvas:
         )
 
     def draw_all_pixels(self, src_pixel_type: PixelType, src_pixels: Sequence, src_width: int, src_height: int, src_rowstride: int):
+        # TODO Errors
         """
             Wrapper for chafa_canvas_draw_all_pixels
         """
@@ -2053,20 +2176,34 @@ class CanvasInspector:
         return (color[0], color[1], color[2])
     
     @fg_color.setter
-    def fg_color(self, color: Tuple[int, int, int]):
-
+    def fg_color(self, fg_color: Tuple[int, int, int]):
         # Remove foreground if we get none
         if color is None:
             self.remove_foreground()
+            return
+    	
+        # Check types
+        if isinstance(fg_color, str):
+            raise TypeError(f"fg_color must not be a string")
 
-        if len(color) != 3:
+        if not isinstance(fg_color, Iterable):
+            raise TypeError(f"fg_color must be iterable, not {type(fg_color)}")
+
+        if len(fg_color) != 3:
             raise ValueError("fg_color must have exactly 3 values")
 
-        if any([255 < col or col < 0 for col in color]):
-            raise ValueError("Each value of fg_color must in the range [0,255]")
+        offset = 1
+        color  = 0
 
-        # Convert to int
-        color = color[0] * 16**4 + color[1] * 16 ** 2 + color[2]
+        # Convert color to packed bytes
+        for col in fg_color[::-1]:
+            col = int(col)
+
+            if 255 < col or col < 0:
+                raise ValueError("Each value of fg_color must be in the range [0,255]")
+            
+            color  += offset * col
+            offset *= 16**2
 
         bg_color = self.bg_color
 
@@ -2098,20 +2235,35 @@ class CanvasInspector:
         return (color[0], color[1], color[2])
     
     @bg_color.setter
-    def bg_color(self, color: Tuple[int, int, int]):
+    def bg_color(self, bg_color: Tuple[int, int, int]):
 
         # Remove background if we get none
-        if color is None:
+        if bg_color is None:
             self.remove_background()
+            return
 
-        if len(color) != 3:
+        # Check types
+        if isinstance(bg_color, str):
+            raise TypeError(f"bg_color must not be a string")
+
+        if not isinstance(bg_color, Iterable):
+            raise TypeError(f"bg_color must be iterable, not {type(bg_color)}")
+
+        if len(bg_color) != 3:
             raise ValueError("bg_color must have exactly 3 values")
 
-        if any([255 < col or col < 0 for col in color]):
-            raise ValueError("Each value of bg_color must in the range [0,255]")
+        offset = 1
+        color  = 0
 
-        # Convert to int
-        color = color[0] * 16**4 + color[1] * 16 ** 2 + color[2]
+        # Convert color to packed bytes
+        for col in bg_color[::-1]:
+            col = int(col)
+
+            if 255 < col or col < 0:
+                raise ValueError("Each value of bg_color must be in the range [0,255]")
+            
+            color  += offset * col
+            offset *= 16**2
 
         fg_color = self.fg_color
 
@@ -2132,6 +2284,11 @@ class CanvasInspector:
 
     @char.setter
     def char(self, char: str):
+        char = str(char)
+
+        if len(char) != 1:
+            raise ValueError(f"char must be of length 1")
+
         self._canvas._set_char_at(self.x, self.y, char)
 
 
@@ -2143,7 +2300,9 @@ class CanvasInspector:
 
     @x.setter
     def x(self, value: int):
-        width = self._canvas._config.width
+        width = self._canvas.peek_config().width
+
+        value = int(value)
 
         if value >= width:
             raise ValueError(
@@ -2158,7 +2317,9 @@ class CanvasInspector:
 
     @y.setter
     def y(self, value: int):
-        height = self._canvas._config.height
+        height = self._canvas.peek_config().height
+
+        value = int(value)
 
         if value >= height:
             raise ValueError(
