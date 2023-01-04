@@ -5,6 +5,9 @@ from enum import IntEnum
 from collections.abc import Iterable
 import array
 
+#  CHAFA LETS GOOOOOOO!!!
+_Chafa = ctypes.CDLL("libchafa.so")
+
 #
 # === PIXEL MODES ===
 #
@@ -234,12 +237,9 @@ class TermSeq(IntEnum):
 
 class ReadOnlySymbolMap():
     def __init__(self):
-        # Init chafa
-        self._chafa = ctypes.CDLL("libchafa.so")
-
         # Init map
-        self._chafa.chafa_symbol_map_new.restype = ctypes.c_void_p
-        self._symbol_map = self._chafa.chafa_symbol_map_new()
+        _Chafa.chafa_symbol_map_new.restype = ctypes.c_void_p
+        self._symbol_map = _Chafa.chafa_symbol_map_new()
 
     
     def copy(self) -> 'SymbolMap':
@@ -248,14 +248,14 @@ class ReadOnlySymbolMap():
         """
 
         # Argtypes
-        self._chafa.chafa_symbol_map_copy.argtypes = [
+        _Chafa.chafa_symbol_map_copy.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_symbol_map_copy.restype = ctypes.c_void_p
+        _Chafa.chafa_symbol_map_copy.restype = ctypes.c_void_p
 
         # Get new pointer
-        new_pointer = self._chafa.chafa_symbol_map_copy(self._symbol_map)
+        new_pointer = _Chafa.chafa_symbol_map_copy(self._symbol_map)
 
         # Init symbol map
         symbol_map = SymbolMap()
@@ -272,12 +272,12 @@ class SymbolMap(ReadOnlySymbolMap):
         """
 
         # Set types
-        self._chafa.chafa_symbol_map_add_by_tags.argtypes = [
+        _Chafa.chafa_symbol_map_add_by_tags.argtypes = [
             ctypes.c_void_p, 
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_symbol_map_add_by_tags(self._symbol_map, tags)
+        _Chafa.chafa_symbol_map_add_by_tags(self._symbol_map, tags)
 
     
     def remove_by_tags(self, tags: SymbolTags):
@@ -292,12 +292,12 @@ class SymbolMap(ReadOnlySymbolMap):
             tags = SymbolTags(SymbolTags)
 
         # Set types
-        self._chafa.chafa_symbol_map_remove_by_tags.argtypes = [
+        _Chafa.chafa_symbol_map_remove_by_tags.argtypes = [
             ctypes.c_void_p, 
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_symbol_map_remove_by_tags(self._symbol_map, tags)
+        _Chafa.chafa_symbol_map_remove_by_tags(self._symbol_map, tags)
 
     
     def add_by_range(self, first: str, last: str):
@@ -320,14 +320,14 @@ class SymbolMap(ReadOnlySymbolMap):
             raise ValueError("code point 'last' must be of length 1")
 
         # Set types
-        self._chafa.chafa_symbol_map_add_by_range.argtypes = [
+        _Chafa.chafa_symbol_map_add_by_range.argtypes = [
             ctypes.c_void_p,
             ctypes.c_wchar,
             ctypes.c_wchar
         ]
 
         # add tags
-        self._chafa.chafa_symbol_map_add_by_range(
+        _Chafa.chafa_symbol_map_add_by_range(
             self._symbol_map,
             first,
             last
@@ -354,14 +354,14 @@ class SymbolMap(ReadOnlySymbolMap):
             raise ValueError("code point 'last' must be of length 1")
 
         # Set types
-        self._chafa.chafa_symbol_map_remove_by_range.argtypes = [
+        _Chafa.chafa_symbol_map_remove_by_range.argtypes = [
             ctypes.c_void_p,
             ctypes.c_wchar,
             ctypes.c_wchar
         ]
 
         # remove tags
-        self._chafa.chafa_symbol_map_remove_by_range(
+        _Chafa.chafa_symbol_map_remove_by_range(
             self._symbol_map,
             first,
             last
@@ -384,20 +384,20 @@ class SymbolMap(ReadOnlySymbolMap):
 
         # Set types
 
-        self._chafa.chafa_symbol_map_apply_selectors.argtypes = [
+        _Chafa.chafa_symbol_map_apply_selectors.argtypes = [
             ctypes.c_void_p,
             ctypes.c_char_p,
             ctypes.POINTER(ctypes.POINTER(GError))
         ]
 
-        self._chafa.chafa_symbol_map_apply_selectors.restype = ctypes.c_bool
+        _Chafa.chafa_symbol_map_apply_selectors.restype = ctypes.c_bool
 
         selectors = ctypes.c_char_p(bytes(selectors, "utf8"))
 
         # Init error
         error = ctypes.POINTER(GError)()
 
-        success = self._chafa.chafa_symbol_map_apply_selectors(
+        success = _Chafa.chafa_symbol_map_apply_selectors(
             self._symbol_map,
             selectors,
             ctypes.byref(error)
@@ -412,12 +412,9 @@ class SymbolMap(ReadOnlySymbolMap):
 
 class ReadOnlyCanvasConfig:
     def __init__(self):
-        # Init chafa
-        self._chafa = ctypes.CDLL("libchafa.so")
-
         # Init config
-        self._chafa.chafa_canvas_config_new.restype = ctypes.c_void_p
-        self._canvas_config = self._chafa.chafa_canvas_config_new()
+        _Chafa.chafa_canvas_config_new.restype = ctypes.c_void_p
+        self._canvas_config = _Chafa.chafa_canvas_config_new()
 
 
     # === Width & Height property ===
@@ -689,13 +686,13 @@ class ReadOnlyCanvasConfig:
         height = ctypes.pointer(ctypes.c_int(-1))
 
         # get geometry
-        self._chafa.chafa_canvas_config_get_geometry.argtypes = [
+        _Chafa.chafa_canvas_config_get_geometry.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(ctypes.c_int),
             ctypes.POINTER(ctypes.c_int)
         ]
 
-        self._chafa.chafa_canvas_config_get_geometry(
+        _Chafa.chafa_canvas_config_get_geometry(
             self._canvas_config,
             width,
             height
@@ -709,14 +706,14 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_fg_only_enabled.argtypes = [
+        _Chafa.chafa_canvas_config_get_fg_only_enabled.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_get_fg_only_enabled.restype = ctypes.c_bool
+        _Chafa.chafa_canvas_config_get_fg_only_enabled.restype = ctypes.c_bool
 
         # Get fg_only 
-        fg_only = self._chafa.chafa_canvas_config_get_fg_only_enabled(self._canvas_config)
+        fg_only = _Chafa.chafa_canvas_config_get_fg_only_enabled(self._canvas_config)
 
         return fg_only
 
@@ -727,14 +724,14 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_fg_color.argtypes = [
+        _Chafa.chafa_canvas_config_get_fg_color.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_get_fg_color.restype = ctypes.c_uint32
+        _Chafa.chafa_canvas_config_get_fg_color.restype = ctypes.c_uint32
 
         # Get fg_color
-        color = self._chafa.chafa_canvas_config_get_fg_color(
+        color = _Chafa.chafa_canvas_config_get_fg_color(
             self._canvas_config 
         )
 
@@ -747,14 +744,14 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_bg_color.argtypes = [
+        _Chafa.chafa_canvas_config_get_bg_color.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_get_bg_color.restype = ctypes.c_uint32
+        _Chafa.chafa_canvas_config_get_bg_color.restype = ctypes.c_uint32
 
         # Get bg_color
-        color = self._chafa.chafa_canvas_config_get_bg_color(
+        color = _Chafa.chafa_canvas_config_get_bg_color(
             self._canvas_config 
         )
 
@@ -767,14 +764,14 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_transparency_threshold.argtypes = [
+        _Chafa.chafa_canvas_config_get_transparency_threshold.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_get_transparency_threshold.restype = ctypes.c_float
+        _Chafa.chafa_canvas_config_get_transparency_threshold.restype = ctypes.c_float
 
         # Get threshold
-        threshold = self._chafa.chafa_canvas_config_get_transparency_threshold(self._canvas_config)
+        threshold = _Chafa.chafa_canvas_config_get_transparency_threshold(self._canvas_config)
 
         return threshold
 
@@ -785,14 +782,14 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_work_factor.argtypes = [
+        _Chafa.chafa_canvas_config_get_work_factor.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_get_work_factor.restype = ctypes.c_float
+        _Chafa.chafa_canvas_config_get_work_factor.restype = ctypes.c_float
 
         # Get factor
-        factor = self._chafa.chafa_canvas_config_get_work_factor(self._canvas_config)
+        factor = _Chafa.chafa_canvas_config_get_work_factor(self._canvas_config)
 
         return factor
 
@@ -803,11 +800,11 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_pixel_mode.argtypes = [ctypes.c_void_p]
-        self._chafa.chafa_canvas_config_get_pixel_mode.restype  = ctypes.c_uint
+        _Chafa.chafa_canvas_config_get_pixel_mode.argtypes = [ctypes.c_void_p]
+        _Chafa.chafa_canvas_config_get_pixel_mode.restype  = ctypes.c_uint
 
         # Get mode
-        pixel_mode = self._chafa.chafa_canvas_config_get_pixel_mode(self._canvas_config)
+        pixel_mode = _Chafa.chafa_canvas_config_get_pixel_mode(self._canvas_config)
 
         return PixelMode(pixel_mode)
 
@@ -818,7 +815,7 @@ class ReadOnlyCanvasConfig:
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_get_dither_grain_size.argtypes = [
+        _Chafa.chafa_canvas_config_get_dither_grain_size.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(ctypes.c_int),
             ctypes.POINTER(ctypes.c_int)
@@ -828,7 +825,7 @@ class ReadOnlyCanvasConfig:
         height_out = ctypes.pointer(ctypes.c_int(0))
 
         # Set grain size
-        self._chafa.chafa_canvas_config_get_dither_grain_size(self._canvas_config, width_out, height_out)
+        _Chafa.chafa_canvas_config_get_dither_grain_size(self._canvas_config, width_out, height_out)
 
         return (width_out.contents.value, height_out.contents.value)
 
@@ -839,7 +836,7 @@ class ReadOnlyCanvasConfig:
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_get_cell_geometry.argtypes = [
+        _Chafa.chafa_canvas_config_get_cell_geometry.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(ctypes.c_int),
             ctypes.POINTER(ctypes.c_int)
@@ -849,7 +846,7 @@ class ReadOnlyCanvasConfig:
         height_out = ctypes.pointer(ctypes.c_int(0))
 
         # Set grain size
-        self._chafa.chafa_canvas_config_get_cell_geometry(self._canvas_config, width_out, height_out)
+        _Chafa.chafa_canvas_config_get_cell_geometry(self._canvas_config, width_out, height_out)
 
         return (width_out.contents.value, height_out.contents.value)
 
@@ -860,11 +857,11 @@ class ReadOnlyCanvasConfig:
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_get_dither_mode.argtypes = [ctypes.c_void_p]
-        self._chafa.chafa_canvas_config_get_dither_mode.restype  = ctypes.c_uint
+        _Chafa.chafa_canvas_config_get_dither_mode.argtypes = [ctypes.c_void_p]
+        _Chafa.chafa_canvas_config_get_dither_mode.restype  = ctypes.c_uint
 
         # Get mode
-        mode = self._chafa.chafa_canvas_config_get_dither_mode(self._canvas_config)
+        mode = _Chafa.chafa_canvas_config_get_dither_mode(self._canvas_config)
 
         return DitherMode(mode)
 
@@ -875,14 +872,14 @@ class ReadOnlyCanvasConfig:
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_get_dither_intensity.argtypes = [
+        _Chafa.chafa_canvas_config_get_dither_intensity.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_get_dither_intensity.restype = ctypes.c_float
+        _Chafa.chafa_canvas_config_get_dither_intensity.restype = ctypes.c_float
 
         # Get intensity
-        intensity = self._chafa.chafa_canvas_config_get_dither_intensity(self._canvas_config)
+        intensity = _Chafa.chafa_canvas_config_get_dither_intensity(self._canvas_config)
 
         return intensity
 
@@ -893,11 +890,11 @@ class ReadOnlyCanvasConfig:
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_get_canvas_mode.argtypes = [ctypes.c_void_p]
-        self._chafa.chafa_canvas_config_get_canvas_mode.restype  = ctypes.c_uint
+        _Chafa.chafa_canvas_config_get_canvas_mode.argtypes = [ctypes.c_void_p]
+        _Chafa.chafa_canvas_config_get_canvas_mode.restype  = ctypes.c_uint
 
         # Get mode
-        mode = self._chafa.chafa_canvas_config_get_canvas_mode(self._canvas_config)
+        mode = _Chafa.chafa_canvas_config_get_canvas_mode(self._canvas_config)
 
         return CanvasMode(mode)
 
@@ -908,11 +905,11 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_color_extractor.argtypes = [ctypes.c_void_p]
-        self._chafa.chafa_canvas_config_get_color_extractor.restype  = ctypes.c_uint
+        _Chafa.chafa_canvas_config_get_color_extractor.argtypes = [ctypes.c_void_p]
+        _Chafa.chafa_canvas_config_get_color_extractor.restype  = ctypes.c_uint
 
         # Get extractor
-        extractor = self._chafa.chafa_canvas_config_get_color_extractor(self._canvas_config)
+        extractor = _Chafa.chafa_canvas_config_get_color_extractor(self._canvas_config)
 
         return ColorExtractor(extractor)
 
@@ -923,11 +920,11 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_color_space.argtypes = [ctypes.c_void_p]
-        self._chafa.chafa_canvas_config_get_color_space.restype  = ctypes.c_uint
+        _Chafa.chafa_canvas_config_get_color_space.argtypes = [ctypes.c_void_p]
+        _Chafa.chafa_canvas_config_get_color_space.restype  = ctypes.c_uint
 
         # Get space
-        space = self._chafa.chafa_canvas_config_get_color_space(self._canvas_config)
+        space = _Chafa.chafa_canvas_config_get_color_space(self._canvas_config)
 
         return ColorSpace(space)
 
@@ -938,11 +935,11 @@ class ReadOnlyCanvasConfig:
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_get_preprocessing_enabled.argtypes = [ctypes.c_void_p]
-        self._chafa.chafa_canvas_config_get_preprocessing_enabled.restype  = ctypes.c_bool
+        _Chafa.chafa_canvas_config_get_preprocessing_enabled.argtypes = [ctypes.c_void_p]
+        _Chafa.chafa_canvas_config_get_preprocessing_enabled.restype  = ctypes.c_bool
 
         # Get preprocessing value 
-        preprocessing = self._chafa.chafa_canvas_config_get_preprocessing_enabled(self._canvas_config)
+        preprocessing = _Chafa.chafa_canvas_config_get_preprocessing_enabled(self._canvas_config)
 
         return preprocessing
 
@@ -953,13 +950,13 @@ class ReadOnlyCanvasConfig:
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_get_optimizations.argtypes = [
+        _Chafa.chafa_canvas_config_get_optimizations.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_get_optimizations.restype = ctypes.c_uint
+        _Chafa.chafa_canvas_config_get_optimizations.restype = ctypes.c_uint
 
-        return self._chafa.chafa_canvas_config_get_optimizations(self._canvas_config)
+        return _Chafa.chafa_canvas_config_get_optimizations(self._canvas_config)
 
     
     def calc_canvas_geometry(self, src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False):
@@ -1002,7 +999,7 @@ class ReadOnlyCanvasConfig:
         if font_ratio <= 0:
             raise ValueError("font_ratio must be greater than 0")
 
-        self._chafa.chafa_calc_canvas_geometry.argtypes = [
+        _Chafa.chafa_calc_canvas_geometry.argtypes = [
             ctypes.c_uint,
             ctypes.c_uint,
             ctypes.POINTER(ctypes.c_uint),
@@ -1015,7 +1012,7 @@ class ReadOnlyCanvasConfig:
         new_width  = ctypes.pointer(ctypes.c_uint(self.width))
         new_height = ctypes.pointer(ctypes.c_uint(self.height))
         
-        self._chafa.chafa_calc_canvas_geometry(
+        _Chafa.chafa_calc_canvas_geometry(
             src_width, src_height,
             new_width, new_height,
             font_ratio,
@@ -1033,14 +1030,14 @@ class ReadOnlyCanvasConfig:
         """
 
         # define types
-        self._chafa.chafa_canvas_config_peek_symbol_map.argtypes = [
+        _Chafa.chafa_canvas_config_peek_symbol_map.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_peek_symbol_map.restype = ctypes.c_void_p
+        _Chafa.chafa_canvas_config_peek_symbol_map.restype = ctypes.c_void_p
 
         # Get new pointer
-        new_pointer = self._chafa.chafa_canvas_config_peek_symbol_map(self._canvas_config)
+        new_pointer = _Chafa.chafa_canvas_config_peek_symbol_map(self._canvas_config)
 
         # Init RO SymbolMap
         symbol_map = ReadOnlySymbolMap()
@@ -1286,17 +1283,17 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # define types
-        self._chafa.chafa_canvas_config_copy.argtypes = [
+        _Chafa.chafa_canvas_config_copy.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_copy.restype = ctypes.c_void_p
+        _Chafa.chafa_canvas_config_copy.restype = ctypes.c_void_p
 
         # Init new config
         new_config = CanvasConfig()
 
         # Get new pointer
-        config_copy = self._chafa.chafa_canvas_config_copy(self._canvas_config)
+        config_copy = _Chafa.chafa_canvas_config_copy(self._canvas_config)
 
         new_config._canvas_config = config_copy
 
@@ -1308,13 +1305,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
             Wrapper for chafa_canvas_config_set_geometry
         """
 
-        self._chafa.chafa_canvas_config_set_geometry.argtypes = [
+        _Chafa.chafa_canvas_config_set_geometry.argtypes = [
             ctypes.c_void_p, 
             ctypes.c_uint, 
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_canvas_config_set_geometry(
+        _Chafa.chafa_canvas_config_set_geometry(
             self._canvas_config, 
             width, 
             height
@@ -1327,13 +1324,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_set_fg_only_enabled.argtypes = [
+        _Chafa.chafa_canvas_config_set_fg_only_enabled.argtypes = [
             ctypes.c_void_p,
             ctypes.c_bool
         ]
 
         # Set threshold
-        self._chafa.chafa_canvas_config_set_fg_only_enabled(
+        _Chafa.chafa_canvas_config_set_fg_only_enabled(
             self._canvas_config,
             fg_only
         )
@@ -1345,13 +1342,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_set_fg_color.argtypes = [
+        _Chafa.chafa_canvas_config_set_fg_color.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint32
         ]
 
         # Set fg_color
-        color = self._chafa.chafa_canvas_config_set_fg_color(
+        color = _Chafa.chafa_canvas_config_set_fg_color(
             self._canvas_config,
             fg_color
         )
@@ -1363,13 +1360,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_set_bg_color.argtypes = [
+        _Chafa.chafa_canvas_config_set_bg_color.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint32
         ]
 
         # Set bg_color
-        color = self._chafa.chafa_canvas_config_set_bg_color(
+        color = _Chafa.chafa_canvas_config_set_bg_color(
             self._canvas_config,
             bg_color
         )
@@ -1381,13 +1378,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_set_transparency_threshold.argtypes = [
+        _Chafa.chafa_canvas_config_set_transparency_threshold.argtypes = [
             ctypes.c_void_p,
             ctypes.c_float
         ]
 
         # Set threshold
-        self._chafa.chafa_canvas_config_set_transparency_threshold(
+        _Chafa.chafa_canvas_config_set_transparency_threshold(
             self._canvas_config,
             threshold
         )
@@ -1399,13 +1396,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Set types
-        self._chafa.chafa_canvas_config_set_work_factor.argtypes = [
+        _Chafa.chafa_canvas_config_set_work_factor.argtypes = [
             ctypes.c_void_p,
             ctypes.c_float
         ]
 
         # Set factor
-        self._chafa.chafa_canvas_config_set_work_factor(
+        _Chafa.chafa_canvas_config_set_work_factor(
             self._canvas_config,
             factor
         )
@@ -1417,12 +1414,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_pixel_mode.argtypes = [
+        _Chafa.chafa_canvas_config_set_pixel_mode.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_canvas_config_set_pixel_mode(self._canvas_config, mode)
+        _Chafa.chafa_canvas_config_set_pixel_mode(self._canvas_config, mode)
 
 
     def _set_dither_grain_size(self, width: int, height: int):
@@ -1431,14 +1428,14 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_dither_grain_size.argtypes = [
+        _Chafa.chafa_canvas_config_set_dither_grain_size.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int,
             ctypes.c_int
         ]
 
         # Set grain size
-        self._chafa.chafa_canvas_config_set_dither_grain_size(self._canvas_config, width, height)
+        _Chafa.chafa_canvas_config_set_dither_grain_size(self._canvas_config, width, height)
 
 
     def _set_cell_geometry(self, width: int, height: int):
@@ -1447,14 +1444,14 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_cell_geometry.argtypes = [
+        _Chafa.chafa_canvas_config_set_cell_geometry.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int,
             ctypes.c_int
         ]
 
         # Set grain size
-        self._chafa.chafa_canvas_config_set_cell_geometry(self._canvas_config, width, height)
+        _Chafa.chafa_canvas_config_set_cell_geometry(self._canvas_config, width, height)
 
     
     def _set_dither_mode(self, mode: DitherMode):
@@ -1463,12 +1460,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_dither_mode.argtypes = [
+        _Chafa.chafa_canvas_config_set_dither_mode.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_canvas_config_set_dither_mode(self._canvas_config, mode)
+        _Chafa.chafa_canvas_config_set_dither_mode(self._canvas_config, mode)
 
 
     def _set_dither_intensity(self, intensity: float):
@@ -1477,13 +1474,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_dither_intensity.argtypes = [
+        _Chafa.chafa_canvas_config_set_dither_intensity.argtypes = [
             ctypes.c_void_p,
             ctypes.c_float
         ]
 
         # Set intensity
-        self._chafa.chafa_canvas_config_set_dither_intensity(
+        _Chafa.chafa_canvas_config_set_dither_intensity(
             self._canvas_config,
             intensity
         )
@@ -1495,12 +1492,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_canvas_mode.argtypes = [
+        _Chafa.chafa_canvas_config_set_canvas_mode.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_canvas_config_set_canvas_mode(self._canvas_config, mode)
+        _Chafa.chafa_canvas_config_set_canvas_mode(self._canvas_config, mode)
 
     
     def _set_color_extractor(self, extractor: ColorExtractor):
@@ -1509,12 +1506,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_color_extractor.argtypes = [
+        _Chafa.chafa_canvas_config_set_color_extractor.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_canvas_config_set_color_extractor(self._canvas_config, extractor)
+        _Chafa.chafa_canvas_config_set_color_extractor(self._canvas_config, extractor)
 
     
     def _set_color_space(self, space: ColorSpace):
@@ -1523,12 +1520,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_color_space.argtypes = [
+        _Chafa.chafa_canvas_config_set_color_space.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
         ]
 
-        self._chafa.chafa_canvas_config_set_color_space(self._canvas_config, space)
+        _Chafa.chafa_canvas_config_set_color_space(self._canvas_config, space)
 
     
     def _set_preprocessing_enabled(self, preproc: bool):
@@ -1537,12 +1534,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_preprocessing_enabled.argtypes = [
+        _Chafa.chafa_canvas_config_set_preprocessing_enabled.argtypes = [
             ctypes.c_void_p,
             ctypes.c_bool
         ]
 
-        self._chafa.chafa_canvas_config_set_preprocessing_enabled(self._canvas_config, preproc)
+        _Chafa.chafa_canvas_config_set_preprocessing_enabled(self._canvas_config, preproc)
 
 
     def _set_optimizations(self, optimizations: int):
@@ -1551,13 +1548,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         """
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_optimizations.argtypes = [
+        _Chafa.chafa_canvas_config_set_optimizations.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
         ]
 
         # Set optimizations
-        self._chafa.chafa_canvas_config_set_optimizations(
+        _Chafa.chafa_canvas_config_set_optimizations(
             self._canvas_config,
             optimizations
         )
@@ -1574,12 +1571,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
             raise TypeError(f"symbol_map must be a SymbolMap, not {type(symbol_map)}")
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_symbol_map.argtypes = [
+        _Chafa.chafa_canvas_config_set_symbol_map.argtypes = [
             ctypes.c_void_p,
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_set_symbol_map(self._canvas_config, symbol_map._symbol_map)
+        _Chafa.chafa_canvas_config_set_symbol_map(self._canvas_config, symbol_map._symbol_map)
 
 
     def set_fill_symbol_map(self, fill_symbol_map: SymbolMap):
@@ -1595,28 +1592,25 @@ class CanvasConfig(ReadOnlyCanvasConfig):
             raise TypeError(f"fill_symbol_map must be a SymbolMap, not {type(fill_symbol_map)}")
 
         # Specify types
-        self._chafa.chafa_canvas_config_set_fill_symbol_map.argtypes = [
+        _Chafa.chafa_canvas_config_set_fill_symbol_map.argtypes = [
             ctypes.c_void_p,
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_config_set_fill_symbol_map(self._canvas_config, fill_symbol_map._symbol_map)
+        _Chafa.chafa_canvas_config_set_fill_symbol_map(self._canvas_config, fill_symbol_map._symbol_map)
 
 
 class TermDb():
     def __init__(self, no_defaults: bool=False):
-        # Init chafa
-        self._chafa = ctypes.CDLL("libchafa.so")
-
         no_defaults = bool(no_defaults)
 
         # Init term db
         if no_defaults:
-            self._chafa.chafa_term_db_new.restype = ctypes.c_void_p
-            self._term_db = self._chafa.chafa_term_db_new()
+            _Chafa.chafa_term_db_new.restype = ctypes.c_void_p
+            self._term_db = _Chafa.chafa_term_db_new()
         else:
-            self._chafa.chafa_term_db_get_default.restype = ctypes.c_void_p
-            self._term_db = self._chafa.chafa_term_db_get_default()
+            _Chafa.chafa_term_db_get_default.restype = ctypes.c_void_p
+            self._term_db = _Chafa.chafa_term_db_get_default()
 
     def detect(self):
         # Init glib
@@ -1626,13 +1620,13 @@ class TermDb():
         # Get environment
         environment = glib.g_get_environ()
 
-        self._chafa.chafa_term_db_detect.restype  = ctypes.c_void_p
-        self._chafa.chafa_term_db_detect.argtypes = [
+        _Chafa.chafa_term_db_detect.restype  = ctypes.c_void_p
+        _Chafa.chafa_term_db_detect.argtypes = [
             ctypes.c_void_p,
             ctypes.c_void_p
         ]
 
-        new_term_info = self._chafa.chafa_term_db_detect(
+        new_term_info = _Chafa.chafa_term_db_detect(
             self._term_db,
             environment
         )
@@ -1652,14 +1646,14 @@ class TermDb():
         """
 
         # Define types
-        self._chafa.chafa_term_db_get_fallback_info.argtypes = [
+        _Chafa.chafa_term_db_get_fallback_info.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_term_db_get_fallback_info.restype = ctypes.c_void_p
+        _Chafa.chafa_term_db_get_fallback_info.restype = ctypes.c_void_p
 
         # Get pointer to fallback info
-        fallback_info_pointer = self._chafa.chafa_term_db_get_fallback_info(self._term_db)
+        fallback_info_pointer = _Chafa.chafa_term_db_get_fallback_info(self._term_db)
 
         # Init fallback info
         fallback_info = TermInfo()
@@ -1674,14 +1668,14 @@ class TermDb():
         """
 
         # Argtypes
-        self._chafa.chafa_term_db_copy.argtypes = [
+        _Chafa.chafa_term_db_copy.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_term_db_copy.restype = ctypes.c_void_p
+        _Chafa.chafa_term_db_copy.restype = ctypes.c_void_p
 
         # Grab new pointer
-        new_pointer = self._chafa.chafa_term_db_copy(self._term_db)
+        new_pointer = _Chafa.chafa_term_db_copy(self._term_db)
 
         # Init new term_db
         term_db = TermDb()
@@ -1692,13 +1686,10 @@ class TermDb():
 
 class TermInfo():
     def __init__(self):
-        # Init chafa
-        self._chafa = ctypes.CDLL("libchafa.so")
-
         # Init term_info
-        self._chafa.chafa_term_info_new.restype = ctypes.c_void_p
+        _Chafa.chafa_term_info_new.restype = ctypes.c_void_p
 
-        self._term_info = self._chafa.chafa_term_info_new()
+        self._term_info = _Chafa.chafa_term_info_new()
 
 
     @dataclass
@@ -1713,14 +1704,14 @@ class TermInfo():
         """
 
         # Argtypes
-        self._chafa.chafa_term_info_copy.argtypes = [
+        _Chafa.chafa_term_info_copy.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_term_info_copy.restype = ctypes.c_void_p
+        _Chafa.chafa_term_info_copy.restype = ctypes.c_void_p
 
         # Grab new pointer
-        new_pointer = self._chafa.chafa_term_info_copy(self._term_info)
+        new_pointer = _Chafa.chafa_term_info_copy(self._term_info)
 
         # Init new term_info
         term_info = TermInfo()
@@ -1745,12 +1736,12 @@ class TermInfo():
             Wrapper for chafa_term_info_supplement
         """
 
-        self._chafa.chafa_term_info_supplement.argtypes = [
+        _Chafa.chafa_term_info_supplement.argtypes = [
             ctypes.c_void_p,
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_term_info_supplement(self._term_info, source)
+        _Chafa.chafa_term_info_supplement(self._term_info, source)
 
 
     def have_seq(self, seq: TermSeq) -> bool:
@@ -1761,15 +1752,15 @@ class TermInfo():
         seq = TermSeq(seq)
 
         # Set types
-        self._chafa.chafa_term_info_have_seq.argtypes = [
+        _Chafa.chafa_term_info_have_seq.argtypes = [
             ctypes.c_void_p, 
             ctypes.c_int
         ]
         
-        self._chafa.chafa_term_info_have_seq.restype = ctypes.c_bool
+        _Chafa.chafa_term_info_have_seq.restype = ctypes.c_bool
 
         # Check for sequence
-        return self._chafa.chafa_term_info_have_seq(self._term_info, seq)
+        return _Chafa.chafa_term_info_have_seq(self._term_info, seq)
 
 
     def detect_capabilities(self) -> TerminalCapabilities:
@@ -1835,9 +1826,6 @@ class TermInfo():
     
 class Canvas:
     def __init__(self, config: CanvasConfig, term_info: TermInfo=None):
-        # Init chafa
-        self._chafa = ctypes.CDLL("libchafa.so")
-
         # Check for term info
         if term_info is None:
             term_db = TermDb()
@@ -1851,20 +1839,20 @@ class Canvas:
 
         # Init config
         if config is None:
-            self._chafa.chafa_canvas_new.argtypes = [ctypes.c_size_t]
+            _Chafa.chafa_canvas_new.argtypes = [ctypes.c_size_t]
             config = ctypes.c_size_t(0)
 
         elif not isinstance(config, CanvasConfig):
             raise TypeError(f"config must be of type CanvasConfig or None, not {type(config)}")
 
         else:
-            self._chafa.chafa_canvas_new.argtypes = [ctypes.c_void_p]
+            _Chafa.chafa_canvas_new.argtypes = [ctypes.c_void_p]
             config = config._canvas_config
 
         # Init canvas
-        self._chafa.chafa_canvas_new.restype  =  ctypes.c_void_p
+        _Chafa.chafa_canvas_new.restype  =  ctypes.c_void_p
 
-        self._canvas = self._chafa.chafa_canvas_new(config)
+        self._canvas = _Chafa.chafa_canvas_new(config)
 
     
     def peek_config(self) -> ReadOnlyCanvasConfig:
@@ -1873,14 +1861,14 @@ class Canvas:
         """
 
         # Types
-        self._chafa.chafa_canvas_peek_config.argtypes = [
+        _Chafa.chafa_canvas_peek_config.argtypes = [
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_peek_config.restype = ctypes.c_void_p
+        _Chafa.chafa_canvas_peek_config.restype = ctypes.c_void_p
 
         # Get the new pointer
-        new_pointer = self._chafa.chafa_canvas_peek_config(self._canvas)
+        new_pointer = _Chafa.chafa_canvas_peek_config(self._canvas)
 
         # Init RO CanvasConfig
         config = ReadOnlyCanvasConfig()
@@ -2002,16 +1990,16 @@ class Canvas:
         """
 
         # Define types
-        self._chafa.chafa_canvas_get_char_at.argtypes = [
+        _Chafa.chafa_canvas_get_char_at.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int,
             ctypes.c_int
         ]
 
-        self._chafa.chafa_canvas_get_char_at.restype = ctypes.c_wchar
+        _Chafa.chafa_canvas_get_char_at.restype = ctypes.c_wchar
 
         # Get char
-        char = self._chafa.chafa_canvas_get_char_at(
+        char = _Chafa.chafa_canvas_get_char_at(
             self._canvas,
             x, y
         )
@@ -2025,7 +2013,7 @@ class Canvas:
         """
 
         # Define types
-        self._chafa.chafa_canvas_set_char_at.argtypes = [
+        _Chafa.chafa_canvas_set_char_at.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int,
             ctypes.c_int,
@@ -2033,7 +2021,7 @@ class Canvas:
         ]
 
         # Set char
-        self._chafa.chafa_canvas_set_char_at(
+        _Chafa.chafa_canvas_set_char_at(
             self._canvas,
             x, y,
             char
@@ -2046,7 +2034,7 @@ class Canvas:
         """
 
         # Set types
-        self._chafa.chafa_canvas_get_colors_at.argtypes = [
+        _Chafa.chafa_canvas_get_colors_at.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int,
             ctypes.c_int,
@@ -2059,7 +2047,7 @@ class Canvas:
         fg_color = ctypes.pointer(ctypes.c_int(0))
 
         # Get colors
-        self._chafa.chafa_canvas_get_colors_at(
+        _Chafa.chafa_canvas_get_colors_at(
             self._canvas,
             x, y,
             fg_color,
@@ -2075,7 +2063,7 @@ class Canvas:
         """
 
         # Set types
-        self._chafa.chafa_canvas_set_colors_at.argtypes = [
+        _Chafa.chafa_canvas_set_colors_at.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int,
             ctypes.c_int,
@@ -2084,7 +2072,7 @@ class Canvas:
         ]
 
         # Set colors
-        self._chafa.chafa_canvas_set_colors_at(
+        _Chafa.chafa_canvas_set_colors_at(
             self._canvas,
             x, y,
             fg,
@@ -2126,7 +2114,7 @@ class Canvas:
             raise ValueError("src_rowstride must be greater than 0")
         
         # Specify types
-        self._chafa.chafa_canvas_draw_all_pixels.argtypes = [
+        _Chafa.chafa_canvas_draw_all_pixels.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint,
             ctypes.POINTER(ctypes.c_uint8),
@@ -2136,7 +2124,7 @@ class Canvas:
         ]
 
         # Draw pixels
-        self._chafa.chafa_canvas_draw_all_pixels(
+        _Chafa.chafa_canvas_draw_all_pixels(
             self._canvas,
             src_pixel_type,
             src_pixels,
@@ -2156,14 +2144,14 @@ class Canvas:
                         ('len',           ctypes.c_uint),
                         ('allocated_len', ctypes.c_uint)]
 
-        self._chafa.chafa_canvas_print.argtypes = [
+        _Chafa.chafa_canvas_print.argtypes = [
             ctypes.c_void_p, 
             ctypes.c_void_p
         ]
 
-        self._chafa.chafa_canvas_print.restype  = ctypes.c_void_p
+        _Chafa.chafa_canvas_print.restype  = ctypes.c_void_p
 
-        output = self._chafa.chafa_canvas_print(self._canvas, self._term_info._term_info)
+        output = _Chafa.chafa_canvas_print(self._canvas, self._term_info._term_info)
         output = GString.from_address(output)
 
         return output.str
