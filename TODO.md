@@ -11,7 +11,7 @@
     - [x] mode
     - [x] intensity
 - [x] optimizations
-- [ ] **DOCS**
+- [x] **DOCS**
 
 # Canvas
 
@@ -42,13 +42,13 @@
 - [ ] allow builtin glyphs
 - [ ] get glyph
 - [ ] add glyph
-- [ ] **DOCS**
+- [x] **DOCS**
 
 # TermDb
 
 - [x] copy
 - [x] fallback info
-- [ ] **DOCS**
+- [x] **DOCS**
 
 # TermInfo
 
@@ -58,9 +58,18 @@
     - [ ] set
 - [x] supplement
 - [ ] **emitters!!!**
-- [ ] **DOCS**
+- [x] **DOCS**
 
 # Misc
 - [x] Properly figure out how the loader should work (pretty happy with it for now but could be faster)
 - [x] Error handling (I think this is done?)
 - [ ] Splitting classes into separate files?
+
+# Docs
+- [ ] Add remaining enums
+  - [ ] Dither mode
+  - [ ] Pixel Type
+
+- [ ] Write a tutorial
+- [ ] Add some examples
+- [ ] Installation
