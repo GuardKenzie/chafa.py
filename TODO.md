@@ -15,13 +15,13 @@
 
 # Canvas
 
-- [ ] copy
+- [ ] new_similar
 - [x] Peeking at config
 - [x] inspect characters at (x, y)
 - [x] inspect color at (x, y)
 - [ ] raw color
 - [ ] **DOCS**
-- [ ] What argument type should `draw_pixels` accept for the pixel array?
+- [x] What argument type should `draw_pixels` accept for the pixel array? <- This is pretty much done
     1. array (pretty fast)
     2. python list and convert to array (slower than array)
     3. Look into `from_buffer` for use with pyvips (faster than array)
@@ -61,6 +61,6 @@
 - [ ] **DOCS**
 
 # Misc
-- [ ] Properly figure out how the loader should work
+- [x] Properly figure out how the loader should work (pretty happy with it for now but could be faster)
 - [x] Error handling (I think this is done?)
 - [ ] Splitting classes into separate files?
