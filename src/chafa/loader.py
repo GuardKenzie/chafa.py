@@ -35,13 +35,14 @@ _lib = _get_library_name()
 if _lib is None:
     raise ImportError("MagickWand library not found.")
 
+_MagickWand = ctypes.CDLL(_lib)
+
 class Loader:
 
     def __init__(self, path: str):
-        self._wand = ctypes.CDLL(_lib)
         
         # check if path exists
-        path = Path(path).expanduser().resolve()
+        path = Path(path).resolve()
 
         if not path.exists():
             raise FileNotFoundError()
@@ -50,27 +51,27 @@ class Loader:
 
         # === Argtypes ===
 
-        self._wand.PixelSetColor.argtypes = [
+        _MagickWand.PixelSetColor.argtypes = [
             ctypes.c_void_p,
             ctypes.c_char_p
         ]
 
-        self._wand.MagickSetBackgroundColor.argtypes = [
+        _MagickWand.MagickSetBackgroundColor.argtypes = [
             ctypes.c_void_p,
             ctypes.c_void_p
         ]
 
-        self._wand.MagickReadImage.argtypes = [
+        _MagickWand.MagickReadImage.argtypes = [
             ctypes.c_void_p,
             ctypes.c_char_p
         ]
 
-        self._wand.DestroyPixelWand.argtypes = [ctypes.c_void_p]
+        _MagickWand.DestroyPixelWand.argtypes = [ctypes.c_void_p]
 
-        self._wand.MagickGetImageWidth. argtypes = [ctypes.c_void_p]
-        self._wand.MagickGetImageHeight.argtypes = [ctypes.c_void_p]
+        _MagickWand.MagickGetImageWidth. argtypes = [ctypes.c_void_p]
+        _MagickWand.MagickGetImageHeight.argtypes = [ctypes.c_void_p]
 
-        self._wand.MagickExportImagePixels.argtypes = [
+        _MagickWand.MagickExportImagePixels.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int,
             ctypes.c_int,
@@ -84,11 +85,11 @@ class Loader:
 
         # === Restypes ===
 
-        self._wand.NewMagickWand.restype = ctypes.c_void_p
-        self._wand.NewPixelWand.restype  = ctypes.c_void_p
+        _MagickWand.NewMagickWand.restype = ctypes.c_void_p
+        _MagickWand.NewPixelWand.restype  = ctypes.c_void_p
 
-        self._wand.MagickGetImageWidth. restype = ctypes.c_int;
-        self._wand.MagickGetImageHeight.restype = ctypes.c_int;
+        _MagickWand.MagickGetImageWidth. restype = ctypes.c_int;
+        _MagickWand.MagickGetImageHeight.restype = ctypes.c_int;
 
         # === Load necessary image information ===
 
@@ -96,27 +97,18 @@ class Loader:
         CharPixel = 1
 
         # Init wand
-        self._wand.MagickWandGenesis()
+        _MagickWand.MagickWandGenesis()
 
-        # Do background color magicks
-        magick_wand = self._wand.NewMagickWand()
-        color       = self._wand.NewPixelWand()
-
-        s = ctypes.c_char_p(bytes("none", "utf8"))
-
-        self._wand.PixelSetColor(color, s)
-        self._wand.MagickSetBackgroundColor(magick_wand, color)
-
-        self._wand.DestroyPixelWand(color)
-
+        magick_wand = _MagickWand.NewMagickWand()
+        
         # Grab image
         image_path = ctypes.c_char_p(bytes(self.path, "utf8"))
 
-        self._wand.MagickReadImage(magick_wand, image_path)
+        _MagickWand.MagickReadImage(magick_wand, image_path)
 
         # Get image information
-        width  = self._wand.MagickGetImageWidth (magick_wand)
-        height = self._wand.MagickGetImageHeight(magick_wand)
+        width  = _MagickWand.MagickGetImageWidth (magick_wand)
+        height = _MagickWand.MagickGetImageHeight(magick_wand)
 
         # We will have 4 channels because we are outputting RGBA
         rowstride = width * 4
@@ -124,7 +116,7 @@ class Loader:
         # Get pixels
         pixels = (ctypes.c_uint8 * (height * rowstride))()
 
-        self._wand.MagickExportImagePixels(
+        _MagickWand.MagickExportImagePixels(
             magick_wand,
             0, 0,
             width, height,
