@@ -56,7 +56,7 @@ Here is `the example program`_ from the Chafa C API docs written in chafa.py::
       pixels,
       PIX_WIDTH,
       PIX_HEIGHT,
-      N_CHANNELS
+      N_CHANNELS * PIX_WIDTH
    )
 
    output = canvas.print().decode()
