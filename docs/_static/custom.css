@@ -31,8 +31,6 @@
     --links: var(--peach);
 }
 
-
-
 .break-block {
     display: inline-block;
 }
@@ -44,6 +42,10 @@ div.body h1.blocked-header {
 
 dl.py {
     margin-bottom: 1.5em;
+}
+
+dl.py.class {
+    padding: 2em 0em;
 }
 
 div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
@@ -213,6 +215,7 @@ div.note {
 
 .class_contents th {
     padding-bottom: 1em;
+    padding-top:    1em;
 }
 
 th span.properties {
@@ -235,8 +238,8 @@ th span.methods {
 
 .class_contents {
     border-collapse: collapse;
-    margin: 1em;
-    margin-left: 2em;
+    margin-bottom: 2em;
+    margin-top: 1em;
     width: 100%;
 }
 

@@ -244,7 +244,9 @@ class ReadOnlySymbolMap():
     
     def copy(self) -> 'SymbolMap':
         """
-        Wrapper for chafa_symbol_map_copy
+        Returns a new :py:class:`SymbolMap` that's a copy of this one.
+
+        :rtype: SymbolMap
         """
 
         # Argtypes
@@ -268,7 +270,9 @@ class ReadOnlySymbolMap():
 class SymbolMap(ReadOnlySymbolMap):
     def add_by_tags(self, tags: SymbolTags):
         """
-            wrapper for chafa_symbol_map_add_by_tags
+        Adds symbols matching the set of tags to the symbol map.
+
+        :param SymbolTags tags: The set of tags to add to the map.
         """
 
         # Set types
@@ -282,7 +286,9 @@ class SymbolMap(ReadOnlySymbolMap):
     
     def remove_by_tags(self, tags: SymbolTags):
         """
-        wrapper for chafa_symbol_map_remove_by_tags
+        Removes symbols matching the set of tags from the symbol map.
+
+        :param SymbolTags tags: The set of tags to remove from the map.
         """
 
         # If we did not get passed a SymbolTags
@@ -302,7 +308,15 @@ class SymbolMap(ReadOnlySymbolMap):
     
     def add_by_range(self, first: str, last: str):
         """
-        Wrapper for chafa_symbol_map_add_by_range
+        Adds symbols in the code point range starting with the character first and ending with the character last to the symbol map.
+
+        For example, if first is given as ``a`` and last is given as ``f``, all characters ``a, b, c, d, e, f`` will be added to the map.
+
+        :param str first: First code point to add, inclusive.
+        :param str last: Last code point to add, inclusive.
+
+        :raises TypeError: if first or last are not of type str.
+        :raises ValueError: if first or last have length other than 1.
         """
 
         # Check types
@@ -336,7 +350,13 @@ class SymbolMap(ReadOnlySymbolMap):
 
     def remove_by_range(self, first: str, last: str):
         """
-        Wrapper for chafa_symbol_map_remove_by_range
+        Removes symbols in the code point range starting with the character first and ending with the character last from the symbol map.
+
+        :param str first: First code point to remove, inclusive.
+        :param str last: Last code point to remove, inclusive.
+
+        :raises TypeError: if first or last are not of type str.
+        :raises ValueError: if first or last have length other than 1.
         """
 
         # Check types
@@ -370,7 +390,34 @@ class SymbolMap(ReadOnlySymbolMap):
     
     def apply_selectors(self, selectors: str):
         """
-        Wrapper for chafa_symbol_map_apply_selectors
+        Parses a string consisting of symbol tags separated by ``+-,`` and applies the pattern to the symbol map. If the string begins with ``+`` or ``-``, it's understood to be relative to the current set in the symbol map, otherwise the map is cleared first.
+
+        The symbol tags are string versions of :py:class:`SymbolTags`, i.e.
+
+        ================================================  ===========
+        :py:class:`SymbolTags`                            String
+        ================================================  ===========
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_ALL`        all
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_NONE`       none
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_SPACE`      space
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_SOLID`      solid
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_STIPPLE`    stipple
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_BLOCK`      block
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_BORDER`     border
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_DIAGONAL`   diagonal
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_DOT`        dot
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_QUAD`       quad
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_HALF`       half
+        :py:meth:`SymbolTags.CHAFA_SYMBOL_TAG_EXTRA`      extra
+        ================================================  ===========
+
+        other :py:class:`SymbolTags` follow the same format and are supported.
+
+        For example: ``block,border`` sets map to contain symbols matching either of those tags. ``+block,border-dot,stipple`` adds block and border symbols then removes dot and stipple symbols.
+
+        :param str selectors: The string of selectors to apply.
+
+        :raises ValueError: if the selectors string is invalid.
         """
 
         # Check type
@@ -467,7 +514,8 @@ class ReadOnlyCanvasConfig:
 
         The config's stored :py:class:`ColorExtractor`. 
         This determines how colours are approximated in 
-        character symbol output.
+        character symbol output. e.g. 
+        :py:attr:`PixelMode.CHAFA_PIXEL_MODE_SYMBOLS`.
         """
         return self._get_color_extractor()
 
@@ -549,6 +597,11 @@ class ReadOnlyCanvasConfig:
 
     @property
     def dither_mode(self) -> DitherMode:
+        """
+        :type: DitherMode
+
+        The config's stored :py:class:`DitherMode`.
+        """
         return self._get_dither_mode()
 
 
@@ -556,15 +609,22 @@ class ReadOnlyCanvasConfig:
 
     @property
     def dither_intensity(self) -> float:
+        """
+        :type: float
+
+        Returns the relative intensity of the dithering 
+        pattern applied during image conversion. 1.0 
+        is the default, corresponding to a moderate intensity.
+        """
         return self._get_dither_intensity()
 
 
     # === optimizations ===
 
     @property
-    def optimizations(self) -> Tuple:
+    def optimizations(self) -> Tuple[Optimizations, ...]:
         """
-        :type: Tuple 
+        :type: Tuple[Optimizations, ...] 
 
         Returns config's optimization flags.
         When enabled, these may produce more 
@@ -627,6 +687,11 @@ class ReadOnlyCanvasConfig:
 
     @property
     def transparency_threshold(self) -> float:
+        """
+        :type: float
+
+        The threshold above which full transparency will be used.
+        """
         return self._get_transparency_threshold()
 
 
@@ -634,6 +699,13 @@ class ReadOnlyCanvasConfig:
 
     @property
     def work_factor(self) -> float:
+        """
+        :type: float
+
+        Gets the work/quality tradeoff factor. A higher 
+        value means more time and memory will be spent 
+        towards a higher quality output.
+        """
         return self._get_work_factor()
 
     
@@ -641,6 +713,21 @@ class ReadOnlyCanvasConfig:
 
     @property
     def fg_only(self) -> bool:
+        """
+        :type: bool
+
+        Queries whether to use foreground colors only, 
+        leaving the background unmodified in the canvas 
+        output.
+
+        When this is set, the canvas will emit escape codes 
+        to set the foreground color only.
+        
+        .. note::
+
+            This is relevant only when the :py:attr:`pixel_mode` 
+            is set to :py:attr:`PixelMode.CHAFA_PIXEL_MODE_SYMBOLS`.
+        """
         return self._get_fg_only_enabled()
 
 
@@ -648,6 +735,16 @@ class ReadOnlyCanvasConfig:
 
     @property
     def fg_color(self) -> Tuple[int, int, int]:
+        """
+        :type: Tuple[int, int, int]
+
+        The assumed foreground color of the output device. This 
+        is used to determine how to apply the foreground pen in 
+        FGBG modes like :py:attr:`CanvasMode.CHAFA_CANVAS_MODE_FGBG`.
+
+        The color is a tuple containing 3 integers in range [0,255] 
+        corresponding to red, green and blue respectively.
+        """
         # Get the color
         color = self._get_fg_color()
 
@@ -662,6 +759,16 @@ class ReadOnlyCanvasConfig:
     
     @property
     def bg_color(self) -> Tuple[int, int, int]:
+        """
+        :type: Tuple[int, int, int]
+
+        The assumed foreground color of the output device. This 
+        is used to determine how to apply the foreground pen in 
+        FGBG modes like :py:attr:`CanvasMode.CHAFA_CANVAS_MODE_FGBG`.
+
+        The color is a tuple containing 3 integers in range [0,255] 
+        corresponding to red, green and blue respectively.
+        """
         # Get the color
         color = self._get_bg_color()
 
@@ -676,9 +783,11 @@ class ReadOnlyCanvasConfig:
 
     def get_geometry(self) -> Tuple[int, int]:
         """
-        Get the config's canvas geometry.
+        Get the config's canvas geometry in character cells. 
+        This is the same as inspecting :py:attr:`width` 
+        and :py:attr:`height`
 
-        :rtype: Tuple[int, int] of width and height.
+        :rtype: typing.Tuple[int, int] of width and height.
         """
 
         # Init pointers
@@ -702,7 +811,7 @@ class ReadOnlyCanvasConfig:
 
     def _get_fg_only_enabled(self) -> bool:
         """
-            Wrapper for chafa_canvas_config_get_fg_only_enabled
+        Wrapper for chafa_canvas_config_get_fg_only_enabled
         """
 
         # Set types
@@ -720,7 +829,7 @@ class ReadOnlyCanvasConfig:
 
     def _get_fg_color(self) -> int:
         """
-            Wrapper for chafa_canvas_config_get_fg_color
+        Wrapper for chafa_canvas_config_get_fg_color
         """
 
         # Set types
@@ -740,7 +849,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_bg_color(self) -> int:
         """
-            Wrapper for chafa_canvas_config_get_bg_color
+        Wrapper for chafa_canvas_config_get_bg_color
         """
 
         # Set types
@@ -760,7 +869,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_transparency_threshold(self) -> float:
         """
-            Wrapper for chafa_canvas_config_get_transparency_threshold
+        Wrapper for chafa_canvas_config_get_transparency_threshold
         """
 
         # Set types
@@ -778,7 +887,7 @@ class ReadOnlyCanvasConfig:
 
     def _get_work_factor(self) -> float:
         """
-            Wrapper for chafa_canvas_config_get_work_factor
+        Wrapper for chafa_canvas_config_get_work_factor
         """
 
         # Set types
@@ -796,7 +905,7 @@ class ReadOnlyCanvasConfig:
 
     def _get_pixel_mode(self) -> PixelMode:
         """
-            Wrapper for chafa_canvas_config_get_pixel_mode
+        Wrapper for chafa_canvas_config_get_pixel_mode
         """
 
         # Set types
@@ -811,7 +920,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_dither_grain_size(self) -> Tuple[int, int]:
         """
-            Wrapper for chafa_canvas_config_get_dither_grain_size
+        Wrapper for chafa_canvas_config_get_dither_grain_size
         """
 
         # Specify types
@@ -832,7 +941,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_cell_geometry(self) -> Tuple[int, int]:
         """
-            Wrapper for chafa_canvas_config_get_dither_grain_size
+        Wrapper for chafa_canvas_config_get_dither_grain_size
         """
 
         # Specify types
@@ -853,7 +962,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_dither_mode(self) -> DitherMode:
         """
-            Wrapper for chafa_canvas_config_get_cnavas_mode
+        Wrapper for chafa_canvas_config_get_cnavas_mode
         """
 
         # Specify types
@@ -868,7 +977,7 @@ class ReadOnlyCanvasConfig:
 
     def _get_dither_intensity(self) -> float:
         """
-            Wrapper for chafa_canvas_config_get_dither_intensity
+        Wrapper for chafa_canvas_config_get_dither_intensity
         """
 
         # Specify types
@@ -886,7 +995,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_canvas_mode(self) -> CanvasMode:
         """
-            Wrapper for chafa_canvas_config_get_cnavas_mode
+        Wrapper for chafa_canvas_config_get_cnavas_mode
         """
 
         # Specify types
@@ -901,7 +1010,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_color_extractor(self) -> ColorExtractor:
         """
-            Wrapper for chafa_canvas_config_get_color_extractor
+        Wrapper for chafa_canvas_config_get_color_extractor
         """
 
         # Set types
@@ -916,7 +1025,7 @@ class ReadOnlyCanvasConfig:
     
     def _get_color_space(self) -> ColorSpace:
         """
-            Wrapper for chafa_canvas_config_get_color_space
+        Wrapper for chafa_canvas_config_get_color_space
         """
 
         # Set types
@@ -931,7 +1040,7 @@ class ReadOnlyCanvasConfig:
 
     def _get_preprocessing_enabled(self) -> bool:
         """
-            Wrapper for chafa_canvas_config_get_preprocessing_enabled
+        Wrapper for chafa_canvas_config_get_preprocessing_enabled
         """
 
         # Set types
@@ -946,7 +1055,7 @@ class ReadOnlyCanvasConfig:
 
     def _get_optimizations(self) -> int:
         """
-            Wrapper for chafa_canvas_config_get_optimizations
+        Wrapper for chafa_canvas_config_get_optimizations
         """
 
         # Specify types
@@ -1302,7 +1411,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_geometry(self, width: int, height: int):
         """
-            Wrapper for chafa_canvas_config_set_geometry
+        Wrapper for chafa_canvas_config_set_geometry
         """
 
         _Chafa.chafa_canvas_config_set_geometry.argtypes = [
@@ -1320,7 +1429,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_fg_only_enabled(self, fg_only: bool):
         """
-            Wrapper for chafa_canvas_config_set_fg_only_enabled
+        Wrapper for chafa_canvas_config_set_fg_only_enabled
         """
 
         # Set types
@@ -1338,7 +1447,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_fg_color(self, fg_color: int):
         """
-            Wrapper for chafa_canvas_config_set_fg_color
+        Wrapper for chafa_canvas_config_set_fg_color
         """
 
         # Set types
@@ -1356,7 +1465,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_bg_color(self, bg_color: int):
         """
-            Wrapper for chafa_canvas_config_set_bg_color
+        Wrapper for chafa_canvas_config_set_bg_color
         """
 
         # Set types
@@ -1374,7 +1483,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_transparency_threshold(self, threshold: float):
         """
-            Wrapper for chafa_canvas_config_set_transparency_threshold
+        Wrapper for chafa_canvas_config_set_transparency_threshold
         """
 
         # Set types
@@ -1392,7 +1501,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_work_factor(self, factor: float):
         """
-            Wrapper for chafa_canvas_config_set_work_factor
+        Wrapper for chafa_canvas_config_set_work_factor
         """
 
         # Set types
@@ -1410,7 +1519,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     def _set_pixel_mode(self, mode: PixelMode):
         """
-            Wrapper for chafa_canvas_config_set_pixel_mode
+        Wrapper for chafa_canvas_config_set_pixel_mode
         """
 
         # Specify types
@@ -1424,7 +1533,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_dither_grain_size(self, width: int, height: int):
         """
-            Wrapper for chafa_canvas_config_set_dither_grain_size
+        Wrapper for chafa_canvas_config_set_dither_grain_size
         """
 
         # Specify types
@@ -1440,7 +1549,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_cell_geometry(self, width: int, height: int):
         """
-            Wrapper for chafa_canvas_config_set_cell_geometry
+        Wrapper for chafa_canvas_config_set_cell_geometry
         """
 
         # Specify types
@@ -1502,7 +1611,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     def _set_color_extractor(self, extractor: ColorExtractor):
         """
-            Wrapper for chafa_canvas_config_set_color_extractor
+        Wrapper for chafa_canvas_config_set_color_extractor
         """
 
         # Specify types
@@ -1516,7 +1625,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     def _set_color_space(self, space: ColorSpace):
         """
-            Wrapper for chafa_canvas_config_set_color_space
+        Wrapper for chafa_canvas_config_set_color_space
         """
 
         # Specify types
@@ -1530,7 +1639,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
     
     def _set_preprocessing_enabled(self, preproc: bool):
         """
-            Wrapper for chafa_canvas_config_set_preprocessing_enabled
+        Wrapper for chafa_canvas_config_set_preprocessing_enabled
         """
 
         # Specify types
@@ -1544,7 +1653,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def _set_optimizations(self, optimizations: int):
         """
-            Wrapper for chafa_canvas_config_set_optimizations
+        Wrapper for chafa_canvas_config_set_optimizations
         """
 
         # Specify types
@@ -1562,9 +1671,9 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def set_symbol_map(self, symbol_map: SymbolMap):
         """
-            Assigns a copy of symbol_map to config.
+        Assigns a copy of symbol_map to config.
 
-            :param SymbolMap symbol_map: The symbol_map.
+        :param SymbolMap symbol_map: The symbol_map.
         """
         
         if not isinstance(symbol_map, SymbolMap):
@@ -1581,11 +1690,12 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
     def set_fill_symbol_map(self, fill_symbol_map: SymbolMap):
         """
-            Assigns a copy of fill_symbol_map to config.
+        Assigns a copy of fill_symbol_map to config.
 
-            Fill symbols are assigned according to their overall foreground to background coverage, disregarding shape. ???
+        Fill symbols are assigned according to their overall 
+        foreground to background coverage, disregarding shape. ???
 
-            :param SymbolMap fill_symbol_map: The fill symbol map.
+        :param SymbolMap fill_symbol_map: The fill symbol map.
         """
 
         if not isinstance(fill_symbol_map, SymbolMap):
@@ -1613,6 +1723,13 @@ class TermDb():
             self._term_db = _Chafa.chafa_term_db_get_default()
 
     def detect(self):
+        """
+        :rtype: TermInfo
+
+        Builds a new :py:class:`TermInfo` with capabilities implied by 
+        the system environment variables (principally the ``TERM`` 
+        variable, but also others).
+        """
         # Init glib
         glib = ctypes.CDLL("libglib-2.0.so")
         glib.g_get_environ.restype = ctypes.c_void_p
@@ -1639,10 +1756,12 @@ class TermDb():
 
     def get_fallback_info(self) -> 'TermInfo':
         """
-        Builds a new ChafaTermInfo with fallback control 
-        sequences. This can be used with unknown but 
-        presumably modern terminals, or to supplement 
-        missing capabilities in a detected terminal.
+        :rtype: TermInfo
+
+        Builds a new :py:class:`TermInfo` with fallback control 
+        sequences. This can be used with unknown but presumably 
+        modern terminals, or to supplement missing capabilities 
+        in a detected terminal.
         """
 
         # Define types
@@ -1664,7 +1783,9 @@ class TermDb():
 
     def copy(self) -> 'TermDb':
         """
-        Wrapper for chafa_term_db_copy
+        :rtype: TermDb
+
+        Returns a new :py:class:`TermDb` which is a copy of this one.
         """
 
         # Argtypes
@@ -1700,7 +1821,9 @@ class TermInfo():
 
     def copy(self) -> 'TermInfo':
         """
-        Wrapper for chafa_term_info_copy
+        Returns a new :py:class:`TermInfo` that is a copy of this one.
+
+        :rtype: TermInfo
         """
 
         # Argtypes
@@ -1722,7 +1845,11 @@ class TermInfo():
     
     def supplement(self, source: 'TermInfo'):
         """
-        Supplements missing sequences in term_info with ones copied from source.
+        Supplements missing sequences in this 
+        :py:class:`TermInfo` with ones copied 
+        from source.
+
+        :param TermInfo source: The :py:class:`TermInfo` to copy sequences from.
         """
 
         if not isinstance(source, TermInfo):
@@ -1733,7 +1860,7 @@ class TermInfo():
 
     def _supplement(self, source: ctypes.c_void_p):
         """
-            Wrapper for chafa_term_info_supplement
+        Wrapper for chafa_term_info_supplement
         """
 
         _Chafa.chafa_term_info_supplement.argtypes = [
@@ -1746,7 +1873,11 @@ class TermInfo():
 
     def have_seq(self, seq: TermSeq) -> bool:
         """
-            Wrapper for chafa_term_info_have_seq
+        Checks if :py:class:`TermInfo` can emit seq.
+        
+        :param TermSeq seq: A :py:class:`TermSeq` to query for.
+
+        :rtype: bool
         """
 
         seq = TermSeq(seq)
@@ -2082,7 +2213,7 @@ class Canvas:
     def draw_all_pixels(self, src_pixel_type: PixelType, src_pixels: Union[list, Tuple, array.ArrayType, ctypes.Array], src_width: int, src_height: int, src_rowstride: int):
         # TODO Errors
         """
-            Wrapper for chafa_canvas_draw_all_pixels
+        Wrapper for chafa_canvas_draw_all_pixels
         """
 
         # Convert src_pixels to appropriate format
@@ -2136,7 +2267,7 @@ class Canvas:
 
     def print(self):
         """
-            Wrapper for chafa_canvas_print
+        Wrapper for chafa_canvas_print
         """
 
         class GString(ctypes.Structure):

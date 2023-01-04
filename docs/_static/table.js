@@ -174,6 +174,20 @@ window.addEventListener("load", () => {
             table.appendChild(tr)
         }
 
-        parent.insertBefore(table, c)
+
+        // Figure out where to put the table
+        const class_contents = c.children[1].children;
+        var before_element;
+        var i = 0;
+
+        while (i < class_contents.length) {
+            before_element = class_contents[i]
+
+            if (before_element.classList.contains("py")) break;
+
+            i++;
+        }
+
+        c.children[1].insertBefore(table, before_element)
     }
 })
