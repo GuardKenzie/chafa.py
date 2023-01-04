@@ -7,6 +7,8 @@ import pyvips
 
 FILE = "../examples/snake.jpg"
 
+MAX_RUNS = 1
+
 config = CanvasConfig()
 
 # Init the symbol map and add to config
@@ -20,9 +22,10 @@ canvas_vips = Canvas(config)
 canvas_wand = Canvas(config)
 canvas_loader = Canvas(config)
 
+
 @profile
 def chafa_pil():
-    for _ in range(10):
+    for _ in range(MAX_RUNS):
         # Open image with PIL
         image = pImage.open(FILE)
 
@@ -43,9 +46,10 @@ def chafa_pil():
             width * bands
         )
 
+
 @profile
 def chafa_vips():
-    for _ in range(10):
+    for _ in range(MAX_RUNS):
         # Open image with vips
         image = pyvips.Image.new_from_file(FILE)
 
@@ -62,9 +66,10 @@ def chafa_vips():
             width * bands
         )
 
+
 @profile
 def chafa_loader():
-    for _ in range(10):
+    for _ in range(MAX_RUNS):
         # Open image with vips
         image = Loader(FILE)
 
@@ -81,9 +86,10 @@ def chafa_loader():
             rowstride
         )
 
+
 @profile
 def chafa_wand():
-    for _ in range(10):
+    for _ in range(MAX_RUNS):
         # Open image with wand
         with wImage(filename=FILE) as image:
 
@@ -102,7 +108,7 @@ def chafa_wand():
             width * bands
         )
 
-chafa_wand()
 chafa_loader()
+chafa_wand()
 chafa_pil()
 chafa_vips()
