@@ -70,6 +70,8 @@
   - [ ] Dither mode
   - [ ] Pixel Type
 
+- [ ] Docs for the loader
+
 - [ ] Write a tutorial
 - [ ] Add some examples
 - [ ] Installation
