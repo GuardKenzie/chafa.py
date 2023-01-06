@@ -81,6 +81,96 @@ An enumerator for pixel modes. This determines how pixel graphics are rendered i
         Last supported pixel mode plus one.
 
 
+Pixel Type
+__________
+An enumerator for pixel types. These represent pixel formats supported by :py:class`ChafaCanvas` 
+
+.. py:class:: PixelType
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_PIXEL_RGBA8_PREMULTIPLIED
+        
+        Premultiplied RGBA, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_BGRA8_PREMULTIPLIED
+        
+        Premultiplied BGRA, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_ARGB8_PREMULTIPLIED
+        
+        Premultiplied ARGB, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_ABGR8_PREMULTIPLIED
+        
+        Premultiplied ABGR, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_RGBA8_UNASSOCIATED
+        
+        Unassociated RGBA, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_BGRA8_UNASSOCIATED
+        
+        Unassociated BGRA, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_ARGB8_UNASSOCIATED
+        
+        Unassociated ARGB, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_ABGR8_UNASSOCIATED
+        
+        Unassociated ABGR, 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_RGB8
+        
+        Packed RGB (no alpha), 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_BGR8
+        
+        Packed BGR (no alpha), 8 bits per channel.
+
+
+    .. py:attribute:: CHAFA_PIXEL_MAX
+	
+        Last supported pixel type, plus one.
+
+Dither Mode
+___________
+
+An enumerator for dither modes. This determines how dithering will be applied to the canvas when drawing.
+
+.. py:class:: DitherMode
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_DITHER_MODE_NONE
+        
+        No dithering.
+
+
+    .. py:attribute:: CHAFA_DITHER_MODE_ORDERED
+        
+        Ordered dithering (Bayer or similar).
+
+
+    .. py:attribute:: CHAFA_DITHER_MODE_DIFFUSION
+        
+        Error diffusion dithering (Floyd-Steinberg or similar).
+
+
+    .. py:attribute:: CHAFA_DITHER_MODE_MAX
+        
+        Last supported dither mode plus one.
+
 Color Extractor
 _______________
 
