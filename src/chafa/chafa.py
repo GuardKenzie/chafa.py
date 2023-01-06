@@ -1896,8 +1896,8 @@ class TermInfo():
 
     def detect_capabilities(self) -> TerminalCapabilities:
         """
-            A function that tries to detect the capabilities of the
-            terminal and return the appropriate canvas and pixel modes
+        A function that tries to detect the capabilities of the
+        terminal and return the appropriate canvas and pixel modes
         """
         # === Canvas mode ===
 
@@ -1957,6 +1957,18 @@ class TermInfo():
     
 class Canvas:
     def __init__(self, config: CanvasConfig, term_info: TermInfo=None):
+        """
+        :param CanvasConfig|None config: The config to initialise the 
+        canvas with. If None is passed, the canvas will be initialised 
+        with hard-coded defaults.
+
+        :param TermInfo term_info: The :py:class:`TermInfo` that will 
+        be used when printing. If None is specified, the term_info will 
+        be initialised with :py:meth:`TermDb.detect`
+
+        :raises TypeError: If term_info is not None or :py:class:`TermInfo`
+        :raises TypeError: If config is not None or :py:class:`CanvasConfig`
+        """
         # Check for term info
         if term_info is None:
             term_db = TermDb()
@@ -1986,9 +1998,42 @@ class Canvas:
         self._canvas = _Chafa.chafa_canvas_new(config)
 
     
+    def new_similar(self) -> 'Canvas':
+        """
+        Creates a new canvas configured similarly to this one.
+        """
+
+        raise NotImplementedError
+
+        # types
+        _Chafa.chafa_canvas_new_similar.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_canvas_new_similar.restype = ctypes.c_void_p
+
+        # Get new pointer
+        new_pointer = _Chafa.chafa_canvas_new_similar(self._canvas)
+
+        # Init canvas
+        new_canvas = Canvas()
+
+        new_canvas._term_info = self._term_info.copy()
+        new_canvas._canvas    = new_pointer
+
+        return new_canvas
+
+
     def peek_config(self) -> ReadOnlyCanvasConfig:
         """
-        Wrapper for chafa_canvas_peek_config
+        Returns a read only version of the :py:class:`CanvasConfig` 
+        used to initialise the canvas.
+
+        .. attention:: 
+            This :py:class:`ReadOnlyCanvasConfig`'s properties can 
+            be inspected but not changed.
+
+        :rtype: ReadOnlyCanvasConfig
         """
 
         # Types
@@ -2076,6 +2121,38 @@ class Canvas:
             return
 
     def __getitem__(self, pos):
+        """
+        You can inspect pixels in the canvas by indexing, 
+        similar to if the canvas were a 2d array. When indexing, 
+        the first coordinate represents the row (or y coordinate) 
+        and the second represents the column (or x coordinate).
+
+        When indexing using a single value, a `generator`_ of 
+        relevant :py:class:`CanvasInspector` objects will be 
+        returned, representing each pixel in the given row.
+
+        When indexing using two values, a single :py:class:`CanvasInspector` 
+        will be returned representing the given pixel.
+
+        Slicing is also supported! You can slice either the row or 
+        column coordinates and this will return generators as 
+        expected. For example; if you index using ``[:,3]`` you will 
+        get a generator for each pixel in the 3rd column of the 
+        canvas (0 indexed). 
+        
+        Slicing using ``[3:6,:5]`` will return generators for rows 3 to 5 
+        inclusive. Each of these rows will be represented by a generator 
+        for :py:class:`CanvasInspector` objects representing pixels 0 to 
+        4 inclusive.
+
+        The take-away from this all is that indexing and slicing should work 
+        (mostly) the same as you would expect a 2d array to work. Check out 
+        the tutorial for more details.
+
+        :param int|slice|tuple pos: The position to index
+
+        :rtype: CanvasInspector
+        """
 
         if isinstance(pos, int):
             return self[pos, :]
@@ -2210,10 +2287,50 @@ class Canvas:
             bg
         )
 
-    def draw_all_pixels(self, src_pixel_type: PixelType, src_pixels: Union[list, Tuple, array.ArrayType, ctypes.Array], src_width: int, src_height: int, src_rowstride: int):
-        # TODO Errors
+    def draw_all_pixels(
+        self, 
+        src_pixel_type: PixelType, 
+        src_pixels:     Union[list, Tuple, array.array, ctypes.Array], 
+        src_width:      int, 
+        src_height:     int, 
+        src_rowstride:  int
+    ):
         """
-        Wrapper for chafa_canvas_draw_all_pixels
+        Draws the given src_pixels to the canvas. Depending on your 
+        set :py:class:`PixelMode`, this will be symbols, kitty sequences 
+        or sixel sequences. 
+
+        To output the data after drawing, use the :py:meth:`print` method.
+
+        .. note::
+            Best performance is achieved by passing a :py:class:`ctypes.Array` 
+            for src_pixels. The :py:class:`chafa.loader.Loader` 
+            class provides convenient (and reasonably fast) 
+            methods for this using the `MagickWand 
+            <https://imagemagick.org/script/magick-wand.php>`_ 
+            C-library.
+
+        :param PixelType src_pixel_type: The pixel type of src_pixels. This 
+            will determine what order the color channels will be read in 
+            and whether there is an alpha channel.
+
+        :param list|tuple|array.array|ctypes.Array src_pixels: The 
+            source pixel data. This is a one dimensional array where 
+            every block of 3 (or 4 depending on the :py:class:`PixelType`) 
+            values represents one pixel of the image. The order of the 
+            channels is determined by src_pixel_type.
+
+        :param int src_width:  The width of the source image.
+        :param int src_height: The width of the source image.
+
+        :param int src_rowstride: The number of values in src_image that 
+            represents one line pixels in the source image. Typically this 
+            will be the number of channels in the source image multiplied 
+            by src_width, e.g. for an image with no alpha channel and a 
+            width of 300 pixels, this will be ``3*300``.
+
+        :raises ValueError: if src_width, src_height or src_rowstride 
+            are less than or equal to 0.
         """
 
         # Convert src_pixels to appropriate format
@@ -2265,9 +2382,15 @@ class Canvas:
         )
 
 
-    def print(self):
+    def print(self, term_info: TermInfo=None) -> str:
         """
-        Wrapper for chafa_canvas_print
+        Builds a UTF-8 string of terminal control sequences and symbols 
+        representing the canvas' current contents. This can e.g. be 
+        printed to a terminal. The exact choice of escape sequences and 
+        symbols, dimensions, etc. is determined by the configuration 
+        assigned to canvas on its creation.
+
+        All output lines except for the last one will end in a newline.
         """
 
         class GString(ctypes.Structure):
@@ -2312,6 +2435,24 @@ class CanvasInspector:
 
     @property
     def fg_color(self) -> Union[Tuple[int, int, int], None]:
+        """
+        :type: tuple[int, int, int] | None
+
+        The foreground color at the inspector's pixel. The color 
+        is represented as None if transparent or a tuple of 3 
+        integers in range [0,255], representing the color in 
+        (R, G, B) format.
+
+        For double-width characters, both cells will be set to the 
+        same color.
+
+        :raises TypeError:  if fg_color is not an :py:class:`Iterable` 
+            other than :py:class:`str`.
+        :raises ValueError: if fg_color is not None and does not contain 
+            exactly 3 values. 
+        :raises ValueError: if fg_color contains a value greater than 255 
+            or less than 0.
+        """
         # Get the color at pixel
         color = self._canvas._get_colors_at(self.x, self.y)[0]
 
@@ -2372,6 +2513,22 @@ class CanvasInspector:
     
     @property
     def bg_color(self) -> Union[Tuple[int, int, int], None]:
+        """
+        :type: tuple[int, int, int] | None
+
+        The background color at the inspector's pixel. The color is 
+        represented as None if transparent or a tuple of 3 integers 
+        in range [0,255], representing the color in (R, G, B) format.
+
+        For double-width characters, both cells will be set to the same color.
+
+        :raises TypeError:  if bg_color is not an :py:class:`Iterable` 
+            other than :py:class:`str`.
+        :raises ValueError: if bg_color is not None and does not 
+            contain exactly 3 values. 
+        :raises ValueError: if bg_color contains a value greater than 255 
+            or less than 0.
+        """
         # Get the color at pixel
         color = self._canvas._get_colors_at(self.x, self.y)[1]
 
@@ -2431,7 +2588,17 @@ class CanvasInspector:
     # === CHAR ===
 
     @property
-    def char(self):
+    def char(self) -> str:
+        """
+        :type: str
+
+        The character at the inspector's pixel. For double-width 
+        characters, the leftmost cell must contain the character 
+        and the cell to the right of it will automatically be set 
+        to 0.
+
+        :raises ValueError: if char is not of length 1.
+        """
         return self._canvas._get_char_at(self.x, self.y)
 
     @char.setter
@@ -2447,7 +2614,14 @@ class CanvasInspector:
     # === Coordinates ===
 
     @property
-    def x(self):
+    def x(self) -> int:
+        """
+        :type: int
+
+        The x coordinate of the inspector.
+
+        :raises ValueError: if x is not less than the height of the canvas.
+        """
         return self._x
 
     @x.setter
@@ -2464,7 +2638,14 @@ class CanvasInspector:
         self._x = value
 
     @property
-    def y(self):
+    def y(self) -> int:
+        """
+        :type: int
+
+        The y coordinate of the inspector.
+
+        :raises ValueError: if y is not less than the height of the canvas.
+        """
         return self._y
 
     @y.setter
@@ -2483,7 +2664,8 @@ class CanvasInspector:
     
     def remove_background(self):
         """
-        A function that makes background of pixel transparent
+        A function that sets the background color at the 
+        inspectors pixel to be transparent.
         """
 
         fg_color = self.fg_color
@@ -2498,7 +2680,8 @@ class CanvasInspector:
 
     def remove_foreground(self):
         """
-        A function that makes foreground of pixel transparent
+        A function that sets the foreground color at the 
+        inspectors pixel to be transparent.
         """
 
         bg_color = self.bg_color

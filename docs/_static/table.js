@@ -144,7 +144,8 @@ window.addEventListener("load", () => {
 
             // find name
             descname = method.querySelector(".descname").cloneNode(true);
-            descname.innerText += "()"
+
+            if (!descname.innerText.endsWith("]")) descname.innerText += "()"
 
             // Generate td
             td = gen_td(descname, method.id, "meth")

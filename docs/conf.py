@@ -21,7 +21,8 @@ extensions = [
     'sphinxemoji.sphinxemoji',
     'sphinx.ext.intersphinx',
     'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary'
+    'sphinx.ext.autosummary',
+    'sphinxcontrib.prettyspecialmethods'
 ]
 
 templates_path = ['_templates']
