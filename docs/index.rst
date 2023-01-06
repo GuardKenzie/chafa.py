@@ -59,7 +59,7 @@ Here is `the example program`_ from the Chafa C API docs written in chafa.py::
       N_CHANNELS * PIX_WIDTH
    )
 
-   output = canvas.print().decode()
+   output = canvas.print()
 
    print(output)
 

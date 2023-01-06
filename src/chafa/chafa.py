@@ -19,17 +19,6 @@ class PixelMode(IntEnum):
     CHAFA_PIXEL_MODE_ITERM2  = 3
     CHAFA_PIXEL_MODE_MAX     = 4
 
-#
-# === DITHER MODE ===
-#
-
-class DitherMode(IntEnum):
-    CHAFA_DITHER_MODE_NONE       = 0
-    CHAFA_DITHER_MODE_ORDERED    = 1
-    CHAFA_DITHER_MODE_DIFFUSION  = 2
-
-    CHAFA_DITHER_MODE_MAX        = 3
-
 
 #
 # === CANVAS MODES ===
@@ -2408,7 +2397,7 @@ class Canvas:
         output = _Chafa.chafa_canvas_print(self._canvas, self._term_info._term_info)
         output = GString.from_address(output)
 
-        return output.str
+        return output.str.decode()
 
 
 
