@@ -79,7 +79,12 @@ API Reference
    :maxdepth: 2
    :caption: If you are looking for a specific class or function, look no further:
 
-   api/api
+   api/Canvas
+   api/CanvasConfig
+   api/SymbolMap
+   api/TermDb
+   api/TermInfo
+   api/Loader
    api/enums
 
 .. _`Hans Petter Jansson`: https://hpjansson.org/blag/
