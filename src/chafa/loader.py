@@ -37,7 +37,22 @@ if _lib is None:
 
 _MagickWand = ctypes.CDLL(_lib)
 
+
 class Loader:
+    """
+    The :py:class:`Loader` is a reasonably fast way 
+    to load the pixel data of an image for use 
+    with chafa.py. In addition to loading the pixel 
+    data, the :py:class:`Loader` will also provide 
+    useful information such as the width and height 
+    of the image to further simplify drawing to the 
+    :py:class:`chafa.Canvas`.
+
+    :param str path: The path to the image to load. 
+        This will not resolve special characters such as ``~``.
+
+    :raises FileNotFoundError: if the image does not exist.
+    """
 
     def __init__(self, path: str):
         
@@ -133,24 +148,55 @@ class Loader:
         self._pixels        = pixels
 
     @property
-    def width(self):
+    def width(self) -> int:
+        """
+        :type: int
+
+        The width of the image.
+        """
         return self._width
 
     @property
-    def height(self):
+    def height(self) -> int:
+        """
+        :type: int
+
+        The height of the image.
+        """
         return self._height
 
     @property
-    def channels(self):
+    def channels(self) -> int:
+        """
+        :type: int
+
+        The number of output of :py:meth:`get_pixels`.
+        """
         return self._channels
 
     @property
-    def pixel_type(self):
+    def pixel_type(self) -> PixelType:
+        """
+        :type: chafa.PixelType
+
+        The :py:class:`chafa.PixelType` of the output 
+        of :py:meth:`get_pixels`.
+        """
         return self._pixel_type
 
     @property
-    def rowstride(self):
+    def rowstride(self) -> int:
+        """
+        :type: int
+
+        The rowstride of the image.
+        """
         return self._rowstride
 
-    def get_pixels(self):
+    def get_pixels(self) -> ctypes.Array:
+        """
+        :rtype: ctypes.Array
+
+        Returns the pixel data of the image.
+        """
         return self._pixels
