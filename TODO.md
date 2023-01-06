@@ -20,7 +20,7 @@
 - [x] inspect characters at (x, y)
 - [x] inspect color at (x, y)
 - [ ] raw color
-- [ ] **DOCS**
+- [x] **DOCS**
 - [x] What argument type should `draw_pixels` accept for the pixel array? <- This is pretty much done
     1. array (pretty fast)
     2. python list and convert to array (slower than array)
@@ -66,9 +66,9 @@
 - [ ] Splitting classes into separate files?
 
 # Docs
-- [ ] Add remaining enums
-  - [ ] Dither mode
-  - [ ] Pixel Type
+- [x] Add remaining enums
+  - [x] Dither mode
+  - [x] Pixel Type
 
 - [ ] Docs for the loader
 
