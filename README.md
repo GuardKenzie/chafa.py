@@ -1,4 +1,12 @@
-# chafapy
+<div align="center" >
+  <img width=500 src="docs/_static/img/logo.png">
+  <p>
+    <em>The snakes don't bite! (I think...)</em>
+  </p>
+  <p>
+      <a href="https://chafapy.mage.black/">Docs</a> | <a href="https://chafapy.mage.black/usage/tutorial.html">Tutorial</a> | <a href="https://chafapy.mage.black/usage/examples.html">Examples</a>
+  </p>
+</div>
 
 These are Python bindings for the amazing terminal image visualiser [Chafa](https://hpjansson.org/chafa/).
 
