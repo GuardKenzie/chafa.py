@@ -35,13 +35,10 @@ You can draw an image to the canvas using :py:meth:`Canvas.draw_all_pixels` and 
 
 The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will return a :py:class:`CanvasInspector` or a `generator`_ for the relevant :py:class:`CanvasInspector` objects.
 
-.. py:class:: Canvas(config: None|CanvasConfig, term_info: TermInfo=None)
+.. py:class:: Canvas(config: None|CanvasConfig)
 
     :param CanvasConfig|None config: The config to initialise the canvas with. If None is passed, the canvas will be initialised with hard-coded defaults.
 
-    :param TermInfo term_info: The :py:class:`TermInfo` that will be used when printing. If None is specified, the term_info will be initialised with :py:meth:`TermDb.detect`
-
-    :raises TypeError: If term_info is not None or :py:class:`TermInfo`
     :raises TypeError: If config is not None or :py:class:`CanvasConfig`
 
     .. py:method:: __getitem__(pos)
@@ -111,13 +108,19 @@ The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will re
 
         :raises ValueError: if src_width, src_height or src_rowstride are less than or equal to 0.
 
-    .. py:method:: print()
+    .. py:method:: print(term_info: TermInfo = None, fallback: bool=False)
 
-        Builds bytes representation for a UTF-8 string of terminal control sequences and symbols representing the canvas' current contents. This can e.g. be printed to a terminal. The exact choice of escape sequences and symbols, dimensions, etc. is determined by the configuration assigned to canvas on its creation.
+        Builds a UTF-8 string of terminal control sequences and symbols representing the canvas' current contents. This can e.g. be printed to a terminal. The exact choice of escape sequences and symbols, dimensions, etc. is determined by the configuration assigned to canvas on its creation.
 
         All output lines except for the last one will end in a newline.
 
-        This will need to be decoded before printing 
+        .. note:: The output of this method will need to be decoded with :py:meth:`bytes.decode`
+
+        :param TermInfo term_info: The :py:class:`TermInfo` that will provide the control sequences used when printing. If None is specified, the term_info will be initialised with :py:meth:`TermDb.detect`.
+
+        :param bool fallback: If True, the term_info (the one provided by :py:meth:`TermDb.detect` or the one provided by the user) will be supplemented with fallback control sequences.
+
+        :raises TypeError: If term_info is not None or :py:class:`TermInfo`
 
         :rtype: bytes
 
