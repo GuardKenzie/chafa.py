@@ -63,7 +63,7 @@
 # Misc
 - [x] Properly figure out how the loader should work (pretty happy with it for now but could be faster)
 - [x] Error handling (I think this is done?)
-- [ ] Splitting classes into separate files?
+- [ ] ~~Splitting classes into separate files?~~ (not for now)
 
 # Docs
 - [x] Add remaining enums
@@ -74,4 +74,4 @@
 
 - [ ] Write a tutorial
 - [x] Add some examples
-- [ ] Installation
+- [x] Installation
