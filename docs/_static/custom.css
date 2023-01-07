@@ -31,6 +31,10 @@
     --links: var(--peach);
 }
 
+img {
+    border-radius: .5rem;
+}
+
 .break-block {
     display: inline-block;
 }
