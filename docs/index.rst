@@ -6,18 +6,19 @@
    </h1>
 
 
-`Chafa <https://hpjansson.org/chafa/>`_ is a wonderful command-line utility, created by `Hans Petter Jansson`_, for visualizing images (and GIFs) in the terminal. In Jansson's own words:
+`Chafa <https://hpjansson.org/chafa/>`_ is a wonderful command-line utility, created by `Hans Petter Jansson`_, for visualizing images in the terminal. In Jansson's own words:
    
    **The future is (still) now!**
 
    The premier UX of the 21st century just got a little better: With ``chafa``, you can now view very, very reasonable approximations of pictures and animations in the comfort of your favorite terminal emulator. The power of ANSI X3.64 compels you!
 
-chafa.py is a python wrapper for the chafa library so you can use rad graphics in your *sss*\ naketastic Python applications!
+chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! I mean, who wouldn't want to make this cute picture of a snake just a little more crunchy?
 
-chafa.py tries to be very *pythonian* (whatever that means) in the sense that most getter and setter functions are simply made to be attributes of Python objects.
+.. image:: crunchyfy.svg
+   :width: 90%
+   :align: center
 
-.. attention:: 
-   This project is under active development with a pre-release version coming soon...
+chafa.py tries to be very *pythonian* (I think that's a word) in the sense that most getter and setter functions are simply made to be attributes of Python objects.
 
 Here is `the example program`_ from the Chafa C API docs written in chafa.py::
 
@@ -63,8 +64,11 @@ Here is `the example program`_ from the Chafa C API docs written in chafa.py::
 
    print(output)
 
+
+Take a look at the :ref:`examples` page for more cool examples. Also, here is a table of contents for these entire docs so you can sort of get a picture of what they cover and where to go:
+
 Getting started
-===============
+---------------
 .. toctree::
    :maxdepth: 2
    :caption: Here are some links to get you going:
@@ -74,7 +78,7 @@ Getting started
    usage/examples
 
 API Reference
-===============
+---------------
 .. toctree::
    :maxdepth: 2
    :caption: If you are looking for a specific class or function, look no further:

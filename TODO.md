@@ -73,5 +73,5 @@
 - [x] Docs for the loader
 
 - [ ] Write a tutorial
-- [ ] Add some examples
+- [x] Add some examples
 - [ ] Installation
