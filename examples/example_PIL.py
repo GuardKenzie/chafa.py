@@ -2,21 +2,12 @@ from chafa import *
 from PIL import Image
 import numpy as np
 
-FONT_WIDTH  = 11
-FONT_HEIGHT = 24
-
 # Init canvas config
 config = CanvasConfig()
 
-# Set canvas height, width and cell geometry
-config.height = 40
-config.width  = 40
-
-# Init the symbol map and add to config
-symbols = SymbolMap()
-symbols.add_by_tags(SymbolTags.CHAFA_SYMBOL_TAG_ALL)
-
-config.set_symbol_map(symbols)
+# Set canvas height and width
+config.height = 30
+config.width  = 30
 
 # Open image with PIL
 image = Image.open("./snake.jpg")
@@ -28,9 +19,6 @@ bands  = len(image.getbands())
 # Put image into correct format
 pixels = np.array(image)
 pixels = np.reshape(pixels, pixels.size)
-
-# Calculate canvas size
-config.calc_canvas_geometry(width, height, FONT_WIDTH/FONT_HEIGHT)
 
 # Init the canvas
 canvas = Canvas(config)
