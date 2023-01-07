@@ -2407,7 +2407,7 @@ class Canvas:
 
         _Chafa.chafa_canvas_print.restype  = ctypes.c_void_p
 
-        output = _Chafa.chafa_canvas_print(self._canvas, self._term_info._term_info)
+        output = _Chafa.chafa_canvas_print(self._canvas, term_info._term_info)
         output = GString.from_address(output)
 
         return output.str
