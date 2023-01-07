@@ -47,7 +47,9 @@ html_theme_options = {
 
     "head_font_family": "Eczar",
     "font_family": "Signika Negative",
-    "code_font_family": "JetBrains Mono"
+    "code_font_family": "JetBrains Mono",
+
+    "description": "Version " + release
 }
 
 pygments_style = "dracula"
@@ -59,8 +61,12 @@ html_js_files = [
 github_username = "GuardKenzie"
 github_repository = "chafa.py"
 
-#html_sidebars = {
-#    '**': {
-#        'globaltoc.html', 'searchbox.html'
-#    }
-#}
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html',
+        'donate.html',
+    ]
+}

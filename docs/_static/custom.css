@@ -31,6 +31,10 @@
     --links: var(--peach);
 }
 
+div.sphinxsidebarwrapper p.blurb {
+    text-align: center;
+}
+
 img {
     border-radius: .5rem;
 }
