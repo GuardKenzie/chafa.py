@@ -44,7 +44,7 @@ The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will re
     :raises TypeError: If term_info is not None or :py:class:`TermInfo`
     :raises TypeError: If config is not None or :py:class:`CanvasConfig`
 
-    .. py:method:: __getitem__(y)
+    .. py:method:: __getitem__(pos)
 
         You can inspect pixels in the canvas by indexing, similar to if the canvas were a 2d array. When indexing, the first coordinate represents the row (or y coordinate) and the second represents the column (or x coordinate).
 
