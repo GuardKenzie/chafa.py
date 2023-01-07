@@ -469,3 +469,11 @@ We can do the same thing with the background and foreground colors! The colors e
     :align: center
 
     Ok, now this is getting ridiculous!
+
+
+I need more help!
+=================
+
+If you are still stuck, don't worry! Hop over to the `discussions on GitHub`_ and ask your questions there! I will try to be as helpful as I can and get you up and running!
+
+.. _`discussions on GitHub`: https://github.com/GuardKenzie/chafa.py/discussions

@@ -95,6 +95,8 @@ API Reference
    :caption: External links:
    :github:
    :pypi: chafa.py
+   
+   Discussions <https://github.com/GuardKenzie/chafa.py/discussions>
 
 .. _`Hans Petter Jansson`: https://hpjansson.org/
 .. _`the example program`: https://hpjansson.org/chafa/ref/chafa-using.html
