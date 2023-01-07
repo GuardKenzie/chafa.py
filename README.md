@@ -1,5 +1,5 @@
 <div align="center" >
-  <img width=500 alt="Chafa.py" src="docs/_static/img/logo.svg">
+  <img width=500 alt="Chafa.py" src="https://github.com/GuardKenzie/chafa.py/blob/main/docs/_static/img/logo.svg?raw=true">
   <p>
     <em>The snakes don't bite! (I think...)</em>
   </p>
@@ -7,9 +7,6 @@
       <a href="https://chafapy.mage.black/">Docs</a> | <a href="https://chafapy.mage.black/usage/tutorial.html">Tutorial</a> | <a href="https://chafapy.mage.black/usage/examples.html">Examples</a>
   </p>
 </div>
-
-# THIS MODULE IS STILL IN PRE-RELEASE! THERE MIGHT BE BREAKING CHANGES TO THE API!
-Please refrain from using in production code until a stable version 1.0 is released.
 
 # What is this?
 
@@ -30,31 +27,47 @@ chafa.py tries to be very *pythonian* (I think that's a word) in the sense that 
 
 # How do I get it?
 
-First, you will need to [install chafa](https://hpjansson.org/chafa/download/). This should be fairly straight forward since chafa packages are available for most linux distributions.
+First, you will need to `install chafa <https://hpjansson.org/chafa/download/>`_. This should be fairly straight forward since chafa packages are available for most linux distributions.
 
-If you want to use the included loader class to load images for using with chafa.py, you will also need the [MagickWand](https://imagemagick.org/script/magick-wand.php) C-library.
+.. currentmodule:: chafa.loader
 
-Chafa.py is not available on PyPi yet but it will be soon! You can still install and play around with this package by cloning this repo and running
+If you want to use the included :py:class:`Loader` class to load images for using with chafa.py, you will also need the `MagickWand <https://imagemagick.org/script/magick-wand.php>`_ C-library.
+
+
+### From PyPi
+
+Chafa.py is available on PyPi. You can install it by running
+
+```
+pip install chafa.py
+```
+
+### From source
+
+If you want, you can install and play around with this package by cloning the repo and building it yourself
 
 ```
 python -m build
 ```
 
-in the root of the repository. This will build a distribution file in a new folder: `dist/` called something like `chafa-0.0.1.tar.gz`. You can then install this file with pip by running
+in the root of the repository. This will build a distribution file in a new folder: ``dist/`` called something like ``chafa-[version].gz``. You can then install this file with pip by running
+
 ```
-pip install ./dist/chafa-0.0.1.tar.gz
+pip install ./dist/chafa-[version].tar.gz
 ```
 
-## Dependencies
+### Dependencies
+
 - [Chafa](https://hpjansson.org/chafa/download/)
 - [MagickWand](https://imagemagick.org/script/magick-wand.php)
+- [Hatchling](https://pypi.org/project/hatchling/) (for building) 
 - Python 3.5 or later
 
 # Example
 
-Here is [the example program](https://hpjansson.org/chafa/ref/chafa-using.html) from the Chafa C API docs written in chafa.py. Take a look at the [examples](https://chafapy.mage.black/usage/examples.html) page in the docs for more cool examples.
+Here is [the example program](https://hpjansson.org/chafa/ref/chafa-using.html) from the Chafa C API docs written in chafa.py. Take a look at the [examples](https://chafapy.mage.black/usage/examples.html) page in the docs for more cool examples, including how to load your images from files.
 
-```python  	
+```python
 from chafa import *
 from array import array
 
