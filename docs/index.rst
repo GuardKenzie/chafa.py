@@ -14,7 +14,7 @@
 
 chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! I mean, who wouldn't want to make this cute picture of a snake just a little more crunchy?
 
-.. image:: crunchyfy.svg
+.. image:: crunchyfy.png
    :width: 90%
    :align: center
 
