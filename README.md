@@ -8,6 +8,8 @@
   </p>
 </div>
 
+# THIS MODULE IS STILL IN PRE-RELEASE! THERE MIGHT BE BREAKING CHANGES TO THE API!
+Please refrain from using in production code until a stable version 1.0 is released.
 
 # What is this?
 
