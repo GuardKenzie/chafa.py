@@ -1945,30 +1945,15 @@ class TermInfo():
 
     
 class Canvas:
-    def __init__(self, config: CanvasConfig, term_info: TermInfo=None):
+    def __init__(self, config: CanvasConfig):
         """
         :param CanvasConfig|None config: The config to initialise the 
         canvas with. If None is passed, the canvas will be initialised 
         with hard-coded defaults.
 
-        :param TermInfo term_info: The :py:class:`TermInfo` that will 
-        be used when printing. If None is specified, the term_info will 
-        be initialised with :py:meth:`TermDb.detect`
-
         :raises TypeError: If term_info is not None or :py:class:`TermInfo`
         :raises TypeError: If config is not None or :py:class:`CanvasConfig`
         """
-        # Check for term info
-        if term_info is None:
-            term_db = TermDb()
-            self._term_info = term_db.detect()
-
-        elif not isinstance(term_info, TermInfo):
-            raise TypeError(f"term_info must be None or of type TermInfo or None, not {type(term_info)}")
-
-        else:
-            self._term_info = term_info 
-
         # Init config
         if config is None:
             _Chafa.chafa_canvas_new.argtypes = [ctypes.c_size_t]
@@ -2371,7 +2356,7 @@ class Canvas:
         )
 
 
-    def print(self, term_info: TermInfo=None) -> str:
+    def print(self, term_info: TermInfo=None, fallback=False) -> bytes:
         """
         Builds a UTF-8 string of terminal control sequences and symbols 
         representing the canvas' current contents. This can e.g. be 
@@ -2380,7 +2365,35 @@ class Canvas:
         assigned to canvas on its creation.
 
         All output lines except for the last one will end in a newline.
+
+        :param TermInfo term_info: The :py:class:`TermInfo` that will 
+        provide the control sequences used when printing. If None is 
+        specified, the term_info will be initialised with 
+        :py:meth:`TermDb.detect`
+
+        :param bool fallback: If True, the term_info (the one provided by
+        :py:meth:`TermDb.detect` or the one provided by the user) will 
+        be supplemented with fallback control sequences.
         """
+
+        term_db = None
+
+        # Check for term info
+        if term_info is None:
+            term_db = TermDb()
+            term_info = term_db.detect()
+
+        elif not isinstance(term_info, TermInfo):
+            raise TypeError(f"term_info must be None or of type TermInfo or None, not {type(term_info)}")
+
+        # Supplement with fallback sequences
+        if fallback:
+            if term_db is None:
+                term_db = TermDb()
+
+            fallback_info = term_db.get_fallback_info()
+            term_info.supplement(fallback_info)
+
 
         class GString(ctypes.Structure):
             _fields_ = [('str',         ctypes.c_char_p),
@@ -2397,7 +2410,7 @@ class Canvas:
         output = _Chafa.chafa_canvas_print(self._canvas, self._term_info._term_info)
         output = GString.from_address(output)
 
-        return output.str.decode()
+        return output.str
 
 
 
