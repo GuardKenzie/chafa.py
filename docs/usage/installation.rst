@@ -18,6 +18,7 @@ From PyPi
 Chafa.py is available on PyPi. You can install it by running
 
 ::
+
     pip install chafa.py
 
 From source
