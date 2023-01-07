@@ -21,6 +21,8 @@ extensions = [
     'sphinxemoji.sphinxemoji',
     'sphinx.ext.intersphinx',
     'sphinx.ext.autodoc',
+    'sphinx_toolbox.sidebar_links',
+    'sphinx_toolbox.github',
     'sphinx.ext.autosummary',
     'sphinxcontrib.prettyspecialmethods'
 ]
@@ -53,6 +55,9 @@ pygments_style = "dracula"
 html_js_files = [
     'table.js'
 ]
+
+github_username = "GuardKenzie"
+github_repository = "chafa.py"
 
 #html_sidebars = {
 #    '**': {

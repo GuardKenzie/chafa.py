@@ -91,5 +91,10 @@ API Reference
    api/Loader
    api/enums
 
+.. sidebar-links::
+   :caption: External links:
+   :github:
+   :pypi: chafa.py
+
 .. _`Hans Petter Jansson`: https://hpjansson.org/
 .. _`the example program`: https://hpjansson.org/chafa/ref/chafa-using.html
