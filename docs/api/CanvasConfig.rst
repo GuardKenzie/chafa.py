@@ -41,6 +41,19 @@ Note that it is not possible to change a canvas' configuration after the canvas 
 
         :param SymbolMap symbol_map: The symbol_map.
 
+    .. py:method:: calc_canvas_geometry(src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False)
+
+        Calculates an optimal geometry for a :py:class:`Canvas` given the width and height of an input image, font ratio, zoom and stretch preferences. This will then set the config's width and height to the calculated values.
+
+        :param int src_width: Width of the input image in pixels.
+        :param int src_height: Height of the input image in pixels.
+        :param float font_ratio: The font's width divided by its height.
+        :param bool zoom: Upscale the image to fit the canvas.
+        :param bool stretch: Ignore the aspect ratio of source.
+
+        :raises ValueError: if src_width src_height or font_ratio are <= 0
+        :raises TypeError: if zoom or stretch are None
+
     .. py:method:: set_fill_symbol_map(fill_symbol_map: SymbolMap)
 
         Assigns a copy of fill_symbol_map to config.
@@ -204,19 +217,6 @@ The properties of a :py:class:`ReadOnlyCanvasConfig` become editable when inheri
 
         :rtype: tuple[int, int] of width and height.
 
-
-    .. py:method:: calc_canvas_geometry(src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False)
-
-        Calculates an optimal geometry for a :py:class:`Canvas` given the width and height of an input image, font ratio, zoom and stretch preferences. This will then set the config's width and height to the calculated values.
-
-        :param int src_width: Width of the input image in pixels.
-        :param int src_height: Height of the input image in pixels.
-        :param float font_ratio: The font's width divided by its height.
-        :param bool zoom: Upscale the image to fit the canvas.
-        :param bool stretch: Ignore the aspect ratio of source.
-
-        :raises ValueError: if src_width src_height or font_ratio are <= 0
-        :raises TypeError: if zoom or stretch are None
 
     .. py:method:: peek_symbol_map()
 

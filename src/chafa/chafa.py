@@ -1056,71 +1056,6 @@ class ReadOnlyCanvasConfig:
 
         return _Chafa.chafa_canvas_config_get_optimizations(self._canvas_config)
 
-    
-    def calc_canvas_geometry(self, src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False):
-        """
-        Calculates an optimal geometry for a :py:class:`Canvas` given 
-        the width and height of an input image, font ratio, zoom and 
-        stretch preferences. This will then set the config's width and 
-        height to the calculated values.
-
-        :param int src_width: Width of the input image in pixels.
-        :param int src_height: Height of the input image in pixels.
-        :param float font_ratio: The font's width divided by its height.
-        :param bool zoom: Upscale the image to fit the canvas.
-        :param bool stretch: Ignore the aspect ratio of source.
-
-        :raises ValueError: if src_width or src_height are <= 0
-        """
-
-        src_width  = int(src_width)
-        src_height = int(src_height)
-
-        font_ratio = float(font_ratio)
-
-        if zoom is None:
-            raise TypeError("zoom must not be None")
-
-        if stretch is None:
-            raise TypeError("stretch must not be None")
-
-        zoom       = bool(zoom)
-        stretch    = bool(stretch)
-
-
-        if src_width <= 0:
-            raise ValueError("src_width must be greater than 0")
-
-        if src_height <= 0:
-            raise ValueError("src_height must be greater than 0")
-
-        if font_ratio <= 0:
-            raise ValueError("font_ratio must be greater than 0")
-
-        _Chafa.chafa_calc_canvas_geometry.argtypes = [
-            ctypes.c_uint,
-            ctypes.c_uint,
-            ctypes.POINTER(ctypes.c_uint),
-            ctypes.POINTER(ctypes.c_uint),
-            ctypes.c_float,
-            ctypes.c_bool,
-            ctypes.c_bool
-        ]
-
-        new_width  = ctypes.pointer(ctypes.c_uint(self.width))
-        new_height = ctypes.pointer(ctypes.c_uint(self.height))
-        
-        _Chafa.chafa_calc_canvas_geometry(
-            src_width, src_height,
-            new_width, new_height,
-            font_ratio,
-            zoom,
-            stretch
-        )
-
-        self.width  = new_width. contents.value
-        self.height = new_height.contents.value
-
 
     def peek_symbol_map(self) -> ReadOnlySymbolMap:
         """
@@ -1697,6 +1632,71 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         ]
 
         _Chafa.chafa_canvas_config_set_fill_symbol_map(self._canvas_config, fill_symbol_map._symbol_map)
+
+    def calc_canvas_geometry(self, src_width: int, src_height: int, font_ratio: float, zoom: bool=False, stretch: bool=False):
+        """
+        Calculates an optimal geometry for a :py:class:`Canvas` given 
+        the width and height of an input image, font ratio, zoom and 
+        stretch preferences. This will then set the config's width and 
+        height to the calculated values.
+
+        :param int src_width: Width of the input image in pixels.
+        :param int src_height: Height of the input image in pixels.
+        :param float font_ratio: The font's width divided by its height.
+        :param bool zoom: Upscale the image to fit the canvas.
+        :param bool stretch: Ignore the aspect ratio of source.
+
+        :raises ValueError: if src_width or src_height are <= 0
+        """
+
+        src_width  = int(src_width)
+        src_height = int(src_height)
+
+        font_ratio = float(font_ratio)
+
+        if zoom is None:
+            raise TypeError("zoom must not be None")
+
+        if stretch is None:
+            raise TypeError("stretch must not be None")
+
+        zoom       = bool(zoom)
+        stretch    = bool(stretch)
+
+
+        if src_width <= 0:
+            raise ValueError("src_width must be greater than 0")
+
+        if src_height <= 0:
+            raise ValueError("src_height must be greater than 0")
+
+        if font_ratio <= 0:
+            raise ValueError("font_ratio must be greater than 0")
+
+        _Chafa.chafa_calc_canvas_geometry.argtypes = [
+            ctypes.c_uint,
+            ctypes.c_uint,
+            ctypes.POINTER(ctypes.c_uint),
+            ctypes.POINTER(ctypes.c_uint),
+            ctypes.c_float,
+            ctypes.c_bool,
+            ctypes.c_bool
+        ]
+
+        new_width  = ctypes.pointer(ctypes.c_uint(self.width))
+        new_height = ctypes.pointer(ctypes.c_uint(self.height))
+        
+        _Chafa.chafa_calc_canvas_geometry(
+            src_width, src_height,
+            new_width, new_height,
+            font_ratio,
+            zoom,
+            stretch
+        )
+
+        self.width  = new_width. contents.value
+        self.height = new_height.contents.value
+
 
 
 class TermDb():

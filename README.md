@@ -93,7 +93,7 @@ canvas.draw_all_pixels(
     N_CHANNELS * PIX_WIDTH
 )
 
-output = canvas.print()
+output = canvas.print().decode()
 
 print(output)
 ```
