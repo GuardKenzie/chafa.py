@@ -58,7 +58,7 @@ The :py:class:`Loader` is a class included with chafa.py which aims making it ea
     )
 
     # Write picture
-    print(canvas.print())
+    print(canvas.print().decode())
 
 
 Using `Pillow`_
@@ -103,7 +103,7 @@ When reading pixel data from an image opened with `Pillow`_, we get a 2D array w
     )
 
     # Write picture
-    print(canvas.print())
+    print(canvas.print().decode())
 
 
 Using `pyvips`_
@@ -143,7 +143,7 @@ The `pyvips`_ library is another fast image manipulation library which can be us
     )
 
     # Write picture
-    print(canvas.print())
+    print(canvas.print().decode())
 
 
 .. currentmodule:: chafa
@@ -196,7 +196,7 @@ Here is an example of a program that uses :py:meth:`TermInfo.detect_capabilities
     )
 
     # Write picture
-    print(canvas.print())
+    print(canvas.print().decode())
 
 
 
@@ -247,7 +247,7 @@ Here is an example that outputs the image in the correct aspect ratio.
     )
 
     # Write picture
-    print(canvas.print())
+    print(canvas.print().decode())
 
 
 .. _`MagickWand`: https://imagemagick.org/script/magick-wand.php

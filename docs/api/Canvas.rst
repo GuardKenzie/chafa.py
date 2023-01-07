@@ -23,7 +23,7 @@ The Canvas
         for pix in row:
             pix.bg_color = (0, 255, 0)
 
-    print(canvas.print())
+    print(canvas.print().decode())
 
 Canvas
 ------
@@ -113,11 +113,13 @@ The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will re
 
     .. py:method:: print()
 
-        Builds a UTF-8 string of terminal control sequences and symbols representing the canvas' current contents. This can e.g. be printed to a terminal. The exact choice of escape sequences and symbols, dimensions, etc. is determined by the configuration assigned to canvas on its creation.
+        Builds bytes representation for a UTF-8 string of terminal control sequences and symbols representing the canvas' current contents. This can e.g. be printed to a terminal. The exact choice of escape sequences and symbols, dimensions, etc. is determined by the configuration assigned to canvas on its creation.
 
         All output lines except for the last one will end in a newline.
 
-        :rtype: str
+        This will need to be decoded before printing 
+
+        :rtype: bytes
 
 
 CanvasInspector

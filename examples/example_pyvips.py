@@ -28,4 +28,4 @@ canvas.draw_all_pixels(
 )
 
 # Write picture
-print(canvas.print())
+print(canvas.print().decode())

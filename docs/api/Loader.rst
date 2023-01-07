@@ -24,7 +24,7 @@ The loader module depends on the `MagickWand`_ C-library. Make sure it is instal
         loader.rowstride
     )
 
-    print(canvas.print())
+    print(canvas.print().decode())
 
 Loader
 ------
