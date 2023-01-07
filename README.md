@@ -17,7 +17,7 @@ images in the terminal. In Jansson's own words:
 > **The future is (still) now!**
 >
 >  The premier UX of the 21st century just got a little better: 
-> With ``chafa``, you can now view very, very reasonable approximations 
+> With `chafa`, you can now view very, very reasonable approximations 
 > of pictures and animations in the comfort of your favorite terminal 
 > emulator. The power of ANSI X3.64 compels you!
 
@@ -27,11 +27,9 @@ chafa.py tries to be very *pythonian* (I think that's a word) in the sense that 
 
 # How do I get it?
 
-First, you will need to `install chafa <https://hpjansson.org/chafa/download/>`_. This should be fairly straight forward since chafa packages are available for most linux distributions.
+First, you will need to [install chafa](https://hpjansson.org/chafa/download/). This should be fairly straight forward since chafa packages are available for most linux distributions.
 
-.. currentmodule:: chafa.loader
-
-If you want to use the included :py:class:`Loader` class to load images for using with chafa.py, you will also need the `MagickWand <https://imagemagick.org/script/magick-wand.php>`_ C-library.
+If you want to use the included Loader class to load images for using with chafa.py, you will also need the [MagickWand](https://imagemagick.org/script/magick-wand.php) C-library.
 
 
 ### From PyPi
@@ -50,7 +48,7 @@ If you want, you can install and play around with this package by cloning the re
 python -m build
 ```
 
-in the root of the repository. This will build a distribution file in a new folder: ``dist/`` called something like ``chafa-[version].gz``. You can then install this file with pip by running
+in the root of the repository. This will build a distribution file in a new folder: `dist/` called something like `chafa-[version].gz`. You can then install this file with pip by running
 
 ```
 pip install ./dist/chafa-[version].tar.gz
