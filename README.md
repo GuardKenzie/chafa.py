@@ -1,5 +1,5 @@
 <div align="center" >
-  <img width=500 src="docs/_static/img/logo.svg">
+  <img width=500 alt="Chafa.py" src="docs/_static/img/logo.svg">
   <p>
     <em>The snakes don't bite! (I think...)</em>
   </p>
