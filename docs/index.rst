@@ -5,6 +5,10 @@
       <span class="break-block">now with 20% more 🐍!</span>
    </h1>
 
+=====
+Index
+=====
+
 
 `Chafa <https://hpjansson.org/chafa/>`_ is a wonderful command-line utility, created by `Hans Petter Jansson`_, for visualizing images in the terminal. In Jansson's own words:
    

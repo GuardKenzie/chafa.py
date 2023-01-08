@@ -283,3 +283,8 @@ th span.methods {
         border-color: var(--bg);
     }
 }
+
+
+#index > h1:first-child {
+    display: none;
+}
