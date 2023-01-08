@@ -26,3 +26,6 @@ classifiers = [
 "Homepage"    = "https://chafapy.mage.black"
 "Source"      = "https://github.com/guardkenzie/chafa.py"
 "Bug Tracker" = "https://github.com/guardkenzie/chafa.py/issues"
+
+[tool.hatch.build.targets.wheel]
+packages=["src/chafa"]
