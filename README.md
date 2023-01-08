@@ -48,10 +48,10 @@ If you want, you can install and play around with this package by cloning the re
 python -m build
 ```
 
-in the root of the repository. This will build a distribution file in a new folder: `dist/` called something like `chafa-[version].gz`. You can then install this file with pip by running
+in the root of the repository. This will build a distribution file in a new folder: `dist/` called something like `chafa_py-[version].gz`. You can then install this file with pip by running
 
 ```
-pip install ./dist/chafa-[version].tar.gz
+pip install ./dist/chafa_py-[version].tar.gz
 ```
 
 ### Dependencies
