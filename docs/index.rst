@@ -16,7 +16,7 @@ Index
 
    The premier UX of the 21st century just got a little better: With ``chafa``, you can now view very, very reasonable approximations of pictures and animations in the comfort of your favorite terminal emulator. The power of ANSI X3.64 compels you!
 
-chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! Not convinced? Here's a picture of a cute snake rendered to text using chafa.py and beamed into your visual through the power of html and css:
+chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! Not convinced? Here's a picture of a cute snake rendered to text using chafa.py and beamed into your visual cortex through the power of html and css:
 
 .. raw:: html
    :file: _chafa_img/snake.html
