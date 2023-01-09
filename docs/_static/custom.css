@@ -1,4 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;700&family=JetBrains+Mono&family=Signika+Negative&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;700&family=Signika+Negative&display=swap');
+  
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Italic.woff2') format('woff2'),
+      url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2'),
+      url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
 
 :root {
     --fg:        #4c4f69;
@@ -282,6 +301,17 @@ th span.methods {
         background-color: var(--bg);
         border-color: var(--bg);
     }
+}
+
+.chafa-img {
+    font-family: "JetBrains Mono";
+    overflow: hidden;
+    text-align: center;
+}
+
+.chafa-img .row {
+    margin: 0;
+    line-height: normal;
 }
 
 

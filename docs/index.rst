@@ -16,60 +16,57 @@ Index
 
    The premier UX of the 21st century just got a little better: With ``chafa``, you can now view very, very reasonable approximations of pictures and animations in the comfort of your favorite terminal emulator. The power of ANSI X3.64 compels you!
 
-chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! I mean, who wouldn't want to make this cute picture of a snake just a little more crunchy?
+chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! Not convinced? Here's a picture of a cute snake rendered to text using chafa.py and beamed into your visual through the power of html and css:
 
-.. image:: crunchyfy.png
-   :width: 90%
-   :align: center
+.. raw:: html
+   :file: _chafa_img/snake.html
+
 
 chafa.py tries to be very *pythonian* (I think that's a word) in the sense that most getter and setter functions are simply made to be attributes of Python objects.
 
-Here is `the example program`_ from the Chafa C API docs written in chafa.py::
+Here is the program used to output the :download:`image <usage/snake.jpg>` you see above::
 
    from chafa import *
-   from array import array
+   from chafa.loader import Loader
 
-   PIX_WIDTH  = 3
-   PIX_HEIGHT = 3
-   N_CHANNELS = 4
+   # The font ratio of JetBrains Mono (width/height)
+   FONT_RATIO = 11/24
 
-   # Initiate pixels array ('B') for 8 bit values
-   pixels = array("B", [
-      0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0xff,
-      0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0xff,
-      0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0xff
-   ])
-
-   # Specify which symbols we want
-   symbol_map = SymbolMap()
-   symbol_map.add_by_tags(SymbolTags.CHAFA_SYMBOL_TAG_ALL)
-
-   # Set up a configuration with the symbols and the canvas size in characters
+   # Create a canvas config
    config = CanvasConfig()
 
-   config.width  = 23
-   config.height = 12
+   # Configure the canvas geometry
+   config.width  = 40
+   config.height = 40
 
-   config.set_symbol_map(symbol_map)
+   # Load the snake
+   image = Loader("./snake.jpg")
 
-   # Create the canvas
-   canvas = Canvas(config)
-
-   # Draw pixels and build string
-   canvas.draw_all_pixels(
-      PixelType.CHAFA_PIXEL_RGBA8_UNASSOCIATED,
-      pixels,
-      PIX_WIDTH,
-      PIX_HEIGHT,
-      N_CHANNELS * PIX_WIDTH
+   # Configure the ideal canvas geometry based on our FONT_RATIO
+   config.calc_canvas_geometry(
+      image.width, 
+      image.height, 
+      FONT_RATIO
    )
 
-   output = canvas.print().decode()
+   # Init the canvas
+   canvas = Canvas(config)
 
-   print(output)
+   # Draw to the canvs
+   canvas.draw_all_pixels(
+      image.pixel_type,
+      image.get_pixels(),
+      image.width, image.height,
+      image.rowstride
+   )
+
+   # Print the output
+   output = canvas.print()
+
+   print(output.decode())
 
 
-Take a look at the :ref:`examples` page for more cool examples. Also, here is a table of contents for these entire docs so you can sort of get a picture of what they cover and where to go:
+That doesn't look that complicated! Take a look at the :ref:`examples` page for more cool examples or the :ref:`tutorial` to learn how chafa.py works. Also, here is a table of contents for these entire docs so you can sort of get a picture of what they cover and where to go:
 
 Getting started
 ---------------
