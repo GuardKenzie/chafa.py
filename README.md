@@ -1,5 +1,5 @@
 <div align="center" >
-  <img width=500 alt="chafa.py" src="https://github.com/GuardKenzie/chafa.py/blob/main/docs/_static/img/logo.svg?raw=true">
+  <img width=500 alt="chafa.py" src="https://github.com/GuardKenzie/chafa.py/blob/main/img/logo.svg?raw=true">
   <p>
     <em>The snakes don't bite! (I think...)</em>
   </p>
@@ -30,10 +30,10 @@ chafa.py tries to be very *pythonian* (I think that's a word) in the sense that 
 Here is a [picture of a cute snake](https://chafapy.mage.black/_images/snake.jpg) rendered to text using chafa.py:
 
 <div align="center">
-  <img src="img/readme_snake.jpg"></img>
+  <img src="https://github.com/GuardKenzie/chafa.py/blob/main/img/readme_snake.png?raw=true"></img>
 </div>
 
-And here is the code that printed this image.
+And here is the code that printed this image. For more examples, head on over to the docs at [chafapy.mage.black](https://chafapy.mage.black).
 
 ```python
 from chafa import *
