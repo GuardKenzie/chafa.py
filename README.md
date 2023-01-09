@@ -30,7 +30,7 @@ chafa.py tries to be very *pythonian* (I think that's a word) in the sense that 
 Here is a [picture of a cute snake](https://chafapy.mage.black/_images/snake.jpg) rendered to text using chafa.py:
 
 <div align="center">
-  <img src="https://github.com/GuardKenzie/chafa.py/blob/main/img/readme_snake.png?raw=true"></img>
+  <img src="https://github.com/GuardKenzie/chafa.py/blob/main/img/readme_snake.jpg?raw=true"></img>
 </div>
 
 And here is the code that printed this image. For more examples, head on over to the docs at [chafapy.mage.black](https://chafapy.mage.black).
