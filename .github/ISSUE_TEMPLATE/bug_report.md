@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report for a bug you found
-title: ''
+title: "[BUG] Title goes here"
 labels: bug
 assignees: ''
 
