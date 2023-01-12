@@ -22,7 +22,7 @@ To create a new :py:class:`SymbolMap`, simply initialise the class. You can then
 Note that some symbols match multiple tags, so it makes sense to e.g. add symbols matching :py:attr:`SymbolTags.CHAFA_SYMBOL_TAG_BORDER` and then removing symbols matching :py:attr:`SymbolTags.CHAFA_SYMBOL_TAG_DIAGONAL`.
 
 .. note:: 
-    The number of available symbols is a significant factor in the speed of:py:class:`Canvas`. For the fastest possible operation you could use a single symbol. :py:attr:`SymbolTags.CHAFA_SYMBOL_TAG_VHALF` works well by itself.
+    The number of available symbols is a significant factor in the speed of :py:class:`Canvas`. For the fastest possible operation you could use a single symbol. :py:attr:`SymbolTags.CHAFA_SYMBOL_TAG_VHALF` works well by itself.
 
 
 .. py:class:: SymbolMap
