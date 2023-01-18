@@ -1,5 +1,4 @@
 import ctypes
-from dataclasses import dataclass
 from typing import Tuple, Sequence, Union # PEP 484 
 from enum import IntEnum
 from collections.abc import Iterable
@@ -1818,10 +1817,10 @@ class TermInfo():
         self._term_info = _Chafa.chafa_term_info_new()
 
 
-    @dataclass
     class TerminalCapabilities:
-        canvas_mode: CanvasMode
-        pixel_mode: PixelMode
+        def __init__(self, canvas_mode, pixel_mode):
+            self.canvas_mode = canvas_mode
+            self.pixel_mode = pixel_mode
 
 
     def copy(self) -> 'TermInfo':
