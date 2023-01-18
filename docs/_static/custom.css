@@ -203,7 +203,7 @@ div.attention {
 }
 
 div.warning {
-    background-color: var(--red);
+    background-color: var(--maroon);
 }
 
 div.note {
