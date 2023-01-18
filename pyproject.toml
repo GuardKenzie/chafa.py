@@ -4,16 +4,16 @@ build-backend = "hatchling.build"
 
 [project]
 name    = "chafa.py"
-version = "1.0.0-2"
+version = "1.0.1"
 
 authors = [
-    { name="Erica Ferrua Edwardsdóttir", email="tolvukisa@gmail.com" }
+    { name="Erica Ferrua Edwardsdóttir", email="e@mage.black" }
 ]
 
 description = "Python bindings for Chafa. Visualize images with text in python. "
 readme = "README.md"
 
-requires-python = ">=3.5"
+requires-python = ">=3.8"
 
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -27,5 +27,40 @@ classifiers = [
 "Source"      = "https://github.com/guardkenzie/chafa.py"
 "Bug Tracker" = "https://github.com/guardkenzie/chafa.py/issues"
 
+[tool.cibuildwheel]
+build = "cp3*-*"
+skip = ["*-manylinux_i686", "*-musllinux_*", "*-win32", "*macosx*"]
+manylinux-x86_64-image = "manylinux2014"
+build-verbosity = 3
+
+[tool.cibuildwheel.linux]
+before-all = [
+    "yum install -y libtool",
+    "cd libs",
+    "git clone https://github.com/hpjansson/chafa libchafa_src",
+    "cd libchafa_src",
+    "mkdir m4",
+    "cp /usr/share/aclocal/pkg.m4 m4/",
+    "./autogen.sh --without-tools",
+    "make",
+    "cd ../",
+    "cp libchafa_src/chafa/.libs/*chafa.so linux/",
+    "cd .."
+]
+
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+
+[tool.hatch.build]
+exclude = [
+    ".github",
+    "wheelhouse"
+]
+
 [tool.hatch.build.targets.wheel]
 packages=["src/chafa"]
+strict-naming = false
+
+[tool.hatch.build.targets.sdist]
+strict-naming = false
+
+[tool.hatch.build.targets.wheel.hooks.custom]

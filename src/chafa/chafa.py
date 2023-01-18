@@ -5,8 +5,24 @@ from enum import IntEnum
 from collections.abc import Iterable
 import array
 
+import os
+import sys
+
 #  CHAFA LETS GOOOOOOO!!!
-_Chafa = ctypes.CDLL("libchafa.so")
+_library_path = os.path.dirname(__file__) + os.path.sep + "libs"
+
+# Figure out which libraries we need to import
+if sys.platform == "linux":
+    _lib_glib = "libglib-2.0.so"
+    _lib = _library_path + os.path.sep + "libchafa.so"
+
+elif sys.platform == "win32":
+    os.add_dll_directory(os.path.dirname(__file__))
+
+    _lib_glib = _library_path + os.path.sep + "libglib-2.0-0.dll"
+    _lib = _library_path + os.path.sep + "libchafa.dll"
+
+_Chafa = ctypes.CDLL(_lib)
 
 #
 # === PIXEL MODES ===
@@ -1720,7 +1736,7 @@ class TermDb():
         variable, but also others).
         """
         # Init glib
-        glib = ctypes.CDLL("libglib-2.0.so")
+        glib = ctypes.CDLL(_lib_glib)
         glib.g_get_environ.restype = ctypes.c_void_p
 
         # Get environment

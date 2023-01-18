@@ -2,6 +2,8 @@ import ctypes.util
 import ctypes
 from pathlib import Path
 from chafa import PixelType
+import sys
+import os
 
 def _get_library_name():
     """
@@ -10,22 +12,32 @@ def _get_library_name():
     """
     libwand = None
 
-    versions = [
-        "",
-        "-7",
-        "-7.Q8",
-        "-7.Q16",
-        "-6",
-        "-Q16",
-        "-Q8",
-        "-6.Q16"
-    ]
+    if sys.platform == "win32":
+        import winreg
 
-    i = 0
+        # Query registry for imageMagick and add it to our dll path
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\ImageMagick\\Current") as key:
+            wand_path = winreg.QueryValueEx(key, "LibPath")
+            os.add_dll_directory(wand_path[0])
 
-    while i < len(versions) and not libwand:
-        libwand = ctypes.util.find_library(f"MagickWand{versions[i]}")
-        i += 1
+            libwand = "CORE_RL_MagickWand_"
+
+    else:
+        versions = [
+            "",
+            "-7",
+            "-7.Q8",
+            "-7.Q16",
+            "-6",
+            "-Q16",
+            "-Q8",
+            "-6.Q16"
+        ]
+
+        i = 0
+        while i < len(versions) and not libwand:
+            libwand = ctypes.util.find_library(f"MagickWand{versions[i]}")
+            i += 1
 
     return libwand
 
