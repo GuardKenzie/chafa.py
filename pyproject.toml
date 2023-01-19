@@ -5,6 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name    = "chafa.py"
 version = "1.0.1"
+license = "LGPL-3.0"
 
 authors = [
     { name="Erica Ferrua Edwardsdóttir", email="e@mage.black" }
@@ -17,8 +18,9 @@ requires-python = ">=3.8"
 
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-    "Operating System :: Unix"
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Operating System :: Unix",
+    'Operating System :: Microsoft :: Windows'
 ]
 
 
@@ -31,7 +33,6 @@ classifiers = [
 build = "cp3*-*"
 skip = ["*-manylinux_i686", "*-musllinux_*", "*-win32", "*macosx*"]
 manylinux-x86_64-image = "manylinux2014"
-build-verbosity = 3
 
 [tool.cibuildwheel.linux]
 before-all = [
