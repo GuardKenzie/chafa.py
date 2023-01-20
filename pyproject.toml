@@ -60,7 +60,6 @@ before-all = [
     "make",
     "cd ..",
     "cp libchafa_src/chafa/.libs/*chafa* libs/macos"
-
 ]
 
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
