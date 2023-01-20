@@ -1,5 +1,7 @@
 <div align="center" >
+  <p>&nbsp;</p>
   <img width=500 alt="chafa.py" src="https://github.com/GuardKenzie/chafa.py/blob/main/img/logo.svg?raw=true">
+  <p>&nbsp;</p>
   <p>
     <em>The snakes don't bite! (I think...)</em>
   </p>
@@ -94,21 +96,11 @@ pip install chafa.py
 
 ### From source
 
-If you want, you can install and play around with this package by cloning the repo and building it yourself
-
-```
-python -m build
-```
-
-in the root of the repository. This will build a distribution file in a new folder: `dist/` called something like `chafa_py-[version].gz`. You can then install this file with pip by running
-
-```
-pip install ./dist/chafa_py-[version].tar.gz
-```
+There are instructions on building chafa.py from source on Windows or Linux in [the docs](https://chafapy.mage.black/usage/installation.html#from-source)
 
 ### Dependencies
 
 - [Chafa](https://hpjansson.org/chafa/download/)
 - [MagickWand](https://imagemagick.org/script/magick-wand.php)
 - [Hatchling](https://pypi.org/project/hatchling/) (for building) 
-- Python 3.5 or later
+- Python 3.8 or later
