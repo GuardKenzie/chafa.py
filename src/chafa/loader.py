@@ -41,7 +41,7 @@ def _get_library_name():
 
     if magick_home:
         file_type = ".so" if platform.system() == "Linux" else ".dylib"
-        libwand   = list(Path(magick_home).glob(f"*MagickWand*{file_type}"))
+        libwand   = list(Path(magick_home).glob(f"**/*MagickWand*{file_type}"))
 
         if len(libwand) > 0:
             libwand = libwand[0]
