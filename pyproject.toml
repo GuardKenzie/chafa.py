@@ -60,8 +60,7 @@ repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 [tool.cibuildwheel.macos]
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
-    "brew install make libtool pkg-config glib automake imagemagick tree",
-    "tree /usr/local/Cellar/imagemagick/",
+    "brew install make libtool pkg-config glib automake imagemagick",
     "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
     "git clone https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
