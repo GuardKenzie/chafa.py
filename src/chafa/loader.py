@@ -47,8 +47,7 @@ def _get_library_name():
             libwand = libwand[0]
 
             return libwand
-    else:
-        raise ImportError(f"{libwand}")
+
     # Last resort is to iterate over versions
     i = 0
     while i < len(versions) and not libwand:
