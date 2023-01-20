@@ -43,7 +43,7 @@ test-command  = "pytest {package}/tests"
 
 [tool.cibuildwheel.linux]
 before-all = [
-    "yum install -y libtool",
+    "yum install -y libtool ImageMagick-devel",
     "cd libs",
     "git clone https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
@@ -71,6 +71,10 @@ before-all = [
 ]
 
 test-command = "MAGICK_HOME=/usr/local/Cellar/imagemagick/ pytest {package}/tests"
+
+[tool.cibuildwheel.windows]
+
+test-command = "pytest {package}/tests/0_PIL_test.py"
 
 [tool.hatch.build]
 exclude = [
