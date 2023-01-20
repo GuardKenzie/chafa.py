@@ -48,7 +48,7 @@ def _get_library_name():
         if len(libwand) > 0:
             libwand = libwand[0]
 
-        return libwand
+            return libwand
 
     # Last resort is to iterate over versions
     i = 0
