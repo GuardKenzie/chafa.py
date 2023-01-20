@@ -49,7 +49,7 @@ class CustomBuildHook(BuildHookInterface):
         
         else:
             chafa_glob = Path("libs/macos").glob("*chafa*.dylib")
-            chafa_glob = list(chafa_glob)
+            chafa_glob = chafa_glob = [p for p in chafa_glob if not ".0" in p.name]
             
             print(chafa_glob)
 
