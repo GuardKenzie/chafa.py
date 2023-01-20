@@ -1,14 +1,8 @@
 name: Docs
 on: [push, pull_request, workflow_dispatch]
 jobs:
-  docs:
+  build_docs:
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -19,16 +13,26 @@ jobs:
         working-directory: docs
         run: |
           make clean html
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
           path: './docs/_build/html'
+
+  upload_docs:
+    needs: [build_docs]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        id: deployment
+        id:   deployment
         uses: actions/deploy-pages@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
