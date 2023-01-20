@@ -31,8 +31,15 @@ classifiers = [
 
 [tool.cibuildwheel]
 build = "cp3*-*"
-skip = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
+skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
+
 manylinux-x86_64-image = "manylinux2014"
+
+test-requires = "pytest"
+test-command  = "pytest {package}/tests"
+
+
+
 
 [tool.cibuildwheel.linux]
 before-all = [
@@ -53,7 +60,7 @@ repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 [tool.cibuildwheel.macos]
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"sudo $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
-    "brew install make libtool pkg-config glib automake",
+    "brew install make libtool pkg-config glib automake imagemagick",
     "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
     "git clone https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
@@ -62,6 +69,8 @@ before-all = [
     "cd ..",
     "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos"
 ]
+
+before-test = "export MAGICK_HOME=/opt/homebrew/opt/imagemagick/"
 
 
 [tool.hatch.build]
