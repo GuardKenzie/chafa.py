@@ -70,7 +70,7 @@ before-all = [
     "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos"
 ]
 
-before-test = "export MAGICK_HOME=/usr/local/Cellar/imagemagick/"
+before-test = "export MAGICK_HOME=/usr/local/Cellar/imagemagick/7.1.0-57/lib"
 
 [tool.hatch.build]
 exclude = [
