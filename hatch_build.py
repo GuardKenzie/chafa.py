@@ -48,19 +48,21 @@ class CustomBuildHook(BuildHookInterface):
                 build_data["force_include"][str(file)] = str(libs_folder / file.name)
         
         else:
-            chafa_glob = Path("libs/macos").glob("*chafa*")
+            chafa_glob = Path("libs/macos").glob("*chafa*.dylib")
             chafa_glob = list(chafa_glob)
+            
+            print(chafa_glob)
 
             if len(chafa_glob) > 1:
-                raise FileNotFoundError("Too many files matched the glob pattern 'libs/windows/*chafa*'")
+                raise FileNotFoundError("Too many files matched the glob pattern 'libs/macos/*chafa*.dylib'")
 
             elif len(chafa_glob) < 1:
-                raise FileNotFoundError("No file matched the glob pattern 'libs/windows/*chafa*'")
+                raise FileNotFoundError("No file matched the glob pattern 'libs/macos/*chafa*.dylib'")
 
             build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dylib")
             
             # Find everything else
-            not_chafa_glob = [p for p in Path("libs/windows").glob("*.dylib") if not "chafa" in p.name]
+            not_chafa_glob = [p for p in Path("libs/macos").glob("*.dylib") if not "chafa" in p.name]
 
             for file in not_chafa_glob:
                 build_data["force_include"][str(file)] = str(libs_folder / file.name)
