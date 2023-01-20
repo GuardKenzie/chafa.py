@@ -68,7 +68,8 @@ before-all = [
     "make",
     "cd ..",
     "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos",
-    "export MAGICK_HOME=/usr/local/Cellar/imagemagick/7.1.0-57/lib"
+    "export MAGICK_HOME=/usr/local/Cellar/imagemagick/7.1.0-57/lib",
+    "tree $MAGICK_HOME"
 ]
 
 [tool.hatch.build]
