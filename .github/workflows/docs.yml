@@ -27,6 +27,7 @@ jobs:
           # Upload entire repository
           path: './docs/_build/html'
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v1
         with:
