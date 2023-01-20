@@ -31,12 +31,19 @@ classifiers = [
 
 [tool.cibuildwheel]
 build = "cp3*-*"
-skip = ["*-manylinux_i686", "*-musllinux_*", "*-win32", "*macosx*"]
+skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
+
 manylinux-x86_64-image = "manylinux2014"
+
+test-requires = ["pytest", "Pillow", "numpy"]
+test-command  = "pytest {package}/tests"
+
+
+
 
 [tool.cibuildwheel.linux]
 before-all = [
-    "yum install -y libtool",
+    "yum install -y libtool ImageMagick-devel",
     "cd libs",
     "git clone https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
@@ -45,11 +52,29 @@ before-all = [
     "./autogen.sh --without-tools",
     "make",
     "cd ../",
-    "cp libchafa_src/chafa/.libs/*chafa.so linux/",
-    "cd .."
+    "cp libchafa_src/chafa/.libs/*chafa.so linux/"
 ]
 
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+
+[tool.cibuildwheel.macos]
+before-all = [
+    "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
+    "brew install make libtool pkg-config glib automake imagemagick",
+    "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
+    "git clone https://github.com/hpjansson/chafa libchafa_src",
+    "cd libchafa_src",
+    "./autogen.sh --without-tools",
+    "make",
+    "cd ..",
+    "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos"
+]
+
+test-command = "MAGICK_HOME=/usr/local/Cellar/imagemagick/ pytest {package}/tests"
+
+[tool.cibuildwheel.windows]
+
+test-command = "pytest {package}/tests/0_PIL_test.py"
 
 [tool.hatch.build]
 exclude = [

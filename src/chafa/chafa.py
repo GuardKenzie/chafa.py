@@ -3,23 +3,30 @@ from typing import Tuple, Sequence, Union # PEP 484
 from enum import IntEnum
 from collections.abc import Iterable
 import array
-
+from pathlib import Path
 import os
-import sys
+import platform
 
 #  CHAFA LETS GOOOOOOO!!!
-_library_path = os.path.dirname(__file__) + os.path.sep + "libs"
+_root_dir = Path(os.path.dirname(__file__)) 
 
 # Figure out which libraries we need to import
-if sys.platform == "linux":
+if platform.system() == "Linux":
     _lib_glib = "libglib-2.0.so"
-    _lib = _library_path + os.path.sep + "libchafa.so"
+    _lib      = str(_root_dir / "libs" / "libchafa.so")
 
-elif sys.platform == "win32":
+elif platform.system() == "Windows":
     os.add_dll_directory(os.path.dirname(__file__))
 
-    _lib_glib = _library_path + os.path.sep + "libglib-2.0-0.dll"
-    _lib = _library_path + os.path.sep + "libchafa.dll"
+    _lib_glib = str(_root_dir / "libs" / "libglib-2.0-0.dll")
+    _lib      = str(_root_dir / "libs" / "libchafa.dll")
+
+elif platform.system() == "Darwin":
+    _lib_glib = str(_root_dir / ".dylibs" / "libglib-2.0.0.dylib")
+    _lib      = str(_root_dir / "libs"    / "libchafa.dylib")
+
+else:
+    raise ImportError("You appear to be running on an unsupported system.")
 
 _Chafa = ctypes.CDLL(_lib)
 
