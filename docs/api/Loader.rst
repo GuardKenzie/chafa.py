@@ -6,6 +6,8 @@ The loader module
 
 The loader module depends on the `MagickWand`_ C-library. Make sure it is installed before using this module.
 
+On Linux and MacOS, the loader module will try to search for `MagickWand`_ in the folder set by the environment variable ``MAGICK_HOME``. This is substantially faster than the alternate method so it is recommended to set this environment variable before importing :py:class:`Loader`.
+ 
 ::
     
     from chafa.loader import Loader
