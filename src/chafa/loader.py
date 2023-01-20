@@ -35,8 +35,6 @@ def _get_library_name():
         "-6.Q16"
     ]
 
-    prefix = "lib" if platform.system() == "Darwin" else ""
-
     # Check if we have a MAGICK_HOME env set
     magick_home = os.environ.get("MAGICK_HOME")
 
@@ -53,7 +51,7 @@ def _get_library_name():
     # Last resort is to iterate over versions
     i = 0
     while i < len(versions) and not libwand:
-        libwand = ctypes.util.find_library(f"{prefix}MagickWand{versions[i]}")
+        libwand = ctypes.util.find_library(f"MagickWand{versions[i]}")
         i += 1
 
     return libwand
