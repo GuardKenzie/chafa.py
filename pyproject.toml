@@ -60,7 +60,7 @@ before-all = [
     "./autogen.sh --without-tools",
     "make",
     "cd ..",
-    "cp libchafa_src/chafa/.libs/*chafa* libs/macos"
+    "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos"
 ]
 
 
