@@ -35,7 +35,7 @@ skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
 
 manylinux-x86_64-image = "manylinux2014"
 
-test-requires = "pytest"
+test-requires = ["pytest", "Pillow", "numpy"]
 test-command  = "pytest {package}/tests"
 
 
