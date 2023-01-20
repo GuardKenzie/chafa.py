@@ -2,7 +2,7 @@ import ctypes.util
 import ctypes
 from pathlib import Path
 from chafa import PixelType
-import sys
+import platform
 import os
 
 def _get_library_name():
@@ -12,7 +12,7 @@ def _get_library_name():
     """
     libwand = None
 
-    if sys.platform == "win32":
+    if platform.system() == "Windows":
         import winreg
 
         # Query registry for imageMagick and add it to our dll path
@@ -22,29 +22,47 @@ def _get_library_name():
 
             libwand = "CORE_RL_MagickWand_"
 
-    else:
-        versions = [
-            "",
-            "-7",
-            "-7.Q8",
-            "-7.Q16",
-            "-6",
-            "-Q16",
-            "-Q8",
-            "-6.Q16"
-        ]
+        return libwand
 
-        i = 0
-        while i < len(versions) and not libwand:
-            libwand = ctypes.util.find_library(f"MagickWand{versions[i]}")
-            i += 1
+    versions = [
+        "",
+        "-7",
+        "-7.Q8",
+        "-7.Q16",
+        "-6",
+        "-Q16",
+        "-Q8",
+        "-6.Q16"
+    ]
+
+    prefix = "lib" if platform.system() == "Darwin" else ""
+
+    # Check if we have a MAGICK_HOME env set
+    magick_home = os.environ.get("MAGICK_HOME")
+
+
+    if magick_home:
+        file_type = ".so" if platform.system() == "Linux" else ".dylib"
+        libwand   = list(Path(magick_home).glob(f"*MagickWand*{file_type}"))
+
+        if len(libwand) > 0:
+            libwand = libwand[0]
+
+        return libwand
+
+    # Last resort is to iterate over versions
+    i = 0
+    while i < len(versions) and not libwand:
+        libwand = ctypes.util.find_library(f"{prefix}MagickWand{versions[i]}")
+        i += 1
 
     return libwand
+
 
 # Try to find library and raise ImportError if it isn't found
 _lib = _get_library_name()
 
-if _lib is None:
+if not _lib:
     raise ImportError("MagickWand library not found.")
 
 _MagickWand = ctypes.CDLL(_lib)
