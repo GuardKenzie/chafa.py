@@ -22,8 +22,8 @@ elif platform.system() == "Windows":
     _lib      = str(_root_dir / "libs" / "libchafa.dll")
 
 elif platform.system() == "Darwin":
-    _lib_glib = str(_root_dir / ".dylib" / "libglib-2.0.0.dylib")
-    _lib      = str(_root_dir / "libs"   / "libchafa.dylib")
+    _lib_glib = str(_root_dir / ".dylibs" / "libglib-2.0.0.dylib")
+    _lib      = str(_root_dir / "libs"    / "libchafa.dylib")
 
 else:
     raise ImportError("You appear to be running on an unsupported system.")
