@@ -80,7 +80,8 @@ test-command = "pytest {package}/tests/0_PIL_test.py"
 [tool.hatch.build]
 exclude = [
     ".github",
-    "wheelhouse"
+    "wheelhouse",
+    ".cirrus.yml"
 ]
 
 [tool.hatch.build.targets.wheel]
