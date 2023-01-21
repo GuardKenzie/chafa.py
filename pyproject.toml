@@ -33,7 +33,7 @@ classifiers = [
 [tool.cibuildwheel]
 build = "cp3*-*"
 skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
-test-skip = "{cp38,cp39,cp311}-macosx_arm64"
+test-skip = "*-macosx_arm64"
 
 manylinux-x86_64-image = "manylinux2014"
 
@@ -72,10 +72,9 @@ before-all = [
     "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos"
 ]
 
+
 [[tool.cibuildwheel.overrides]]
 select = "*macosx_arm64"
-
-test-skip = "{cp38,cp39,cp311}-macosx_arm64"
 
 before-all = [
     "brew install make libtool pkg-config glib automake imagemagick",
