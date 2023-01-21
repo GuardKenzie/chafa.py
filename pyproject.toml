@@ -90,6 +90,8 @@ before-all = [
     "python -m pip debug --verbose"
 ]
 
+test-command = "MAGICK_HOME=/opt/homebrew/Cellar/imagemagick pytest {package}/tests"
+
 
 [tool.cibuildwheel.windows]
 
