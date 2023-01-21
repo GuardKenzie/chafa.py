@@ -48,6 +48,8 @@ class CustomBuildHook(BuildHookInterface):
                 build_data["force_include"][str(file)] = str(libs_folder / file.name)
         
         else:
+            build_data["macos_max_compat"] = False
+            
             chafa_glob = Path("libs/macos").glob("*chafa*.dylib")
             chafa_glob = chafa_glob = [p for p in chafa_glob if not ".0" in p.name]
             
