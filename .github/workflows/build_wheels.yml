@@ -1,4 +1,4 @@
-name: 🎡 Build wheels
+name: 🔨 Build
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build_wheels:
-    name: 🔨 Build wheels on ${{ matrix.os }}
+    name: 🎡 ${{ matrix.os }} wheels
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
