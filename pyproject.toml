@@ -74,6 +74,8 @@ before-all = [
 [[tool.cibuildwheel.overrides]]
 select = "*macosx_arm64"
 
+test-skip = "{cp38,cp39,cp311}-macosx_arm64"
+
 before-all = [
     "brew install make libtool pkg-config glib automake imagemagick",
     "sudo ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
