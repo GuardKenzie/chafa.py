@@ -33,11 +33,12 @@ classifiers = [
 [tool.cibuildwheel]
 build = "cp3*-*"
 skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
+test-skip = "cp38-macosx*"
 
 manylinux-x86_64-image = "manylinux2014"
 
 test-requires = ["pytest", "Pillow", "numpy"]
-test-command  = "pytest {package}/tests"
+test-command  = "pytest -rP {package}/tests"
 
 
 
@@ -68,14 +69,33 @@ before-all = [
     "./autogen.sh --without-tools",
     "make",
     "cd ..",
+    "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos",
+    "python -m pip debug --verbose"
+]
+
+test-command = "MAGICK_HOME=/usr/local/Cellar/imagemagick/ pytest -rP {package}/tests"
+
+
+[[tool.cibuildwheel.overrides]]
+select = "*macosx_arm64"
+
+before-all = [
+    "brew install make libtool pkg-config glib automake imagemagick",
+    "sudo ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
+    "git clone https://github.com/hpjansson/chafa libchafa_src",
+    "cd libchafa_src",
+    "./autogen.sh --without-tools",
+    "make",
+    "cd ..",
     "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos"
 ]
 
-test-command = "MAGICK_HOME=/usr/local/Cellar/imagemagick/ pytest {package}/tests"
+test-command = "MAGICK_HOME=/opt/homebrew/Cellar/imagemagick pytest -rP {package}/tests"
+
 
 [tool.cibuildwheel.windows]
 
-test-command = "pytest {package}/tests/0_PIL_test.py"
+test-command = "pytest -rP {package}/tests/0_PIL_test.py"
 
 [tool.hatch.build]
 exclude = [
@@ -87,6 +107,7 @@ exclude = [
 [tool.hatch.build.targets.wheel]
 packages=["src/chafa"]
 strict-naming = false
+macos-max-compat = false
 
 [tool.hatch.build.targets.sdist]
 strict-naming = false

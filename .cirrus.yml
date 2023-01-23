@@ -7,7 +7,7 @@ build_and_store_wheels: &BUILD_AND_STORE_WHEELS
     path: "wheelhouse/*"
 
 macos_arm64_task:
-  name: Build macOS arm64 wheels.
+  name: 💪🍎 Build MacOS arm wheels.
   macos_instance:
     image: ghcr.io/cirruslabs/macos-monterey-xcode
 

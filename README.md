@@ -3,10 +3,10 @@
   <img width=500 alt="chafa.py" src="https://github.com/GuardKenzie/chafa.py/blob/main/img/logo.svg?raw=true">
   <p>&nbsp;</p>
   <p>
-    <em>The snakes don't bite! (I think...)</em>
+    <em>Terminal graphics with Python!</em>
   </p>
   <p>
-      <a href="https://chafapy.mage.black/">Docs</a> | <a href="https://chafapy.mage.black/usage/tutorial.html">Tutorial</a> | <a href="https://chafapy.mage.black/usage/examples.html">Examples</a>
+      <a href="https://chafapy.mage.black/">📙 Docs</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/tutorial.html">🌱 Tutorial</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/examples.html">💾 Examples</a>
   </p>
 </div>
 
@@ -23,9 +23,7 @@ images in the terminal. In Jansson's own words:
 > of pictures and animations in the comfort of your favorite terminal 
 > emulator. The power of ANSI X3.64 compels you!
 
-chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications!
-
-chafa.py tries to be very *pythonian* (I think that's a word) in the sense that most getter and setter functions are simply made to be attributes of Python objects.
+chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! The chafa.py library also tries to be very *pythonian* (I think that's a word) in the sense that most getter and setter functions are simply made to be attributes of Python objects.
 
 # Example
 
@@ -34,65 +32,63 @@ Here is a [picture of a cute snake](https://chafapy.mage.black/_images/snake.jpg
 <div align="center">
   <img src="https://github.com/GuardKenzie/chafa.py/blob/main/img/readme_snake.jpg?raw=true"></img>
 </div>
+<details>
+  <summary>✏️ Code</summary>
 
-And here is the code that printed this image. For more examples, head on over to the docs at [chafapy.mage.black](https://chafapy.mage.black).
+  For more examples, head on over to the docs at [chafapy.mage.black](https://chafapy.mage.black).
+  
+  ```python
+  from chafa import *
+  from chafa.loader import Loader
 
-```python
-from chafa import *
-from chafa.loader import Loader
+  # The font ratio of JetBrains Mono (width/height)
+  FONT_RATIO = 11/24
 
-# The font ratio of JetBrains Mono (width/height)
-FONT_RATIO = 11/24
+  # Create a canvas config
+  config = CanvasConfig()
 
-# Create a canvas config
-config = CanvasConfig()
+  # Configure the canvas geometry
+  config.width  = 40
+  config.height = 40
 
-# Configure the canvas geometry
-config.width  = 40
-config.height = 40
+  # Load the snake
+  image = Loader("./snake.jpg")
 
-# Load the snake
-image = Loader("./snake.jpg")
+  # Configure the ideal canvas geometry based on our FONT_RATIO
+  config.calc_canvas_geometry(
+     image.width,
+     image.height,
+     FONT_RATIO
+  )
 
-# Configure the ideal canvas geometry based on our FONT_RATIO
-config.calc_canvas_geometry(
-   image.width,
-   image.height,
-   FONT_RATIO
-)
+  # Init the canvas
+  canvas = Canvas(config)
 
-# Init the canvas
-canvas = Canvas(config)
+  # Draw to the canvs
+  canvas.draw_all_pixels(
+     image.pixel_type,
+     image.get_pixels(),
+     image.width, image.height,
+     image.rowstride
+  )
 
-# Draw to the canvs
-canvas.draw_all_pixels(
-   image.pixel_type,
-   image.get_pixels(),
-   image.width, image.height,
-   image.rowstride
-)
+  # Print the output
+  output = canvas.print()
 
-# Print the output
-output = canvas.print()
-
-print(output.decode())
-```
-
-
-# How do I get it?
-
-First, you will need to [install chafa](https://hpjansson.org/chafa/download/). This should be fairly straight forward since chafa packages are available for most linux distributions.
-
-If you want to use the included Loader class to load images for using with chafa.py, you will also need the [MagickWand](https://imagemagick.org/script/magick-wand.php) C-library.
+  print(output.decode())
+  ```
+</details>
 
 
-### From PyPi
+# Where can I get it?
 
-Chafa.py is available on PyPi. You can install it by running
+Chafa.py is available on [PyPi](https://pypi.org/project/chafa.py/). You can install it by running
 
 ```
 pip install chafa.py
 ```
+
+If you want to use the included Loader class to load images, you will also need to install [MagickWand](https://imagemagick.org/script/magick-wand.php).
 
 ### From source
 
@@ -104,3 +100,9 @@ There are instructions on building chafa.py from source on Windows or Linux in [
 - [MagickWand](https://imagemagick.org/script/magick-wand.php)
 - [Hatchling](https://pypi.org/project/hatchling/) (for building) 
 - Python 3.8 or later
+
+
+<details>
+<summary>📬 P.S. The snakes don't bite <em>(I think...)</em></summary>
+    🐍🐍🐍🐍🐍
+</details> 
