@@ -12,6 +12,8 @@
 
 # What is this?
 
+Have you ever wanted to display an image your TUI Python application? Well, now you can!
+
 [Chafa](https://hpjansson.org/chafa/) is a wonderful command-line utility, 
 created by [Hans Petter Jansson](https://hpjansson.org/), for visualizing 
 images in the terminal. In Jansson's own words:
@@ -23,13 +25,13 @@ images in the terminal. In Jansson's own words:
 > of pictures and animations in the comfort of your favorite terminal 
 > emulator. The power of ANSI X3.64 compels you!
 
-chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! The chafa.py library also tries to be very *pythonian* (I think that's a word) in the sense that most getter and setter functions are simply made to be attributes of Python objects.
+chafa.py is a python wrapper for the chafa library so you can use rad graphics in your cool Python applications! The chafa.py library tries to be intuitive and aims to produce very readable code.
 
 ### Features include:
 
 - ⚡ Modern and intuitive Python API
 - 📖 Extensive [documentation](https://chafapy.mage.black) and a [tutorial](https://chafapy.mage.black/usage/tutorial.html)
-- 📟 Support for (almost) any terminal emulator
+- 📟 Generate text based approximations of images in (almost) any terminal emulator
 - [6️⃣ Sixels](https://www.arewesixelyet.com/), [😸 Kitty](https://sw.kovidgoyal.net/kitty/graphics-protocol/) and [🍎 ITerm2](https://iterm2.com/documentation-images.html) image protocols support
 - 🐧 Linux, 🍎 MacOS (x86 and ARM), 🪟 Windows support
 
@@ -99,15 +101,9 @@ pip install chafa.py
 
 If you want to use the included Loader class to load images, you will also need to install [MagickWand](https://imagemagick.org/script/magick-wand.php).
 
-### From source
-
-There are instructions on building chafa.py from source on Windows or Linux in [the docs](https://chafapy.mage.black/usage/installation.html#from-source)
-
 ### Dependencies
 
-- [Chafa](https://hpjansson.org/chafa/download/)
 - [MagickWand](https://imagemagick.org/script/magick-wand.php)
-- [Hatchling](https://pypi.org/project/hatchling/) (for building) 
 - Python 3.8 or later
 
 
