@@ -9,6 +9,7 @@
 Index
 =====
 
+Have you ever wanted to display an image your TUI Python application? Well, now you can; with chafa.py!
 
 `Chafa <https://hpjansson.org/chafa/>`_ is a wonderful command-line utility, created by `Hans Petter Jansson`_, for visualizing images in the terminal. In Jansson's own words:
    
@@ -16,7 +17,19 @@ Index
 
    The premier UX of the 21st century just got a little better: With ``chafa``, you can now view very, very reasonable approximations of pictures and animations in the comfort of your favorite terminal emulator. The power of ANSI X3.64 compels you!
 
-chafa.py is a python wrapper for the chafa library so you can use rad graphics in your (undoubtedly pretty cool) Python applications! Not convinced? Here's a picture of a cute snake rendered to text using chafa.py and beamed into your visual cortex through the power of html and css:
+chafa.py is a python wrapper for the chafa library so you can use rad graphics in your cool Python applications! The chafa.py library tries to be intuitive and aims to produce very readable code.
+
+Features include
+----------------
+
+- ⚡ Modern and intuitive Python API
+- 📖 Extensive documentation and a `tutorial <https://chafapy.mage.black/usage/tutorial.html>`_
+- 📟 Generate text based approximations of images in (almost) any terminal emulator
+- `6️⃣ Sixels <https://www.arewesixelyet.com/>`_, `😸 Kitty <https://sw.kovidgoyal.net/kitty/graphics-protocol/>`_ and `🍎 ITerm2 <https://iterm2.com/documentation-images.html>`_ image protocols support
+- 🐧 Linux, 🍎 MacOS (x86 and ARM), 🪟 Windows support
+
+
+Not convinced? Here's a :download:`picture of a cute snake <usage/snake.jpg>` rendered to text using chafa.py and beamed into your visual cortex through the power of html and css:
 
 .. raw:: html
    :file: _chafa_img/snake.html
@@ -24,7 +37,7 @@ chafa.py is a python wrapper for the chafa library so you can use rad graphics i
 
 chafa.py tries to be very *pythonian* (I think that's a word) in the sense that most getter and setter functions are simply made to be attributes of Python objects.
 
-Here is the program used to output the :download:`image <usage/snake.jpg>` you see above::
+Here is the program used to output the image you see above::
 
    from chafa import *
    from chafa.loader import Loader
