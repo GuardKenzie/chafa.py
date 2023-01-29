@@ -131,7 +131,7 @@ The `pyvips`_ library is another fast image manipulation library which can be us
     bands  = image.bands
 
     # Init the canvas
-    canvas = Canvas(config, term_info=term_info)
+    canvas = Canvas(config)
 
     # Draw to canvas
     canvas.draw_all_pixels(
