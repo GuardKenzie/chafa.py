@@ -22,11 +22,10 @@ chafa.py is a python wrapper for the chafa library so you can use rad graphics i
 Features include
 ----------------
 
-- ⚡ Modern and intuitive Python API
-- 📖 Extensive documentation and a `tutorial <https://chafapy.mage.black/usage/tutorial.html>`_
-- 📟 Generate text based approximations of images in (almost) any terminal emulator
-- `6️⃣ Sixels <https://www.arewesixelyet.com/>`_, `😸 Kitty <https://sw.kovidgoyal.net/kitty/graphics-protocol/>`_ and `🍎 ITerm2 <https://iterm2.com/documentation-images.html>`_ image protocols support
-- 🐧 Linux, 🍎 MacOS (x86 and ARM), 🪟 Windows support
+- Modern and intuitive Python API
+- Generate text based approximations of images in (almost) any terminal emulator
+- `Sixels <https://www.arewesixelyet.com/>`_, `Kitty <https://sw.kovidgoyal.net/kitty/graphics-protocol/>`_ and `ITerm2 <https://iterm2.com/documentation-images.html>`_ image protocols support
+- Linux, MacOS (x86 and ARM), Windows support
 
 
 Not convinced? Here's a :download:`picture of a cute snake <usage/snake.jpg>` rendered to text using chafa.py and beamed into your visual cortex through the power of html and css:
