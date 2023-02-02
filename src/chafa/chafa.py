@@ -1882,6 +1882,12 @@ class TermInfo():
             self.canvas_mode = canvas_mode
             self.pixel_mode = pixel_mode
 
+        def __repr__(self):
+            return f"TerminalCapabilities(canvas_mode={self.canvas_mode.name}, pixel_mode={self.pixel_mode.name})"
+
+        def __eq__(self, other):
+            return self.canvas_mode == other.canvas_mode and self.pixel_mode == other.pixel_mode
+
 
     def copy(self) -> 'TermInfo':
         """
