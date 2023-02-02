@@ -5,6 +5,8 @@ from collections.abc import Iterable
 import array
 from pathlib import Path
 import os
+import sys
+import termios
 import platform
 
 #  CHAFA LETS GOOOOOOO!!!
@@ -244,6 +246,57 @@ class TermSeq(IntEnum):
     CHAFA_TERM_SEQ_SET_COLOR_FGBG_8 = 54
 
     CHAFA_TERM_SEQ_MAX = 55
+
+
+
+def get_device_attributes():
+    """
+    A functino that returns an array containing the current
+    terminal's device attributes, fetched by reading the string
+    provided by emitting the ``\e[c`` control sequence. (See
+    `Xterm Control Sequences on invisible-island.net 
+    <https://invisible-island.net/xterm/ctlseqs/ctlseqs.html>_`.
+
+    :rtype: Tuple[int]
+    """
+
+    stdin_fileno = sys.stdin.fileno()
+
+    # Set up
+    old_term = termios.tcgetattr(stdin_fileno)
+    new_term = termios.tcgetattr(stdin_fileno)
+
+    # disable canonical mode and disable echo input
+    new_lflags  = ~(termios.ICANON | termios.ECHO) 
+    new_term[3] = new_lflags
+
+    # Emit sequence
+    sys.stdout.write("\033[c")
+    sys.stdout.flush()
+    
+    termios.tcsetattr(stdin_fileno, termios.TCSANOW, new_term)
+
+    # Read the sequence
+    char = sys.stdin.read(1)
+    attributes = []
+
+    while char != "c":
+        attributes.append(char)
+        char = sys.stdin.read(1)
+
+    # Set terminal back to normal
+    termios.tcsetattr(stdin_fileno, termios.TCSANOW, old_term)
+
+    # Split attributes by ; and turn them into integers
+    attributes = "".join(attributes)
+
+    if len(attributes) > 3:
+        attributes = tuple([int(i) for i in attributes[3:-1].split(";")])
+
+    else:
+        attributes = tuple()
+
+    return attributes
 
 
 class ReadOnlySymbolMap():
@@ -1944,9 +1997,20 @@ class TermInfo():
 
         # === Pixel mode ===
 
+        # Also check device attributes if we are on xterm
+        terminal = os.environ.get("TERM", "")
+        xterm_sixels = False
+
+        if "xterm" in terminal:
+            attributes = get_device_attributes()
+
+            xterm_sixels = 4 in attributes
+
         # Check for sixels
         sixel_capable = self.have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_SIXELS) \
-            and         self.have_seq(TermSeq.CHAFA_TERM_SEQ_END_SIXELS)
+            and         self.have_seq(TermSeq.CHAFA_TERM_SEQ_END_SIXELS) \
+
+        sixel_capable = sixel_capable or xterm_sixels
 
         # Check for kitty
         kitty_capable = self.have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_KITTY_IMMEDIATE_IMAGE_V1)

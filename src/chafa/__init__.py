@@ -14,4 +14,4 @@ from .chafa import TermDb
 from .chafa import TermInfo
 from .chafa import Canvas
 
-
+from .chafa import get_device_attributes
