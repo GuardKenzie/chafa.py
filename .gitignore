@@ -134,4 +134,4 @@ dmypy.json
 # Build stuff to ignore
 libs/**.dll
 libs/**.so
-wheelhouse/*.whl
+wheelhouse/*
