@@ -6,7 +6,6 @@ import array
 from pathlib import Path
 import os
 import sys
-import termios
 import platform
 
 #  CHAFA LETS GOOOOOOO!!!
@@ -14,6 +13,7 @@ _root_dir = Path(os.path.dirname(__file__))
 
 # Figure out which libraries we need to import
 if platform.system() == "Linux":
+    import termios
     _lib_glib = "libglib-2.0.so"
     _lib      = str(_root_dir / "libs" / "libchafa.so")
 
@@ -259,6 +259,9 @@ def get_device_attributes():
 
     :rtype: Tuple[int]
     """
+    
+    if platform.system() != "Linux":
+        return []
 
     stdin_fileno = sys.stdin.fileno()
 
@@ -2007,7 +2010,7 @@ class TermInfo():
         terminal = os.environ.get("TERM", "")
         xterm_sixels = False
 
-        if "xterm" in terminal:
+        if "xterm" in terminal and platform.system() == "Linux":
             attributes = get_device_attributes()
 
             xterm_sixels = 4 in attributes
