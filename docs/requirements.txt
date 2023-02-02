@@ -1,0 +1,3 @@
+sphinxemoji
+sphinx-toolbox
+sphinxcontrib-prettyspecialmethods
