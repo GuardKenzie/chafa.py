@@ -4,6 +4,7 @@ from .chafa import CanvasMode
 from .chafa import PixelType
 from .chafa import SymbolTags
 from .chafa import Optimizations
+from .chafa import TermSeq
 
 from .chafa import SymbolMap
 from .chafa import ReadOnlySymbolMap
