@@ -2544,15 +2544,20 @@ class CanvasInspector:
         height = canvas_config.height
 
         # Check if x and y are within bounds
-
-        if x >= width or y >= height:
+        if (
+            (x >= width or y >= height)
+            or (x < 0 and width  < abs(x)) # If we have a negative we need to make sure it 
+            or (y < 0 and height < abs(y)) # is not going past the start of the canvas
+        ):
             raise ValueError(
                 f"Coordinates ({x},{y}) are out of bounds for canvas with dimensions {width}x{height}."
             )
         
         self._canvas = canvas
-        self._x = x
-        self._y = y
+
+        # Use modulo to cast negatives into positives
+        self._x = x % width
+        self._y = y % height
 
 
     # === FG COLOR ===
