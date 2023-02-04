@@ -7,6 +7,7 @@ from pathlib import Path
 import os
 import sys
 import platform
+from io import UnsupportedOperation
 
 #  CHAFA LETS GOOOOOOO!!!
 _root_dir = Path(os.path.dirname(__file__)) 
@@ -261,9 +262,13 @@ def get_device_attributes():
     """
     
     if platform.system() != "Linux":
-        return []
+        return tuple()
 
-    stdin_fileno = sys.stdin.fileno()
+    try:
+        stdin_fileno = sys.stdin.fileno()
+
+    except UnsupportedOperation:
+        return tuple()
 
     # Set up
     old_term = termios.tcgetattr(stdin_fileno)
@@ -291,10 +296,9 @@ def get_device_attributes():
     termios.tcsetattr(stdin_fileno, termios.TCSANOW, old_term)
 
     # Split attributes by ; and turn them into integers
-    attributes = "".join(attributes)
-
-    if len(attributes) > 3:
-        attributes = tuple([int(i) for i in attributes[3:-1].split(";")])
+    if len(attributes) >= 4:
+        attributes = "".join(attributes[3:])
+        attributes = tuple([int(i) for i in attributes.split(";")])
 
     else:
         attributes = tuple()
