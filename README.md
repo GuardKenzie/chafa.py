@@ -8,6 +8,19 @@
   <p>
       <a href="https://chafapy.mage.black/">📙 Docs</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/tutorial.html">🌱 Tutorial</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/examples.html">💾 Examples</a>
   </p>
+ <p>—</p>
+  <p>
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/chafa.py?label=version&style=flat-square">
+    &nbsp;
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/GuardKenzie/chafa.py/build_wheels.yml?style=flat-square">
+    &nbsp;
+    <img alt="Sneks" src="https://img.shields.io/badge/snakes%20go-sssss-cbd446?style=flat-square">  
+  </p>
+  <p>
+    <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/chafa.py?style=flat-square">
+    &nbsp;
+    <img alt="GitHub commits since latest release (by SemVer)" src="https://img.shields.io/github/commits-since/GuardKenzie/chafa.py/latest?style=flat-square">
+  </p>
 </div>
 
 # What is this?
