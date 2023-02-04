@@ -819,13 +819,8 @@ class ReadOnlyCanvasConfig:
         # Get the color
         color = self._get_fg_color()
 
-        # Convert to bytes
-        bit_length = 3 
-        order      = "big"
-        
-        color = color.to_bytes(bit_length, order)
-
-        return (color[0], color[1], color[2])
+        # convert to tuple
+        return CanvasInspector.packed_8bit_to_tuple(color)
 
     
     @property
@@ -843,13 +838,8 @@ class ReadOnlyCanvasConfig:
         # Get the color
         color = self._get_bg_color()
 
-        # Convert to bytes
-        bit_length = 3
-        order      = "big"
-        
-        color = color.to_bytes(bit_length, order)
-
-        return (color[0], color[1], color[2])
+        # convert to tuple
+        return CanvasInspector.packed_8bit_to_tuple(color)
 
 
     def get_geometry(self) -> Tuple[int, int]:
@@ -1347,17 +1337,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         if len(fg_color) != 3:
             raise ValueError("fg_color must have exactly 3 values")
 
-        offset = 1
-        color  = 0
-
-        for col in fg_color[::-1]:
-            col = int(col)
-
-            if 255 < col or col < 0:
-                raise ValueError("Each value of fg_color must be in the range [0,255]")
-            
-            color  += offset * col
-            offset *= 16**2
+        color  = CanvasInspector.tuple_to_packed_8bit(fg_color)
 
         self._set_fg_color(color)
 
@@ -1374,17 +1354,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         if len(bg_color) != 3:
             raise ValueError("bg_color must have exactly 3 values")
 
-        offset = 1
-        color  = 0
-
-        for col in bg_color[::-1]:
-            col = int(col)
-
-            if 255 < col or col < 0:
-                raise ValueError("Each value of bg_color must be in the range [0,255]")
-            
-            color  += offset * col
-            offset *= 16**2
+        color = CanvasInspector.tuple_to_packed_8bit(bg_color)
 
         self._set_bg_color(color)
 
@@ -2338,6 +2308,35 @@ class Canvas:
         return fg_color.contents.value, bg_color.contents.value
 
 
+    def _get_raw_colors_at(self, x: int, y:int) -> Tuple[int, int]:
+        """
+        Wrapper for chafa_canvas_get_raw_colors_at
+        """
+
+        # Set types
+        _Chafa.chafa_canvas_get_raw_colors_at.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int)
+        ]
+
+        # Define storage
+        bg_color = ctypes.pointer(ctypes.c_int(0))
+        fg_color = ctypes.pointer(ctypes.c_int(0))
+
+        # Get colors
+        _Chafa.chafa_canvas_get_raw_colors_at(
+            self._canvas,
+            x, y,
+            fg_color,
+            bg_color
+        )
+
+        return fg_color.contents.value, bg_color.contents.value
+
+
     def _set_colors_at(self, x:int, y: int, fg: int, bg: int):
         """
         Wrapper for chafa_canvas_set_colors_at
@@ -2359,6 +2358,30 @@ class Canvas:
             fg,
             bg
         )
+
+
+    def _set_raw_colors_at(self, x:int, y: int, fg: int, bg: int):
+        """
+        Wrapper for chafa_canvas_set_raw_colors_at
+        """
+
+        # Set types
+        _Chafa.chafa_canvas_set_raw_colors_at.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.c_int
+        ]
+
+        # Set colors
+        _Chafa.chafa_canvas_set_raw_colors_at(
+            self._canvas,
+            x, y,
+            fg,
+            bg
+        )
+
 
     def draw_all_pixels(
         self, 
@@ -2534,6 +2557,49 @@ class CanvasInspector:
 
     # === FG COLOR ===
 
+    @staticmethod
+    def packed_8bit_to_tuple(color: int) -> Tuple[int, int, int]:
+        """
+        A static method that takes an integer representing a packed
+        8bit RGB value and converts it into a tuple (R,G,B)
+
+        :rtype: tuple[int, int, int]
+        """
+
+        # Convert to bytes
+        bit_length = 3
+        order      = "big"
+        
+        color = color.to_bytes(bit_length, order)
+
+        return (color[0], color[1], color[2])
+
+    @staticmethod
+    def tuple_to_packed_8bit(color_tuple: Tuple[int, int, int]) -> int:
+        """
+        A static method that takes a tuple (R,G,B) representing a color
+        and converts it into a packed 8bit RGB value represented by an
+        integer.
+
+        :rtype: tuple[int, int, int]
+        """
+
+        offset = 1
+        color  = 0
+
+        # Convert color to packed bytes
+        for col in color_tuple[::-1]:
+            col = int(col)
+
+            if 255 < col or col < 0:
+                raise ValueError("Each value of color must be in the range [0,255]")
+            
+            color  += offset * col
+            offset *= 16**2
+
+        return color
+        
+
     @property
     def fg_color(self) -> Union[Tuple[int, int, int], None]:
         """
@@ -2561,14 +2627,10 @@ class CanvasInspector:
         if color == -1:
             return None
 
-        # Convert to bytes
-        bit_length = 3 
-        order      = "big"
-        
-        color = color.to_bytes(bit_length, order)
+        # convert to tuple
+        return self.packed_8bit_to_tuple(color)
 
-        return (color[0], color[1], color[2])
-    
+
     @fg_color.setter
     def fg_color(self, fg_color: Tuple[int, int, int]):
         # Remove foreground if we get none
@@ -2586,18 +2648,7 @@ class CanvasInspector:
         if len(fg_color) != 3:
             raise ValueError("fg_color must have exactly 3 values")
 
-        offset = 1
-        color  = 0
-
-        # Convert color to packed bytes
-        for col in fg_color[::-1]:
-            col = int(col)
-
-            if 255 < col or col < 0:
-                raise ValueError("Each value of fg_color must be in the range [0,255]")
-            
-            color  += offset * col
-            offset *= 16**2
+        color = self.tuple_to_packed_8bit(fg_color)
 
         bg_color = self.bg_color
 
@@ -2605,9 +2656,43 @@ class CanvasInspector:
             bg_color = -1
 
         else:
-            bg_color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+            bg_color = self.tuple_to_packed_8bit(bg_color)
 
         self._canvas._set_colors_at(self.x, self.y, color, bg_color)
+
+    @property
+    def raw_fg_color(self) -> Union[Tuple[int, int, int], int, None]:
+        """
+        :type: tuple[int, int, int] | None
+
+        The foreground color at the inspector's pixel. The color 
+        is represented as None if transparent or a tuple of 3 
+        integers in range [0,255], representing the color in 
+        (R, G, B) format.
+
+        For double-width characters, both cells will be set to the 
+        same color.
+
+        :raises TypeError:  if fg_color is not an :py:class:`Iterable` 
+            other than :py:class:`str`.
+        :raises ValueError: if fg_color is not None and does not contain 
+            exactly 3 values. 
+        :raises ValueError: if fg_color contains a value greater than 255 
+            or less than 0.
+        """
+        # Get the color at pixel
+        color = self._canvas._get_raw_colors_at(self.x, self.y)[0]
+
+        return int(color)
+
+
+    @raw_fg_color.setter
+    def raw_fg_color(self, fg_color: int):
+
+        if fg_color < -1 or fg_color > 0xFFFFFF:
+            raise ValueError("color must be in range [-1, 0xFFFFFF]")
+
+        self._canvas._set_raw_colors_at(self.x, self.y, fg_color, self.raw_bg_color)
 
 
     # === BG COLOR ===
@@ -2636,13 +2721,8 @@ class CanvasInspector:
         if color == -1:
             return None
 
-        # Convert to bytes
-        bit_length = 3 
-        order      = "big"
-        
-        color = color.to_bytes(bit_length, order)
-
-        return (color[0], color[1], color[2])
+        # convert to tuple
+        return self.packed_8bit_to_tuple(color)
     
     @bg_color.setter
     def bg_color(self, bg_color: Tuple[int, int, int]):
@@ -2662,18 +2742,7 @@ class CanvasInspector:
         if len(bg_color) != 3:
             raise ValueError("bg_color must have exactly 3 values")
 
-        offset = 1
-        color  = 0
-
-        # Convert color to packed bytes
-        for col in bg_color[::-1]:
-            col = int(col)
-
-            if 255 < col or col < 0:
-                raise ValueError("Each value of bg_color must be in the range [0,255]")
-            
-            color  += offset * col
-            offset *= 16**2
+        color  = self.tuple_to_packed_8bit(bg_color)
 
         fg_color = self.fg_color
 
@@ -2681,10 +2750,43 @@ class CanvasInspector:
             fg_color = -1
 
         else:
-            fg_color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+            fg_color = self.tuple_to_packed_8bit(fg_color)
 
         self._canvas._set_colors_at(self.x, self.y, fg_color, color)
 
+    @property
+    def raw_bg_color(self) -> Union[int, None]:
+        """
+        :type: tuple[int, int, int] | None
+
+        The foreground color at the inspector's pixel. The color 
+        is represented as None if transparent or a tuple of 3 
+        integers in range [0,255], representing the color in 
+        (R, G, B) format.
+
+        For double-width characters, both cells will be set to the 
+        same color.
+
+        :raises TypeError:  if fg_color is not an :py:class:`Iterable` 
+            other than :py:class:`str`.
+        :raises ValueError: if fg_color is not None and does not contain 
+            exactly 3 values. 
+        :raises ValueError: if fg_color contains a value greater than 255 
+            or less than 0.
+        """
+        # Get the color at pixel
+        color = self._canvas._get_raw_colors_at(self.x, self.y)[1]
+
+        return int(color)
+
+
+    @raw_bg_color.setter
+    def raw_bg_color(self, bg_color: int):
+
+        if bg_color < -1 or bg_color > 0xFFFFFF:
+            raise ValueError("color must be in range [-1, 0xFFFFFF]")
+
+        self._canvas._set_raw_colors_at(self.x, self.y, self.raw_fg_color, bg_color)
 
     # === CHAR ===
 
@@ -2775,7 +2877,7 @@ class CanvasInspector:
             fg_color = -1
 
         else:
-            fg_color = fg_color[0] * 16**4 + fg_color[1] * 16 ** 2 + fg_color[2]
+            fg_color = self.tuple_to_packed_8bit(fg_color)
 
         self._canvas._set_colors_at(self.x, self.y, fg_color, -1)
 
@@ -2791,6 +2893,6 @@ class CanvasInspector:
             bg_color = -1
 
         else:
-            bg_color = bg_color[0] * 16**4 + bg_color[1] * 16 ** 2 + bg_color[2]
+            bg_color = self.tuple_to_packed_8bit(bg_color)
 
         self._canvas._set_colors_at(self.x, self.y, -1, bg_color)
