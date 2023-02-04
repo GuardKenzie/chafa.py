@@ -5,6 +5,8 @@ from .chafa import PixelType
 from .chafa import SymbolTags
 from .chafa import Optimizations
 from .chafa import TermSeq
+from .chafa import ColorSpace
+from .chafa import ColorExtractor
 
 from .chafa import SymbolMap
 from .chafa import ReadOnlySymbolMap
