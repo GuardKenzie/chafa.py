@@ -36,14 +36,7 @@ Traceback (most recent call list):
 ```
 
 ## System info
-Please post the output of the following commands
-
-**Chafa.py version**:
-```
-pip show chafa.py | grep Version
-```
-
-**Chafa version**
-```
-chafa --version
-```
+Please provide the following details:
+- **OS**:
+- **Chafa.py version**: (just the line that includes Version in `pip show chafa.py`)
+- **Python version**: (Provided by `python --version`)
