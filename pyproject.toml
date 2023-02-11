@@ -95,7 +95,7 @@ test-command = "MAGICK_HOME=/opt/homebrew/Cellar/imagemagick pytest -rP {package
 
 [tool.cibuildwheel.windows]
 
-test-command = "pytest -rP {package}/tests/0_PIL_test.py"
+test-command = "pytest -rP {package}/tests/0_PIL_test.py {package}/tests/2_raw_test.py {package}/tests/3_capabilities_test.py"
 
 [tool.hatch.build]
 exclude = [
