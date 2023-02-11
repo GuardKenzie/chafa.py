@@ -2,6 +2,8 @@ from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 import sys
 from pathlib import Path
 
+def print_build_error(msg):
+    print(f"\033[91m!!!-->\033[0m \033[1m{msg}\033[0m \033[91m<--!!!\033[0m")
 
 class CustomBuildHook(BuildHookInterface):
     
@@ -16,14 +18,13 @@ class CustomBuildHook(BuildHookInterface):
             chafa_glob = list(Path("libs/linux").glob("*chafa*.so"))
 
             if len(chafa_glob) > 1:
-                raise FileNotFoundError("Too many files matched the glob pattern 'libs/linux/*chafa*.dll'")
+                print_build_error("Too many files matched the glob pattern 'libs/linux/*chafa*.so'")
 
             elif len(chafa_glob) < 1:
-                raise FileNotFoundError("No file matched the glob pattern 'libs/linux/*chafa*.dll'")
-
-            build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dll")
-
-            build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.so")
+                print_build_error("No file matched the glob pattern 'libs/linux/*chafa*.so'")
+            
+            else:
+                build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.so")
 
 
         elif sys.platform == "win32":
@@ -34,18 +35,19 @@ class CustomBuildHook(BuildHookInterface):
             chafa_glob = list(chafa_glob)
 
             if len(chafa_glob) > 1:
-                raise FileNotFoundError("Too many files matched the glob pattern 'libs/windows/*chafa*.dll'")
+                print_build_error("Too many files matched the glob pattern 'libs/windows/*chafa*.dll'")
 
             elif len(chafa_glob) < 1:
-                raise FileNotFoundError("No file matched the glob pattern 'libs/windows/*chafa*.dll'")
+                print_build_error("No file matched the glob pattern 'libs/windows/*chafa*.dll'")
 
-            build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dll")
-            
-            # Find everything else
-            not_chafa_glob = [p for p in Path("libs/windows").glob("*.dll") if not "chafa" in p.name]
+            else:
+                build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dll")
+                
+                # Find everything else
+                not_chafa_glob = [p for p in Path("libs/windows").glob("*.dll") if not "chafa" in p.name]
 
-            for file in not_chafa_glob:
-                build_data["force_include"][str(file)] = str(libs_folder / file.name)
+                for file in not_chafa_glob:
+                    build_data["force_include"][str(file)] = str(libs_folder / file.name)
         
         else:
             chafa_glob = Path("libs/macos").glob("*chafa*.dylib")
@@ -54,18 +56,18 @@ class CustomBuildHook(BuildHookInterface):
             print(chafa_glob)
 
             if len(chafa_glob) > 1:
-                raise FileNotFoundError("Too many files matched the glob pattern 'libs/macos/*chafa*.dylib'")
+                print_build_error("Too many files matched the glob pattern 'libs/macos/*chafa*.dylib'")
 
             elif len(chafa_glob) < 1:
-                raise FileNotFoundError("No file matched the glob pattern 'libs/macos/*chafa*.dylib'")
+                print_build_error("No file matched the glob pattern 'libs/macos/*chafa*.dylib'")
+            else:
+                build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dylib")
+                
+                # Find everything else
+                not_chafa_glob = [p for p in Path("libs/macos").glob("*.dylib") if not "chafa" in p.name]
 
-            build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dylib")
-            
-            # Find everything else
-            not_chafa_glob = [p for p in Path("libs/macos").glob("*.dylib") if not "chafa" in p.name]
-
-            for file in not_chafa_glob:
-                build_data["force_include"][str(file)] = str(libs_folder / file.name)
+                for file in not_chafa_glob:
+                    build_data["force_include"][str(file)] = str(libs_folder / file.name)
 
 
 
