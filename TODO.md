@@ -19,7 +19,7 @@
 - [x] Peeking at config
 - [x] inspect characters at (x, y)
 - [x] inspect color at (x, y)
-- [ ] raw color
+- [x] raw color
 - [x] **DOCS**
 - [x] What argument type should `draw_pixels` accept for the pixel array? <- This is pretty much done
     1. array (pretty fast)
@@ -72,6 +72,6 @@
 
 - [x] Docs for the loader
 
-- [ ] Write a tutorial
+- [x] Write a tutorial
 - [x] Add some examples
 - [x] Installation
