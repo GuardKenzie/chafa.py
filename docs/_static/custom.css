@@ -143,6 +143,8 @@ div.sphinxsidebar input[type="submit"] {
     line-height: 1em;
 }
 
+div.admonition .pre,
+div.admonition code,
 div.admonition code.xref, code.xref {
     background-color: inherit;
     color: var(--fg);

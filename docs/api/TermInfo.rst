@@ -14,6 +14,8 @@ Terminal Info
     print("CanvasMode:", capabilities.canvas_mode)
     print("PixelMode: ", capabilities.pixel_mode)
 
+
+
 TermInfo
 --------
 
@@ -80,3 +82,16 @@ This class is just a simple dataclass representing the capabilities of a termina
     .. py:attribute:: pixel_mode
 
         :type: PixelMode
+
+    .. py:method:: __eq__(other)
+
+        Returns ``True`` if both of
+        
+        #. ``other.canvas_mode == this.canvas_mode``
+        #. ``other.pixel_mode == this.pixel_mode``
+        
+        are ``True``. Returns ``False`` otherwise.
+
+        :rtype: bool
+
+    .. versionadded:: 1.1.0

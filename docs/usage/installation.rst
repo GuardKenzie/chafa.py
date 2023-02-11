@@ -6,7 +6,7 @@ Installation
 
 Here are some installation instructions for getting going. It is preferred to install from `PyPi`_, however, you are welcome to build from source if you so desire.
 
-Currently only Linux, Windows 64-bit and Intel MacOS systems are supported.
+Currently only Linux, Windows 64-bit and MacOS systems (Intel and ARM) are supported.
 
 For all methods, if you want to use the included :py:class:`Loader` class to load images, you will also need the `MagickWand <https://imagemagick.org/script/magick-wand.php>`_ C-library. The installation of MagickWand is fairly straight forward.
 
@@ -28,65 +28,29 @@ If you are using MacOS, make sure to set your ``MAGICK_HOME`` environment variab
 From source
 ===========
 
-Building from source requires the `hatchling <https://pypi.org/project/hatchling/>`_ build tool. To build chafa.py from source on Linux or Windows, do the following:
+When building from source, make sure you have installed the following:
 
-Linux
------
+- `Chafa <https://hpjansson.org/chafa/download/>`_, specifically that you have ``libchafa`` somewhere on your path
+- `Hatchling <https://pypi.org/project/hatchling/>`_
+- ``glib-2.0``
 
-#. Navigate to the root of the `chafa.py repository`_ and run
+To install from source, clone `chafa.py repository`_ and run
 
-   ::
+::
 
-        git clone https://github.com/hpjansson/chafa libs/libchafa_src
+    hatchling build -t wheel
 
+When the build is finished (you might see some warnings, they are safe to ignore), there should be a ``.whl`` file in a new ``dist/`` folder. To install that, run
 
-#. Navigate to the newly cloned chafa source and run
-
-   ::
-
-        ./autogen.sh --without-tools
-        make
-
-#. Navigate back to the root of the chafa.py repository and run
-
-   ::
-
-        cp libs/libchafa_src/chafa/.libs/libchafa.so libs/linux
-
-
-#. You are now all set to build! Run
-
-   ::
-
-        hatchling build -t wheel
-
-
-#. There should now be a new ``.whl`` file in ``./dist``. Install that with
-   
-   ::
+::
     
-        pip install dist/chafa.py-[version]-[tags].whl
+    pip install dist/{filename}.whl
 
-   replacing the ``[version]`` and ``[tags]`` with the appropriate values.
+replacing ``{filename}`` with the appropriate file name.
 
-
-
-Windows
--------
-
-#. Navigate to the root of the `chafa.py repository`_ and run
-   ::
-
-        hatchling build -t wheel
-
-#. There should now be a new ``.whl`` file in ``./dist``. Install that with
-   
-   ::
+.. note::
     
-        pip install dist/chafa.py-[version]-[tags].whl
-
-   replacing the ``[version]`` and ``[tags]`` with the appropriate values.
-
+    When installing from source, you have to make sure ``libchafa`` and ``libglib-2.0`` are somewhere on your path so chafa.py can find and use them.
 
 Dependencies
 ============

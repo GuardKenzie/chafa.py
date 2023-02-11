@@ -181,6 +181,22 @@ You can think of the :py:class:`CanvasInspector` like a detective with a magnify
         :raises ValueError: if bg_color is not None and does not contain exactly 3 values. 
         :raises ValueError: if bg_color contains a value greater than 255 or less than 0.
 
+    .. py:property:: raw_fg_color
+        
+        :type: int
+
+        The raw foreground color at the inspector's pixel. The colors are -1 for transparency, a packed 8-bit RGB value (``0x00RRGGBB``) in truecolor mode, or the raw pen value (0-255) in indexed modes.
+        
+        .. versionadded:: 1.1.0
+
+    .. py:property:: raw_bg_color
+        
+        :type: int
+
+        The raw background color at the inspector's pixel. The colors are -1 for transparency, a packed 8-bit RGB value (``0x00RRGGBB``) in truecolor mode, or the raw pen value (0-255) in indexed modes.
+
+        .. versionadded:: 1.1.0
+
     .. py:property:: char
 
         :type: str
