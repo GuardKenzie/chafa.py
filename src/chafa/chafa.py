@@ -2711,24 +2711,14 @@ class CanvasInspector:
         self._canvas._set_colors_at(self.x, self.y, color, bg_color)
 
     @property
-    def raw_fg_color(self) -> Union[Tuple[int, int, int], int, None]:
+    def raw_fg_color(self) -> int:
         """
-        :type: tuple[int, int, int] | None
+        :type: int
 
-        The foreground color at the inspector's pixel. The color 
-        is represented as None if transparent or a tuple of 3 
-        integers in range [0,255], representing the color in 
-        (R, G, B) format.
-
-        For double-width characters, both cells will be set to the 
-        same color.
-
-        :raises TypeError:  if fg_color is not an :py:class:`Iterable` 
-            other than :py:class:`str`.
-        :raises ValueError: if fg_color is not None and does not contain 
-            exactly 3 values. 
-        :raises ValueError: if fg_color contains a value greater than 255 
-            or less than 0.
+        The raw foreground color at the inspector's pixel. The colors 
+        are -1 for transparency, a packed 8-bit RGB value 
+        (``0x00RRGGBB``) in truecolor mode, or the raw pen value (0-255) 
+        in indexed modes.
         """
         # Get the color at pixel
         color = self._canvas._get_raw_colors_at(self.x, self.y)[0]
@@ -2805,24 +2795,14 @@ class CanvasInspector:
         self._canvas._set_colors_at(self.x, self.y, fg_color, color)
 
     @property
-    def raw_bg_color(self) -> Union[int, None]:
+    def raw_bg_color(self) -> int:
         """
-        :type: tuple[int, int, int] | None
+        :type: int
 
-        The foreground color at the inspector's pixel. The color 
-        is represented as None if transparent or a tuple of 3 
-        integers in range [0,255], representing the color in 
-        (R, G, B) format.
-
-        For double-width characters, both cells will be set to the 
-        same color.
-
-        :raises TypeError:  if fg_color is not an :py:class:`Iterable` 
-            other than :py:class:`str`.
-        :raises ValueError: if fg_color is not None and does not contain 
-            exactly 3 values. 
-        :raises ValueError: if fg_color contains a value greater than 255 
-            or less than 0.
+        The raw background color at the inspector's pixel. The colors 
+        are -1 for transparency, a packed 8-bit RGB value 
+        (``0x00RRGGBB``) in truecolor mode, or the raw pen value (0-255) 
+        in indexed modes.
         """
         # Get the color at pixel
         color = self._canvas._get_raw_colors_at(self.x, self.y)[1]
