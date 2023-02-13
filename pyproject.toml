@@ -63,10 +63,12 @@ repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 select = "*linux_aarch64"
 
 before-all = [
-    "apt install -y libtool libtool-bin libmagickwand-dev imagemagick autoconf",
+    "yum install -y libtool ImageMagick-devel",
     "cd libs",
     "git clone --branch 1.12.4 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
+    "mkdir m4",
+    "cp /usr/share/aclocal/pkg.m4 m4/",
     "./autogen.sh --without-tools",
     "make",
     "cd ../",
