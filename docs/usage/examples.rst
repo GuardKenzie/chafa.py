@@ -70,7 +70,6 @@ When reading pixel data from an image opened with `Pillow`_, we get a 2D array w
 
     from chafa import *
     from PIL import Image
-    import numpy as np
 
     # Init canvas config
     config = CanvasConfig()
@@ -87,8 +86,7 @@ When reading pixel data from an image opened with `Pillow`_, we get a 2D array w
     bands  = len(image.getbands())
 
     # Put image into correct format
-    pixels = np.array(image)
-    pixels = np.reshape(pixels, pixels.size)
+    pixels = image.tobytes()
 
     # Init the canvas
     canvas = Canvas(config)
