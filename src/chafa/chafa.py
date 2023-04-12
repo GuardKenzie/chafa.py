@@ -342,13 +342,22 @@ def get_device_attributes():
 
     # Split attributes by ; and turn them into integers
     if len(attributes) >= 4:
-        attributes = "".join(attributes[3:])
-        attributes = tuple([int(i) for i in attributes.split(";")])
+        attributes = "".join(attributes[3:]).split(";")
+
+        # Convert all attributes to ints unless we can't, then we skip
+        out = []
+        for attrib in attributes:
+            try:
+                out.append(int(attrib))
+            except ValueError:
+                continue
+
+        out = tuple(out)
 
     else:
-        attributes = tuple()
+        out = tuple()
 
-    return attributes
+    return out
 
 
 class ReadOnlySymbolMap():
