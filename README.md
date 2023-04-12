@@ -16,11 +16,6 @@
     &nbsp;
     <img alt="Sneks" src="https://img.shields.io/badge/snakes%20go-sssss-cbd446?style=flat-square">  
   </p>
-  <p>
-    <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/chafa.py?style=flat-square">
-    &nbsp;
-    <img alt="GitHub commits since latest release (by SemVer)" src="https://img.shields.io/github/commits-since/GuardKenzie/chafa.py/latest?style=flat-square">
-  </p>
 </div>
 
 # What is this?
