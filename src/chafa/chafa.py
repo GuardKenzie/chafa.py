@@ -37,6 +37,11 @@ if platform.system() == "Linux":
     _lib_glib = "libglib-2.0.so"
     _lib      = _root_dir / "libs" / "libchafa.so"
 
+    try:
+        ctypes.CDLL(_lib_glib)
+    except OSError:
+        _lib_glib = find_glib()
+
     if not _lib.exists():
         _lib = find_chafa()
 
