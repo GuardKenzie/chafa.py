@@ -47,7 +47,7 @@ test-command  = "pytest -rP {package}/tests"
 before-all = [
     "yum install -y libtool ImageMagick-devel",
     "cd libs",
-    "git clone --branch 1.12.4 https://github.com/hpjansson/chafa libchafa_src",
+    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "mkdir m4",
     "cp /usr/share/aclocal/pkg.m4 m4/",
@@ -65,7 +65,7 @@ select = "*linux_aarch64"
 before-all = [
     "yum install -y libtool ImageMagick-devel",
     "cd libs",
-    "git clone --branch 1.12.4 https://github.com/hpjansson/chafa libchafa_src",
+    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "mkdir m4",
     "cp /usr/share/aclocal/pkg.m4 m4/",
@@ -80,7 +80,7 @@ before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
     "brew install make libtool pkg-config glib automake imagemagick",
     "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
-    "git clone --branch 1.12.4 https://github.com/hpjansson/chafa libchafa_src",
+    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "./autogen.sh --without-tools",
     "make",
@@ -98,7 +98,7 @@ select = "*macosx_arm64"
 before-all = [
     "brew install make libtool pkg-config glib automake imagemagick",
     "sudo ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
-    "git clone --branch 1.12.4 https://github.com/hpjansson/chafa libchafa_src",
+    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "./autogen.sh --without-tools",
     "make",
