@@ -2103,9 +2103,9 @@ class Canvas:
     def new_similar(self) -> 'Canvas':
         """
         Creates a new canvas configured similarly to this one.
-        """
 
-        raise NotImplementedError
+        :rtype: Canvas
+        """
 
         # types
         _Chafa.chafa_canvas_new_similar.argtypes = [
