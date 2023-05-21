@@ -2118,10 +2118,10 @@ class Canvas:
         new_pointer = _Chafa.chafa_canvas_new_similar(self._canvas)
 
         # Init canvas
-        new_canvas = Canvas()
+        new_canvas = Canvas(None)
 
-        new_canvas._term_info = self._term_info.copy()
-        new_canvas._canvas    = new_pointer
+        # Assign the new pointer to the newly created canvas
+        new_canvas._canvas = new_pointer
 
         return new_canvas
 
