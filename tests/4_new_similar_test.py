@@ -1,6 +1,5 @@
 from chafa import *
 from PIL import Image
-import numpy as np
 from pathlib import Path
 
 def test_PIL():
@@ -27,7 +26,6 @@ def test_PIL():
     config.width = 50
 
     canvas2 = canvas.new_similar()
-    #
 
     # Draw to canvases
     canvas.draw_all_pixels(
