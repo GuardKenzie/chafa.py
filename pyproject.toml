@@ -112,13 +112,7 @@ test-command = "MAGICK_HOME=/opt/homebrew/Cellar/imagemagick pytest -rP {package
 [tool.cibuildwheel.windows]
 
 before-all = [
-    "cd libs",
-    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
-    "cd libchafa_src",
-    "choco install msys2",
-    "C:\\tools\\msys64\\ucrt64.exe ..\\build_chafa_ucrt64.sh",
-    "cd ..",
-    "cp libchafa_src\\chafa\\.libs\\libchafa-0.dll windows"
+    "cp libchafa_src\\chafa\\.libs\\libchafa-0.dll libs\\windows\\"
 ]
 
 test-command = "pytest -rP {package}/tests/0_PIL_test.py {package}/tests/2_raw_test.py {package}/tests/3_capabilities_test.py {package}/tests/4_new_similar_test.py"
