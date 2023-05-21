@@ -116,7 +116,7 @@ before-all = [
     "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "choco install msys2",
-    "C:\\tools\\msys2\\ucrt64.exe ..\\build_chafa_ucrt64.sh",
+    "C:\\tools\\msys64\\ucrt64.exe ..\\build_chafa_ucrt64.sh",
     "cd ..",
     "cp libchafa_src\\chafa\\.libs\\libchafa-0.dll windows"
 ]
