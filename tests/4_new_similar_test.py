@@ -7,8 +7,8 @@ def test_PIL():
     config = CanvasConfig()
 
     # Set canvas height and width
-    config.height = 30
-    config.width  = 30
+    config.height = 10
+    config.width  = 10
 
     # Open image with PIL
     image = Image.open(Path(__file__).parent / "snake.jpg")
@@ -46,7 +46,7 @@ def test_PIL():
 
     for pixel in canvas2[:,0]:
         pixel.bg_color = (255, 0, 0)
-        pixel.char     = " "
+        pixel.char     = "ð"
 
     # Write picture
     print("Original canvas")
