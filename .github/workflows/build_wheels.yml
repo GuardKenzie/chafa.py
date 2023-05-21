@@ -37,8 +37,6 @@ jobs:
       - name: Build Windows DLLs
         if: matrix.os == 'windows-2019'
         shell: msys2 {0}
-        with:
-          msystem: ucrt64
         run: >
           git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src
           cd libchafa_src
