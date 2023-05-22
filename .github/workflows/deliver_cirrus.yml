@@ -15,10 +15,10 @@ jobs:
     steps:
     - name: Downloading artifacts
       run: |
-        wget https://api.cirrus-ci.com/v1/artifact/github/GuardKenzie/chafa.py/macos_arm_wheels/wheels.zip
-        unzip wheels.zip
-        wget https://api.cirrus-ci.com/v1/artifact/github/GuardKenzie/chafa.py/linux_arm_wheels/wheels.zip
-        unzip wheels.zip
+        wget -O macos.zip https://api.cirrus-ci.com/v1/artifact/github/GuardKenzie/chafa.py/macos_arm_wheels/wheels.zip
+        wget -O linux.zip https://api.cirrus-ci.com/v1/artifact/github/GuardKenzie/chafa.py/linux_arm_wheels/wheels.zip
+        unzip macos.zip
+        unzip linux.zip
       
     - name: Uploading to test PyPi
       uses: pypa/gh-action-pypi-publish@v1.8.5
