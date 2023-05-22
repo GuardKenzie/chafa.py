@@ -9,7 +9,9 @@ jobs:
     name: 📬 Deliver to PyPi
     if: >
       github.event.check_suite.app.name   == 'Cirrus CI' &&
-      github.event.check_suite.conclusion == 'success'
+      github.event.check_suite.conclusion == 'success' &&
+      github.event_name   == 'release' && 
+      github.event.action == 'published'
 
     runs-on: ubuntu-latest
     steps:
@@ -24,6 +26,5 @@ jobs:
       uses: pypa/gh-action-pypi-publish@v1.8.5
       with:
         packages-dir: wheelhouse/
-        repository-url: https://test.pypi.org/legacy/
         user: __token__
         password: ${{ secrets.pypi_password }}
