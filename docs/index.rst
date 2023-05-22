@@ -89,7 +89,7 @@ Getting started
 
    usage/installation
    usage/tutorial
-   usage/examples
+   usage/examples/examples
 
 API Reference
 ---------------
