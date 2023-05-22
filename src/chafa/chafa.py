@@ -1,3 +1,4 @@
+from __future__ import annotations
 import ctypes
 import ctypes.util
 from typing import Tuple, Sequence, Union # PEP 484 
@@ -372,7 +373,7 @@ class ReadOnlySymbolMap():
         self._symbol_map = _Chafa.chafa_symbol_map_new()
 
     
-    def copy(self) -> 'SymbolMap':
+    def copy(self) -> SymbolMap:
         """
         Returns a new :py:class:`SymbolMap` that's a copy of this one.
 
@@ -1419,7 +1420,7 @@ class CanvasConfig(ReadOnlyCanvasConfig):
 
 
 
-    def copy(self) -> 'CanvasConfig':
+    def copy(self) -> CanvasConfig:
         """
         Creates a new :py:class:`CanvasConfig` that is a copy of this config.
 
@@ -1854,7 +1855,7 @@ class TermDb():
         return term_info
 
 
-    def get_fallback_info(self) -> 'TermInfo':
+    def get_fallback_info(self) -> TermInfo:
         """
         :rtype: TermInfo
 
@@ -1881,7 +1882,7 @@ class TermDb():
         return fallback_info
 
 
-    def copy(self) -> 'TermDb':
+    def copy(self) -> TermDb:
         """
         :rtype: TermDb
 
@@ -1925,7 +1926,7 @@ class TermInfo():
             return self.canvas_mode == other.canvas_mode and self.pixel_mode == other.pixel_mode
 
 
-    def copy(self) -> 'TermInfo':
+    def copy(self) -> TermInfo:
         """
         Returns a new :py:class:`TermInfo` that is a copy of this one.
 
@@ -2146,7 +2147,7 @@ class Canvas:
         self._canvas = _Chafa.chafa_canvas_new(config)
 
     
-    def new_similar(self) -> 'Canvas':
+    def new_similar(self) -> Canvas:
         """
         Creates a new canvas configured similarly to this one.
 
@@ -2268,7 +2269,7 @@ class Canvas:
 
             return
 
-    def __getitem__(self, pos):
+    def __getitem__(self, pos) -> CanvasInspector:
         """
         You can inspect pixels in the canvas by indexing, 
         similar to if the canvas were a 2d array. When indexing, 
