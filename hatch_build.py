@@ -18,10 +18,10 @@ class CustomBuildHook(BuildHookInterface):
             chafa_glob = list(Path("libs/linux").glob("*chafa*.so"))
 
             if len(chafa_glob) > 1:
-                print_build_error("Too many files matched the glob pattern 'libs/linux/*chafa*.so'")
+                print("Too many files matched the glob pattern 'libs/linux/*chafa*.so'")
 
             elif len(chafa_glob) < 1:
-                print_build_error("No file matched the glob pattern 'libs/linux/*chafa*.so'")
+                print("No file matched the glob pattern 'libs/linux/*chafa*.so'")
             
             else:
                 build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.so")
@@ -38,16 +38,17 @@ class CustomBuildHook(BuildHookInterface):
                 print_build_error("Too many files matched the glob pattern 'libs/windows/*chafa*.dll'")
 
             elif len(chafa_glob) < 1:
-                print_build_error("No file matched the glob pattern 'libs/windows/*chafa*.dll'")
+                print("No file matched the glob pattern 'libs/windows/*chafa*.dll'")
 
             else:
                 build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dll")
-                
-                # Find everything else
-                not_chafa_glob = [p for p in Path("libs/windows").glob("*.dll") if not "chafa" in p.name]
+            
+            # Find everything else
+            not_chafa_glob = [p for p in Path("libs/windows").glob("*.dll") if not "chafa" in p.name]
 
-                for file in not_chafa_glob:
-                    build_data["force_include"][str(file)] = str(libs_folder / file.name)
+            for file in not_chafa_glob:
+                build_data["force_include"][str(file)] = str(libs_folder / file.name)
+
         
         else:
             chafa_glob = Path("libs/macos").glob("*chafa*.dylib")
@@ -60,14 +61,15 @@ class CustomBuildHook(BuildHookInterface):
 
             elif len(chafa_glob) < 1:
                 print_build_error("No file matched the glob pattern 'libs/macos/*chafa*.dylib'")
+            
             else:
                 build_data["force_include"][str(chafa_glob[0])] = str(libs_folder / "libchafa.dylib")
                 
-                # Find everything else
-                not_chafa_glob = [p for p in Path("libs/macos").glob("*.dylib") if not "chafa" in p.name]
+            # Find everything else
+            not_chafa_glob = [p for p in Path("libs/macos").glob("*.dylib") if not "chafa" in p.name]
 
-                for file in not_chafa_glob:
-                    build_data["force_include"][str(file)] = str(libs_folder / file.name)
+            for file in not_chafa_glob:
+                build_data["force_include"][str(file)] = str(libs_folder / file.name)
 
 
 
