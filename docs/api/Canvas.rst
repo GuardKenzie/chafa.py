@@ -78,7 +78,16 @@ The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will re
         :param int|slice|tuple pos: The position to index
 
         :rtype: CanvasInspector
-        
+    
+
+    .. py:method:: new_similar()
+
+        Returns a new :py:class:`Canvas` configured similarly to this one.
+
+        :rtype: Canvas
+
+        .. versionadded:: 1.2.0
+
 
     .. py:method:: peek_config()
 
