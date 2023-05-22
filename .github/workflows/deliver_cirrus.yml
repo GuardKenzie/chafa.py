@@ -7,9 +7,9 @@ on:
 jobs:
   upload_all_cirrus:
     name: 📬 Deliver to PyPi
-    if: > 
+    if: >
       github.event.check_suite.app.name   == 'Cirrus CI' &&
-      github.event.check_suite.conclusion == 'success' &&
+      github.event.check_suite.conclusion == 'success'
 
     runs-on: ubuntu-latest
     steps:
