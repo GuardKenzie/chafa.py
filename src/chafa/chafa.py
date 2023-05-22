@@ -2071,7 +2071,53 @@ class TermInfo():
 
         return terminal_capabilities
 
+
+    def emit(self, sequence: TermSeq, *args) -> bytes:
+        """
+        Returns the asked for terminal sequences as bytes.
+
+        :param TermSeq *args: The sequences to emit
+
+        :rtype: bytes
+        """
+        # Make sure we have a terminal sequence
+        sequence = TermSeq(sequence)
+
+        # Check if the terminal has the sequence
+        if not self.have_seq(sequence):
+            raise ValueError(f"Your terminal does not appear the sequence {sequence.name}")
+        
+        # Terminate the args
+        args = (*args, -1)
+
+        # Grab the sequence
+        out = self._emit_seq(sequence, *args)
+
+        # Check if we actually got anything
+        if out is None:
+            raise TypeError(f"Wrong number of arguments passed for sequence {sequence.name}")
+
+
+        return out
+
+
+    def _emit_seq(self, seq: TermSeq, *args):
+        """
+        wrapper for chafa_term_info_emit_seq
+        """
+
+        _Chafa.chafa_term_info_emit_seq.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int
+        ]
+
+        _Chafa.chafa_term_info_emit_seq.restype  = ctypes.c_char_p
+
+        res = _Chafa.chafa_term_info_emit_seq(self._term_info, seq, *args)
+
+        return res
     
+
 class Canvas:
     def __init__(self, config: CanvasConfig):
         """
