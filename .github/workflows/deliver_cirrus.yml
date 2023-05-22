@@ -21,7 +21,7 @@ jobs:
         unzip wheels.zip
       
     - name: Uploading to test PyPi
-      uses: pypa/gh-action-pypi-publish@v1.8.5
+      uses: pypa/gh-action-pypi-publish@v1.8.6
       with:
         packages-dir: wheelhouse/
         repository-url: https://test.pypi.org/legacy/
