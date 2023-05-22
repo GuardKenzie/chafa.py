@@ -62,7 +62,7 @@ img {
     display: inline-block;
 }
 
-div.body h1.blocked-header {
+div.body h1 {
     line-height: 1em;
     margin: .6em 0;
 }
