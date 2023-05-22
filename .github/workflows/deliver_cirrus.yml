@@ -21,8 +21,9 @@ jobs:
         unzip linux.zip
         mv wheelhouse dist
       
-    - name: Uploading to PyPi
+    - name: Uploading to test PyPi
       uses: pypa/gh-action-pypi-publish@v1.8.5
       with:
+        repository-url: https://test.pypi.org/legacy/
         user: __token__
         password: ${{ secrets.pypi_password }}
