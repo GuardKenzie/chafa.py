@@ -34,6 +34,7 @@ classifiers = [
 build = "cp3*-*"
 skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
 test-skip = "cp38-macosx*"
+environment-pass = "CHAFA_VERSION"
 
 manylinux-x86_64-image = "manylinux2014"
 
