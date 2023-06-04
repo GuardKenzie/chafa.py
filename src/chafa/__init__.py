@@ -1,20 +1,23 @@
-from .chafa import PixelMode
-from .chafa import DitherMode
-from .chafa import CanvasMode
-from .chafa import PixelType
-from .chafa import SymbolTags
-from .chafa import Optimizations
-from .chafa import TermSeq
-from .chafa import ColorSpace
-from .chafa import ColorExtractor
+from .enums import PixelMode
+from .enums import DitherMode
+from .enums import CanvasMode
+from .enums import PixelType
+from .enums import SymbolTags
+from .enums import Optimizations
+from .enums import TermSeq
+from .enums import ColorSpace
+from .enums import ColorExtractor
 
-from .chafa import SymbolMap
-from .chafa import ReadOnlySymbolMap
-from .chafa import Canvas
-from .chafa import CanvasConfig
-from .chafa import ReadOnlyCanvasConfig
-from .chafa import TermDb
-from .chafa import TermInfo
-from .chafa import Canvas
+from .symbol_map import SymbolMap
+from .symbol_map import ReadOnlySymbolMap
+
+from .canvas_config import CanvasConfig
+from .canvas_config import ReadOnlyCanvasConfig
+
+from .canvas import Canvas
+
+from .term_db import TermDb
+
+from .term_info import TermInfo
 
 from .chafa import get_device_attributes
