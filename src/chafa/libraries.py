@@ -75,5 +75,3 @@ _lib      = str(_lib)
 _lib_glib = str(_lib_glib)
 
 _Chafa = ctypes.CDLL(_lib)
-
-print(_lib_glib)
