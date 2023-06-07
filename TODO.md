@@ -15,7 +15,7 @@
 
 # Canvas
 
-- [ ] new_similar
+- [x] new_similar
 - [x] Peeking at config
 - [x] inspect characters at (x, y)
 - [x] inspect color at (x, y)
@@ -53,17 +53,15 @@
 # TermInfo
 
 - [x] copy
-- [ ] sequences
-    - [ ] get
-    - [ ] set
+- ~~[ ] sequences~~ (superceeded by the emitters)
 - [x] supplement
-- [ ] **emitters!!!**
+- [x] **emitters!!!**
 - [x] **DOCS**
 
 # Misc
 - [x] Properly figure out how the loader should work (pretty happy with it for now but could be faster)
 - [x] Error handling (I think this is done?)
-- [ ] ~~Splitting classes into separate files?~~ (not for now)
+- [x] Splitting classes into separate files?
 
 # Docs
 - [x] Add remaining enums

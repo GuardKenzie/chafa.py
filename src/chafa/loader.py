@@ -1,7 +1,7 @@
 import ctypes.util
 import ctypes
 from pathlib import Path
-from chafa import PixelType
+from .enums import PixelType
 import platform
 import os
 
