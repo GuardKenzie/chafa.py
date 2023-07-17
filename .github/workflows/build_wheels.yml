@@ -43,7 +43,7 @@ jobs:
           ./autogen.sh --without-tools --host=mingw64 && make
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.3
+        uses: pypa/cibuildwheel@v2.14.1
 
       - uses: actions/upload-artifact@v3
         with:
