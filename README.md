@@ -116,7 +116,7 @@ If you want to use the included Loader class to load images, you will also need 
 ### Optional Dependencies
 
 
-- [MagickWand](https://imagemagick.org/script/magick-wand.php) (for the [Loader](https://chafapy.mage.black/api/Loader.html)
+- [MagickWand](https://imagemagick.org/script/magick-wand.php) (for the [Loader](https://chafapy.mage.black/api/Loader.html) class)
 
 <details>
 <summary>📬 P.S. The snakes don't bite <em>(I think...)</em></summary>
