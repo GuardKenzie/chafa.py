@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-20.04, windows-2019, macos-11]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup UCRT64
         uses: msys2/setup-msys2@v2
@@ -53,7 +53,7 @@ jobs:
     name: 💽 Make SDist
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Build SDist
       run: pipx run build --sdist
