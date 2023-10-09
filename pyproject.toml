@@ -83,7 +83,7 @@ before-all = [
     "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "./autogen.sh --without-tools",
-    "make",
+    "gmake",
     "cd ..",
     "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos",
     "python -m pip debug --verbose"
