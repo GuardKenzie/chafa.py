@@ -78,15 +78,14 @@ before-all = [
 [tool.cibuildwheel.macos]
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
-    "brew install make libtool pkg-config glib automake imagemagick",
+    "brew install make libtool pkg-config glib automake",
     "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
     "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "./autogen.sh --without-tools",
     "gmake",
     "cd ..",
-    "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos",
-    "python -m pip debug --verbose"
+    "cp libchafa_src/chafa/.libs/*chafa*.dylib libs/macos"
 ]
 
 test-command = "MAGICK_HOME=/usr/local/Cellar/imagemagick/ pytest -rP {package}/tests"
