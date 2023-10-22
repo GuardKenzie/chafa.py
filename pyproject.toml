@@ -78,8 +78,8 @@ before-all = [
 [tool.cibuildwheel.macos]
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
-    "brew install make libtool pkg-config glib automake imagemagick",
-    #"ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
+    "brew install make libtool pkg-config glib automake",
+    "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
     "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "./autogen.sh --without-tools",
