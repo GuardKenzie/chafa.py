@@ -256,7 +256,7 @@ Sixels
 ------
 Drawing with sixels is easier than with kitty. You will not need to use :py:meth:`CanvasConfig.calc_canvas_geometry` or set the cell geometry. We can simply set the pixel mode to :py:attr:`PixelMode.CHAFA_PIXEL_MODE_SIXELS`::
 
-    config.pixel_mode = chafa.PixelMode.CHAFA_PIXEL_MODE_Sixels
+    config.pixel_mode = chafa.PixelMode.CHAFA_PIXEL_MODE_SIXELS
 
     canvas = canvas(config)
 
