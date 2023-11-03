@@ -80,8 +80,8 @@ When reading pixel data from an image opened with `Pillow`_, we get a 2D array w
     canvas.draw_all_pixels(
         PixelType.CHAFA_PIXEL_RGB8,
         pixels,
-        height,
         width,
+        height,
         width * bands
     )
 
