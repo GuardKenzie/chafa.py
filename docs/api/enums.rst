@@ -83,7 +83,7 @@ An enumerator for pixel modes. This determines how pixel graphics are rendered i
 
 Pixel Type
 __________
-An enumerator for pixel types. These represent pixel formats supported by :py:class`ChafaCanvas` 
+An enumerator for pixel types. These represent pixel formats supported by :py:class:`ChafaCanvas` 
 
 .. py:class:: PixelType
 

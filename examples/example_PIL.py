@@ -25,8 +25,8 @@ canvas = Canvas(config)
 canvas.draw_all_pixels(
     PixelType.CHAFA_PIXEL_RGB8,
     pixels,
-    height,
     width,
+    height,
     width * bands
 )
 
