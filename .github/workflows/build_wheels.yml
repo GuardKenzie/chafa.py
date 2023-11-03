@@ -11,8 +11,6 @@ jobs:
   build_wheels:
     name: 🎡 ${{ matrix.os }} wheels
     runs-on: ${{ matrix.os }}
-    env:
-      CHAFA_VERSION: master
     strategy:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
@@ -40,12 +38,12 @@ jobs:
         if: matrix.os == 'windows-2019'
         shell: msys2 {0}
         run: |
-          git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src
+          git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src
           cd libchafa_src
           ./autogen.sh --without-tools --host=mingw64 && make
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.3
+        uses: pypa/cibuildwheel@v2.13.0
 
       - uses: actions/upload-artifact@v3
         with:

@@ -23,7 +23,7 @@ jobs:
         unzip linux.zip
       
     - name: Uploading to test PyPi
-      uses: pypa/gh-action-pypi-publish@v1.8.5
+      uses: pypa/gh-action-pypi-publish@v1.8.10
       with:
         packages-dir: wheelhouse/
         user: __token__
