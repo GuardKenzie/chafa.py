@@ -101,7 +101,7 @@ Here is a [picture of a cute snake](https://chafapy.mage.black/_images/snake.jpg
 
 # Where can I get it?
 
-Chafa.py is available on [PyPi](https://pypi.org/project/chafa.py/). You can install it by running
+Chafa.py is available on [PyPI](https://pypi.org/project/chafa.py/). You can install it by running
 
 ```
 pip install chafa.py
