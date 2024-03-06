@@ -20,7 +20,7 @@
 
 # What is this?
 
-Have you ever wanted to display an image your TUI Python application? Well, now you can!
+Have you ever wanted to display an image in your TUI Python application? Well, now you can!
 
 [Chafa](https://hpjansson.org/chafa/) is a wonderful command-line utility, 
 created by [Hans Petter Jansson](https://hpjansson.org/), for visualizing 
