@@ -214,3 +214,14 @@ class TermSeq(IntEnum):
     CHAFA_TERM_SEQ_SET_COLOR_FGBG_8 = 54
 
     CHAFA_TERM_SEQ_MAX = 55
+
+
+#
+# === Passthrough ===
+#
+
+class Passthrough(IntEnum):
+    CHAFA_PASSTHROUGH_NONE    = 0
+    CHAFA_PASSTHROUGH_SCREEN  = 1
+    CHAFA_PASSTHROUGH_TMUX    = 2
+    CHAFA_PASSTHROUGH_MAX     = 3

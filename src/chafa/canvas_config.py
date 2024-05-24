@@ -361,6 +361,15 @@ class ReadOnlyCanvasConfig:
         return packed_8bit_to_tuple(color)
 
 
+    @property
+    def passthrough(self) -> Passthrough:
+        # Get passthrough
+        through = self._get_passthrough()
+
+        # Convert to enum
+        return Passthrough(through)
+
+
     def get_geometry(self) -> Tuple[int, int]:
         """
         Get the config's canvas geometry in character cells. 
@@ -647,6 +656,21 @@ class ReadOnlyCanvasConfig:
 
         return _Chafa.chafa_canvas_config_get_optimizations(self._canvas_config)
 
+    
+    def _get_passthrough(self) -> int:
+        """
+        Wrapper for chafa_canvas_config_get_passthrough
+        """
+
+        # Specify types
+        _Chafa.chafa_canvas_config_get_passthrough.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_canvas_config_get_passthrough.restype = ctypes.c_uint
+
+        return _Chafa.chafa_canvas_config_get_passthrough(self._canvas_config)
+
 
     def peek_symbol_map(self) -> ReadOnlySymbolMap:
         """
@@ -876,6 +900,13 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         color = tuple_to_packed_8bit(bg_color)
 
         self._set_bg_color(color)
+
+    
+    @ReadOnlyCanvasConfig.passthrough.setter
+    def passthrough(self, through: Passthrough):
+        through = Passthrough(through)
+
+        self._set_passthrough(through)
 
 
 
@@ -1161,6 +1192,24 @@ class CanvasConfig(ReadOnlyCanvasConfig):
         _Chafa.chafa_canvas_config_set_optimizations(
             self._canvas_config,
             optimizations
+        )
+
+
+    def _set_passthrough(self, through: Passthrough):
+        """
+        Wrapper for chafa_canvas_config_set_passthrough
+        """
+
+        # Specify types
+        _Chafa.chafa_canvas_config_set_passthrough.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        # Set passthrough
+        _Chafa.chafa_canvas_config_set_passthrough(
+            self._canvas_config,
+            through
         )
 
 

@@ -7,6 +7,7 @@ from .enums import Optimizations
 from .enums import TermSeq
 from .enums import ColorSpace
 from .enums import ColorExtractor
+from .enums import Passthrough
 
 from .symbol_map import SymbolMap
 from .symbol_map import ReadOnlySymbolMap

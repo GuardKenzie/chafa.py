@@ -2,11 +2,9 @@ from __future__ import annotations
 import sys
 import platform
 from io import UnsupportedOperation
-import asyncio
 
 if platform.system() == "Linux":
     import termios
-    import select
 
 
 def get_device_attributes():
