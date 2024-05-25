@@ -75,6 +75,9 @@ before-all = [
 ]
 
 [tool.cibuildwheel.macos]
+
+environment = { MACOSX_DEPLOYMENT_TARGET="11.0" }
+
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
     "brew install --force --overwrite make", # libtool pkg-config glib automake",
