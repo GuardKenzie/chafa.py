@@ -50,6 +50,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
+          merge-multiple: true
 
   make_sdist:
     name: 💽 Make SDist
@@ -63,6 +64,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         path: dist/*.tar.gz
+        merge-multiple: true
 
   upload_all:
     name: 📬 Deliver to PyPi
