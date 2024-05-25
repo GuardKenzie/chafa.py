@@ -2,7 +2,7 @@ from __future__ import annotations
 import ctypes
 from typing import Iterable
 import array
-from typing import Tuple, Union
+from typing import Tuple, Union, Generator
 
 from .libraries import _Chafa
 from .canvas_config import ReadOnlyCanvasConfig, CanvasConfig
@@ -36,6 +36,12 @@ class Canvas:
         _Chafa.chafa_canvas_new.restype  =  ctypes.c_void_p
 
         self._canvas = _Chafa.chafa_canvas_new(config)
+
+
+    class GString(ctypes.Structure):
+        _fields_ = [('str',         ctypes.c_char_p),
+                    ('len',           ctypes.c_uint),
+                    ('allocated_len', ctypes.c_uint)]
 
     
     def new_similar(self) -> Canvas:
@@ -514,10 +520,6 @@ class Canvas:
             term_info.supplement(fallback_info)
 
 
-        class GString(ctypes.Structure):
-            _fields_ = [('str',         ctypes.c_char_p),
-                        ('len',           ctypes.c_uint),
-                        ('allocated_len', ctypes.c_uint)]
 
         _Chafa.chafa_canvas_print.argtypes = [
             ctypes.c_void_p, 
@@ -527,9 +529,53 @@ class Canvas:
         _Chafa.chafa_canvas_print.restype  = ctypes.c_void_p
 
         output = _Chafa.chafa_canvas_print(self._canvas, term_info._term_info)
-        output = GString.from_address(output)
+        output = self.GString.from_address(output)
 
         return output.str
+
+
+    def print_rows(self, term_info: TermInfo=None, fallback=False) -> Generator[bytes]:
+        term_db = None
+
+        # Check for term info
+        if term_info is None:
+            term_db = TermDb()
+            term_info = term_db.detect()
+
+        elif not isinstance(term_info, TermInfo):
+            raise TypeError(f"term_info must be None or of type TermInfo or None, not {type(term_info)}")
+
+        # Supplement with fallback sequences
+        if fallback:
+            if term_db is None:
+                term_db = TermDb()
+
+            fallback_info = term_db.get_fallback_info()
+            term_info.supplement(fallback_info)
+
+        config = self.peek_config()
+
+        max_length = config.height
+
+        # Define storage for output with max_length to accomodate all the possible rows
+        output_array = ctypes.POINTER(ctypes.POINTER(self.GString) * max_length)()
+        output_rows = ctypes.c_int()
+
+        _Chafa.chafa_canvas_print_rows.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p,
+            ctypes.POINTER(ctypes.POINTER(ctypes.POINTER(self.GString)*max_length)),
+            ctypes.POINTER(ctypes.c_int)
+        ]
+
+        _Chafa.chafa_canvas_print_rows(self._canvas, term_info._term_info, output_array, output_rows)
+
+        # Create a generator for the output
+        current_row = 0
+        while current_row < output_rows.value:
+            yield output_array.contents[current_row].contents.str
+            current_row += 1
+
 
 
 
