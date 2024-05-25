@@ -17,7 +17,7 @@ def test_print_rows():
     config.cell_width  = FONT_WIDTH
 
     # Open image with the loader
-    image = Loader("./snake.jpg")
+    image = Loader(Path(__file__).parent / "snake.jpg")
 
     width      = image.width
     height     = image.height
