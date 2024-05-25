@@ -1,6 +1,8 @@
 from chafa import *
 from chafa.loader import Loader
 
+from pathlib import Path
+
 FONT_WIDTH  = 11
 FONT_HEIGHT = 24
 
