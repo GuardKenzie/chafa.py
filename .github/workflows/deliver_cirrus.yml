@@ -2,7 +2,7 @@ name: 📬 Deliver from Cirrus
 
 on:
   check_suite:
-    type: ['completed']
+    types: ['completed']
 
 jobs:
   upload_all_cirrus:
