@@ -32,7 +32,7 @@ classifiers = [
 
 [tool.cibuildwheel]
 build = "cp3*-*"
-skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
+skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32", "cp38-macosx_arm64"]
 test-skip = "cp38-macosx*"
 environment-pass = "CHAFA_VERSION"
 
