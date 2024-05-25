@@ -77,7 +77,7 @@ before-all = [
 [tool.cibuildwheel.macos]
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
-    "brew install --force --overwrite make libtool pkg-config glib automake",
+    "brew install --force --overwrite make", # libtool pkg-config glib automake",
     "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
