@@ -34,7 +34,6 @@ classifiers = [
 build = "cp3*-*"
 skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32", "cp38-macosx_arm64"]
 test-skip = "cp38-macosx*"
-macosx-deployment-target = "14.0"
 environment-pass = "CHAFA_VERSION"
 
 manylinux-x86_64-image = "manylinux2014"
@@ -93,6 +92,8 @@ test-command = "MAGICK_HOME=/usr/local/Cellar/imagemagick/ pytest -rP {package}/
 
 [[tool.cibuildwheel.overrides]]
 select = "*macosx_arm64"
+
+environment = { MACOSX_DEPLOYMENT_TARGET="14.0" }
 
 before-all = [
     "brew install make libtool pkg-config glib automake imagemagick",
