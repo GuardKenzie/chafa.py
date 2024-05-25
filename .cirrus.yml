@@ -3,7 +3,7 @@ env:
 
 build_and_store_wheels: &BUILD_AND_STORE_WHEELS
   install_cibuildwheel_script:
-    - python -m pip install cibuildwheel==2.12.0
+    - python -m pip install cibuildwheel==2.18.1
   run_cibuildwheel_script:
     - cibuildwheel
   wheels_artifacts:
@@ -13,14 +13,13 @@ macos_arm64_task:
   name: 💪🍎 Build MacOS arm wheels.
   alias: macos_arm_wheels
   macos_instance:
-    image: ghcr.io/cirruslabs/macos-monterey-xcode
+    image: ghcr.io/cirruslabs/macos-sonoma-xcode
 
   env:
     PATH: /opt/homebrew/opt/python@3.10/libexec/bin:$PATH
-    
+
   install_pre_requirements_script:
     - brew install python@3.10
-    - ln -s python3 /opt/homebrew/opt/python@3.10/libexec/bin/python
   <<: *BUILD_AND_STORE_WHEELS
 
 linux_aarch64_task:
