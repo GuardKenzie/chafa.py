@@ -25,3 +25,6 @@
 - [x] tuck (property)
 - [ ] **DOCS!!**
 - [ ] *Testing*
+
+## CIBuildWheel
+- [ ] Sort out build issues with manylinux_2_24
