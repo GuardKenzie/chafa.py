@@ -225,3 +225,25 @@ class Passthrough(IntEnum):
     CHAFA_PASSTHROUGH_SCREEN  = 1
     CHAFA_PASSTHROUGH_TMUX    = 2
     CHAFA_PASSTHROUGH_MAX     = 3
+
+
+#
+# === Tuck ===
+#
+
+class Tuck(IntEnum):
+    CHAFA_TUCK_STRETCH        = 0
+    CHAFA_TUCK_FIT            = 1
+    CHAFA_TUCK_SHRINK_TO_FIT  = 2
+    CHAFA_TUCK_MAX            = 3
+
+
+#
+# === Align ===
+#
+    
+class Align(IntEnum):
+    CHAFA_ALIGN_START   = 0
+    CHAFA_ALIGN_END     = 1
+    CHAFA_ALIGN_CENTER  = 2
+    CHAFA_ALIGN_MAX     = 3

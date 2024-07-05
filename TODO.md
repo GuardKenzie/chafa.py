@@ -16,8 +16,8 @@
 - [ ] **DOCS!!**
 
 ## Placement
-- [ ] Initialisation for the class
-- [ ] halign (property)
-- [ ] valign (property)
-- [ ] tuck (property)
+- [x] Initialisation for the class
+- [x] halign (property)
+- [x] valign (property)
+- [x] tuck (property)
 - [ ] **DOCS!!**
