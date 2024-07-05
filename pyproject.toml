@@ -36,7 +36,7 @@ skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32", "cp38-macosx_arm64"]
 test-skip = "cp38-macosx*"
 environment-pass = "CHAFA_VERSION"
 
-manylinux-x86_64-image = "manylinux2_24"
+manylinux-x86_64-image = "manylinux_2_24"
 
 test-requires = ["pytest", "Pillow"]
 test-command  = "pytest -rP {package}/tests"
