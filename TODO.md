@@ -11,8 +11,8 @@
 - [ ] **DOCS!!**
 
 ## Image
-- [ ] Initialisation for the class
-- [ ] set_frame
+- [x] Initialisation for the class
+- [x] set_frame
 - [ ] **DOCS!!**
 
 ## Placement
