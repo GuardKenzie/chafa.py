@@ -3,17 +3,20 @@
 ## Canvas
 - [ ] set_placement
 - [ ] **DOCS!!**
+- [ ] *Testing*
 
 ## Frame
 - [ ] Initialisation for the class
 - [ ] new_borrow
 - [ ] new_steal
 - [ ] **DOCS!!**
+- [ ] *Testing*
 
 ## Image
 - [x] Initialisation for the class
 - [x] set_frame
 - [ ] **DOCS!!**
+- [ ] *Testing*
 
 ## Placement
 - [x] Initialisation for the class
@@ -21,3 +24,4 @@
 - [x] valign (property)
 - [x] tuck (property)
 - [ ] **DOCS!!**
+- [ ] *Testing*
