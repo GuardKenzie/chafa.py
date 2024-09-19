@@ -55,7 +55,7 @@ class Placement:
 
 
     @valign.setter
-    def halign(self, new_valign: Align):
+    def valign(self, new_valign: Align):
         new_valign = Align(new_valign)
 
         self._set_valign(new_valign)
@@ -66,7 +66,7 @@ class Placement:
 
         _Chafa.chafa_placement_get_tuck.restype  = ctypes.c_uint
 
-        tuck =_Chafa.chafa_placement_get_tuck()
+        tuck =_Chafa.chafa_placement_get_tuck(self._placement)
         return Tuck(tuck)
     
 
@@ -76,7 +76,7 @@ class Placement:
             ctypes.c_uint
         ]
 
-        _Chafa.chafa_placement.set_tuck(self._placement, new_tuck)
+        _Chafa.chafa_placement_set_tuck(self._placement, new_tuck)
 
 
     def _get_halign(self) -> Align:
@@ -94,7 +94,7 @@ class Placement:
             ctypes.c_uint
         ]
 
-        _Chafa.chafa_placement.set_halign(self._placement, new_halign)
+        _Chafa.chafa_placement_set_halign(self._placement, new_halign)
 
 
     def _get_valign(self) -> Align:
@@ -112,4 +112,4 @@ class Placement:
             ctypes.c_uint
         ]
 
-        _Chafa.chafa_placement.set_valign(self._placement, new_valign)
+        _Chafa.chafa_placement_set_valign(self._placement, new_valign)
