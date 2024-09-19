@@ -44,7 +44,7 @@ test-command  = "pytest -rP {package}/tests"
 
 [tool.cibuildwheel.linux]
 before-all = [
-    "apt install -y libtool ImageMagick-devel",
+    "yum install -y libtool ImageMagick-devel",
     "cd libs",
     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
