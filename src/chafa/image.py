@@ -34,6 +34,6 @@ class Image:
             ctypes.c_void_p    
         ]
 
-        _Chafa.chafa_mage_set_frame(self._image, new_frame._frame)
+        _Chafa.chafa_image_set_frame(self._image, new_frame._frame)
 
         self._frame = new_frame
