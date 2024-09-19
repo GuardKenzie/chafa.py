@@ -137,4 +137,4 @@ libs/**.so
 wheelhouse/*
 
 # Testing
-chafa/snake.jpg
+src/snake.jpg
