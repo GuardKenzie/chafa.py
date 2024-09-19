@@ -44,7 +44,7 @@ test-command  = "pytest -rP {package}/tests"
 
 [tool.cibuildwheel.linux]
 before-all = [
-    "yum install -y libtool glib2.0-devel epel-release",
+    "yum install -y libtool glib2-devel epel-release",
     "yum install -y ImageMagick-devel",
     "cd libs",
     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
