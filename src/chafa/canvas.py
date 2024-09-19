@@ -9,6 +9,7 @@ from .canvas_config import ReadOnlyCanvasConfig, CanvasConfig
 from .enums import *
 from .term_info import TermInfo
 from .term_db import TermDb
+from .placement import Placement
 
 class Canvas:
     def __init__(self, config: CanvasConfig):
@@ -37,13 +38,38 @@ class Canvas:
 
         self._canvas = _Chafa.chafa_canvas_new(config)
 
+        # Placement
+        self._placement = None
+
 
     class GString(ctypes.Structure):
         _fields_ = [('str',         ctypes.c_char_p),
                     ('len',           ctypes.c_uint),
                     ('allocated_len', ctypes.c_uint)]
 
+
+    @property
+    def placement(self):
+        return self._placement
     
+
+    @placement.setter
+    def placement(self, new_placement: Placement):
+        self._set_placement(new_placement)
+
+
+    def _set_placement(self, new_placement: Placement):
+        """
+        Bindings for chafa_canvas_set_placement
+        """
+        _Chafa.chafa_canvas_set_placement.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_canvas_set_placement(self._canvas, new_placement._placement)
+    
+
     def new_similar(self) -> Canvas:
         """
         Creates a new canvas configured similarly to this one.
