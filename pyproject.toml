@@ -46,7 +46,7 @@ test-command  = "pytest -rP {package}/tests"
 before-all = [
     "dnf group install -y 'Development Tools'",
     "dnf install -y epel-release",
-    "dnf install -y ImageMagick-devel",
+    "dnf install -y ImageMagick-devel glib2-devel",
     "cd libs",
     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
