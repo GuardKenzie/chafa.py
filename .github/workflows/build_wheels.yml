@@ -23,7 +23,7 @@ jobs:
 
       - name: Setup UCRT64
         uses: msys2/setup-msys2@v2
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         with:
           msystem: ucrt64
           install: >-
@@ -38,7 +38,7 @@ jobs:
             make
 
       - name: Build Windows DLLs
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         shell: msys2 {0}
         run: |
           git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src
@@ -46,7 +46,7 @@ jobs:
           ./autogen.sh --without-tools --host=mingw64 && make
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.18.1
+        uses: pypa/cibuildwheel@v2.21.1
 
       - uses: actions/upload-artifact@v4
         with:
