@@ -23,4 +23,8 @@ from .term_db import TermDb
 
 from .term_info import TermInfo
 
+from .placement import Placement
+from .frame import Frame
+from .image import Image
+
 from .chafa import get_device_attributes
