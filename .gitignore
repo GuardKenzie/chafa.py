@@ -135,3 +135,6 @@ dmypy.json
 libs/**.dll
 libs/**.so
 wheelhouse/*
+
+# Testing
+chafa/snake.jpg
