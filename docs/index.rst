@@ -102,6 +102,7 @@ API Reference
    api/SymbolMap
    api/TermDb
    api/TermInfo
+   api/FrameImagePlacement
    api/Loader
    api/Functions
    api/enums

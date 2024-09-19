@@ -46,6 +46,8 @@ The :py:class:`Loader` is a class included with chafa.py which aims making it ea
     print(canvas.print().decode())
 
 
+.. _pillow-example:
+
 Using `Pillow`_
 ---------------
 
