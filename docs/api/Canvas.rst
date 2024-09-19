@@ -31,7 +31,9 @@ A :py:class:`Canvas` is a canvas that can render its contents as text strings.
 
 When you want to make a :py:class:`Canvas`, you can specify it's properties like the width, height, output pixel mode etc. by first creating a :py:class:`CanvasConfig` and then initialising :py:class:`Canvas` with that.
 
-You can draw an image to the canvas using :py:meth:`Canvas.draw_all_pixels` and convert it to output bytes for printing with :py:meth:`Canvas.print`. *(pssst: check out the :py:class:`loader.Loader` to make drawing images easier)*.
+You can draw an image to the canvas using :py:meth:`Canvas.draw_all_pixels` and convert it to output bytes for printing with :py:meth:`Canvas.print`. Check out :ref:`pillow-example` for an example on how to load an image using `Pillow`_.
+
+Alternatively, you can assign the :py:class:`Canvas` a :py:class:`Placement` with the :py:attr:`Canvas.placement` property if you want to control the alignment of the image on the :py:class:`Canvas`. If you go this route, you do not need to use :py:meth:`Canvas.draw_all_pixels`, and can go straight to :py:meth:`Canvas.print`.
 
 The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will return a :py:class:`CanvasInspector` or a `generator`_ for the relevant :py:class:`CanvasInspector` objects.
 
@@ -80,6 +82,15 @@ The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will re
         :rtype: CanvasInspector
     
 
+    .. py:property:: placement
+
+        :type: Placement
+
+        The :py:class:`Placement` of an :py:class:`Image` containing a :py:class:`Frame` on the canvas. Use this as an alternative to :py:meth:`draw_all_pixels` and for control over the image's alignment with :py:class:`Align` and :py:class:`Tuck`.
+
+        .. versionadded:: 1.2.0
+
+
     .. py:method:: new_similar()
 
         Returns a new :py:class:`Canvas` configured similarly to this one.
@@ -106,7 +117,7 @@ The :py:class:`Canvas` supports indexing (and slicing) with ``[]``! This will re
         To output the data after drawing, use the :py:meth:`print` method.
 
         .. note::
-            Best performance is achieved by passing a :py:class:`ctypes.Array` for src_pixels. The :py:class:`chafa.loader.Loader` class provides convenient (and reasonably fast) methods for this using the `MagickWand`_ C-library.
+            Best performance is achieved by passing a :py:class:`ctypes.Array` for src_pixels. A fast way to do this is to use `Pillow`_; specifically the `` `Image.tobytes <https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.tobytes>`_ `` method. 
 
         :param PixelType src_pixel_type: The pixel type of src_pixels. This will determine what order the color channels will be read in and whether there is an alpha channel.
         :param list|tuple|array.array|ctypes.Array src_pixels: The source pixel data. This is a one dimensional array where every block of 3 (or 4 depending on the :py:class:`PixelType`) values represents one pixel of the image. The order of the channels is determined by src_pixel_type.
@@ -225,3 +236,4 @@ You can think of the :py:class:`CanvasInspector` like a detective with a magnify
 
 .. _`generator`: https://docs.python.org/3/glossary.html#term-generator
 .. _`MagickWand`: https://imagemagick.org/script/magick-wand.php
+.. _`Pillow`: https://python-pillow.org/
