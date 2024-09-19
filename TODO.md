@@ -1,14 +1,14 @@
 # Version 1.2.0 (bindings for Chafa 1.14)
 
 ## Canvas
-- [ ] set_placement
+- [x] set_placement
 - [ ] **DOCS!!**
 - [ ] *Testing*
 
 ## Frame
-- [ ] Initialisation for the class
-- [ ] new_borrow
-- [ ] new_steal
+- [?] Initialisation for the class
+- ~~[ ] new_borrow~~
+- ~~[ ] new_steal~~
 - [ ] **DOCS!!**
 - [ ] *Testing*
 
