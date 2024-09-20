@@ -4,7 +4,7 @@ Installation
 
 .. currentmodule:: chafa.loader
 
-Here are some installation instructions for getting going. It is preferred to install from `PyPi`_, however, you are welcome to build from source if you so desire.
+Here are some installation instructions for getting going. It is preferred to install from `PyPI`_, however, you are welcome to build from source if you so desire.
 
 Currently every major 64-bit OS is supported except Windows on ARM.
 
@@ -14,10 +14,10 @@ For all methods, if you want to use the included :py:class:`Loader` class to loa
 
    For a substantial performance increase when importing :py:class:`Loader`, you can set the ``MAGICK_HOME`` environment variable to where the ImageMagick library lives on your computer (i.e. for brew users, something like ``/usr/local/Cellar/imagemagick/``).
 
-From PyPi
+From PyPI
 =========
 
-Chafa.py is available on `PyPi`_. You can install it by running
+Chafa.py is available on `PyPI`_. You can install it by running
 
 ::
 
@@ -59,5 +59,5 @@ Dependencies
 - `Hatchling <https://pypi.org/project/hatchling/>`_ (for building) 
 - Python 3.8 or later
 
-.. _`PyPi`: https://pypi.org/project/chafa.py/
+.. _`PyPI`: https://pypi.org/project/chafa.py/
 .. _`chafa.py repository`: https://github.com/guardkenzie/chafa.py

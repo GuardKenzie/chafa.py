@@ -10,7 +10,7 @@ Index
 =====
 
 
-Have you ever wanted to display an image your TUI Python application? Well, now you can; with chafa.py!
+Have you ever wanted to display an image in your TUI Python application? Well, now you can; with chafa.py!
 
 `Chafa <https://hpjansson.org/chafa/>`_ is a wonderful command-line utility, created by `Hans Petter Jansson`_, for visualizing images in the terminal. In Jansson's own words:
    
