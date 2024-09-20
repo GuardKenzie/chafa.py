@@ -2,7 +2,7 @@ name: 📬 Deliver from Cirrus
 
 on:
   check_suite:
-    type: ['completed']
+    types: ['completed']
 
 jobs:
   upload_all_cirrus:
@@ -17,13 +17,11 @@ jobs:
     steps:
     - name: Downloading artifacts
       run: |
-        wget -O macos.zip https://api.cirrus-ci.com/v1/artifact/github/GuardKenzie/chafa.py/macos_arm_wheels/wheels.zip
         wget -O linux.zip https://api.cirrus-ci.com/v1/artifact/github/GuardKenzie/chafa.py/linux_arm_wheels/wheels.zip
-        unzip macos.zip
         unzip linux.zip
       
     - name: Uploading to test PyPi
-      uses: pypa/gh-action-pypi-publish@v1.8.10
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
         packages-dir: wheelhouse/
         user: __token__

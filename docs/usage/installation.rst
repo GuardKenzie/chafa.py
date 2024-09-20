@@ -6,7 +6,7 @@ Installation
 
 Here are some installation instructions for getting going. It is preferred to install from `PyPI`_, however, you are welcome to build from source if you so desire.
 
-Currently only Linux, Windows 64-bit and MacOS systems (Intel and ARM) are supported.
+Currently every major 64-bit OS is supported except Windows on ARM.
 
 For all methods, if you want to use the included :py:class:`Loader` class to load images, you will also need the `MagickWand <https://imagemagick.org/script/magick-wand.php>`_ C-library. The installation of MagickWand is fairly straight forward.
 
@@ -56,7 +56,6 @@ Dependencies
 ============
 
 - `Chafa <https://hpjansson.org/chafa/download/>`_
-- `MagickWand <https://imagemagick.org/script/magick-wand.php>`_
 - `Hatchling <https://pypi.org/project/hatchling/>`_ (for building) 
 - Python 3.8 or later
 

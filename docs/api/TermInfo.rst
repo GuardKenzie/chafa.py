@@ -45,6 +45,20 @@ A :py:class:`TermInfo` describes the characteristics of one particular kind of d
 
         :rtype: bool
 
+    .. py:method:: emit(*args)
+
+        Returns the terminal sequences asked for as :py:class:`bytes`.
+
+        .. note:: To "use" the sequence with :py:func:`print` you will first need to decode it with :py:meth:`bytes.decode`
+        
+        For an example, check out the :ref:`sequence example` example.
+
+        :param TermSeq \*args: The sequences to emit
+
+        :rtype: bytes
+
+        .. versionadded:: 1.2.0
+
     .. py:method:: detect_capabilities()
 
         A method that tries to automatically detect the current terminal's capabilities.

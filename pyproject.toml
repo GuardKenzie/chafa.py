@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name    = "chafa.py"
-version = "1.1.2"
+version = "1.2.0"
 license = "LGPL-3.0"
 
 authors = [
@@ -32,22 +32,24 @@ classifiers = [
 
 [tool.cibuildwheel]
 build = "cp3*-*"
-skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32"]
+skip  = ["*-manylinux_i686", "*-musllinux_*", "*-win32", "cp38-macosx_arm64"]
 test-skip = "cp38-macosx*"
+environment-pass = "CHAFA_VERSION"
 
-manylinux-x86_64-image = "manylinux2014"
+manylinux-x86_64-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
 
 test-requires = ["pytest", "Pillow"]
 test-command  = "pytest -rP {package}/tests"
 
 
-
-
 [tool.cibuildwheel.linux]
 before-all = [
-    "yum install -y libtool ImageMagick-devel",
+    "dnf group install -y 'Development Tools'",
+    "dnf install -y epel-release",
+    "dnf install -y ImageMagick-devel glib2-devel pkgconf-pkg-config",
     "cd libs",
-    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
+    "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "mkdir m4",
     "cp /usr/share/aclocal/pkg.m4 m4/",
@@ -59,28 +61,34 @@ before-all = [
 
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 
-[[tool.cibuildwheel.overrides]]
-select = "*linux_aarch64"
+# [[tool.cibuildwheel.overrides]]
+# select = "*linux_aarch64"
 
-before-all = [
-    "yum install -y libtool ImageMagick-devel",
-    "cd libs",
-    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
-    "cd libchafa_src",
-    "mkdir m4",
-    "cp /usr/share/aclocal/pkg.m4 m4/",
-    "./autogen.sh --without-tools",
-    "make",
-    "cd ../",
-    "cp libchafa_src/chafa/.libs/*chafa.so linux/"
-]
+# before-all = [
+#     "yum group install -y 'Development Tools'",
+#     "yum install -y epel-release",
+#     "yum install -y ImageMagick-devel",
+#     "cd libs",
+#     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
+#     "cd libchafa_src",
+#     "mkdir m4",
+#     "cp /usr/share/aclocal/pkg.m4 m4/",
+#     "./autogen.sh --without-tools",
+#     "make",
+#     "cd ../",
+#     "cp libchafa_src/chafa/.libs/*chafa.so linux/"
+# ]
+
 
 [tool.cibuildwheel.macos]
+
+environment = { MACOSX_DEPLOYMENT_TARGET="13.0" }
+
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
-    "brew install make libtool pkg-config glib automake",
+    "brew install --force --overwrite make imagemagick libtool pkg-config glib automake",
     "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
-    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
+    "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "./autogen.sh --without-tools",
     "gmake",
@@ -94,10 +102,12 @@ test-command = "MAGICK_HOME=/usr/local/Cellar/imagemagick/ pytest -rP {package}/
 [[tool.cibuildwheel.overrides]]
 select = "*macosx_arm64"
 
+environment = { MACOSX_DEPLOYMENT_TARGET="14.0" }
+
 before-all = [
     "brew install make libtool pkg-config glib automake imagemagick",
     "sudo ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
-    "git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src",
+    "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
     "./autogen.sh --without-tools",
     "make",

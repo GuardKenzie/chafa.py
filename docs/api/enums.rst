@@ -245,6 +245,59 @@ An enumerator for optimizations. When enabled, these may produce more compact ou
         All optimizations enabled.
 
 
+Tuck
+----
+An enumerator for tucking styles. To be used in a :py:class:`Placement` to specify what to do if the image doesn't fit within the :py:class:`Canvas`'s bounds.
+
+.. py:class:: Tuck
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_TUCK_STRETCH
+	
+        Resize element to fit the area exactly, changing its aspect ratio.
+
+    .. py:attribute:: CHAFA_TUCK_FIT  
+
+        Resize element to fit the area, preserving its aspect ratio by adding padding.
+
+    .. py:attribute:: CHAFA_TUCK_SHRINK_TO_FIT   
+
+        Like CHAFA_TUCK_FIT , but prohibit enlargement.
+
+    .. py:attribute:: CHAFA_TUCK_MAX
+        
+        Last supported tucking policy, plus one.
+
+    .. versionadded:: 1.2.0
+
+Align
+-----
+An enumerator for :py:class:`Placement`'s available vertical- and horizontal alignments.
+
+.. py:class:: Align
+
+    :bases: :py:class:`enum.IntEnum`
+
+    .. py:attribute:: CHAFA_ALIGN_START
+	
+        Align flush with beginning of the area (top or left in LTR locales).
+
+    .. py:attribute:: CHAFA_ALIGN_END
+	
+        Align flush with end of the area (bottom or right in LTR locales).
+
+    .. py:attribute:: CHAFA_ALIGN_CENTER
+	
+        Align in the middle of the area.
+
+    .. py:attribute:: CHAFA_ALIGN_MAX
+	
+        Last supported alignment, plus one.
+    
+    .. versionadded:: 1.2.0
+
+
 Symbol Tags
 ___________
 An enumerator for symbol tags. This can be used in :py:meth:`SymbolMap.add_by_tags` to specify which symbols to use in the output of a :py:class:`Canvas`.

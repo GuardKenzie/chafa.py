@@ -11,16 +11,19 @@ jobs:
   build_wheels:
     name: 🎡 ${{ matrix.os }} wheels
     runs-on: ${{ matrix.os }}
+    env:
+      CHAFA_VERSION: master
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-11]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        # os: [ubuntu-20.04, windows-2019, macos-11]
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup UCRT64
         uses: msys2/setup-msys2@v2
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         with:
           msystem: ucrt64
           install: >-
@@ -35,31 +38,33 @@ jobs:
             make
 
       - name: Build Windows DLLs
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         shell: msys2 {0}
         run: |
-          git clone --branch 1.12.5 https://github.com/hpjansson/chafa libchafa_src
+          git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src
           cd libchafa_src
           ./autogen.sh --without-tools --host=mingw64 && make
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.21.1
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
 
   make_sdist:
     name: 💽 Make SDist
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Build SDist
       run: pipx run build --sdist
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
+        name: sdist
         path: dist/*.tar.gz
 
   upload_all:
@@ -68,12 +73,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
-        name: artifact
         path: dist
 
-    - uses: pypa/gh-action-pypi-publish@v1.8.10
+    - uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
