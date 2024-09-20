@@ -66,7 +66,7 @@ select = "*linux_aarch64"
 before-all = [
     "yum group install -y 'Development Tools'",
     "yum install -y epel-release",
-    "yum install -y ImageMagick-devel glib2-devel pkgconf-pkg-config",
+    "yum install -y ImageMagick-devel",
     "cd libs",
     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
