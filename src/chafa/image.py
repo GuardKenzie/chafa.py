@@ -6,6 +6,11 @@ from .frame import Frame
 
 class Image:
     def __init__(self):
+        """
+        A container for a :py:class:`Frame`. To be placed on a 
+        :py:class:`Placement`.
+        """
+        
         _Chafa.chafa_image_new.restype = ctypes.c_void_p
 
         self._image = _Chafa.chafa_image_new()
@@ -16,6 +21,12 @@ class Image:
 
     @property
     def frame(self) -> Frame:
+        """
+        :type: Frame
+
+        The :py:class:`Frame` for the image
+        """
+        
         return self._frame
     
 

@@ -8,6 +8,20 @@ from .image import Image
 
 class Placement:
     def __init__(self, image: Image, id: int = 0):
+        """
+        This class defines the placement of an :py:class:`Image` on a 
+        :py:class:`Canvas`. 
+
+        .. note::
+            None of placement's properties have any effect if the 
+            :py:class:`Canvas`'s pixel mode is set to 
+            :py:attr:`PixelMode.CHAFA_PIXEL_MODE_SYMBOLS`.
+
+        :param image: The :py:class:`Image` to be placed.
+        :param id: An id to assign to the image. Leave as ``0`` to assign 
+            one automatically.
+        """
+        
         _Chafa.chafa_placement_new.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int
@@ -23,6 +37,13 @@ class Placement:
     
     @property
     def tuck(self) -> Tuck:
+        """
+        :type: Tuck
+
+        This describes how the :py:class:`Image` is resized to fit on the 
+        :py:class:`Canvas`, and defaults to :py:attr:`Tuck.CHAFA_TUCK_STRETCH`.
+        """
+        
         return self._get_tuck()
 
 
@@ -37,6 +58,13 @@ class Placement:
 
     @property
     def halign(self) -> Align:
+        """
+        :type: Align
+
+        Describes the horizontal alignment of the :py:class:`Image` on the 
+        :py:class:`Canvas`.
+        """
+        
         return self._get_halign()
 
 
@@ -51,6 +79,13 @@ class Placement:
 
     @property
     def valign(self) -> Align:
+        """
+        :type: Align
+
+        Describes the horizontal alignment of the :py:class:`Image` on the 
+        :py:class:`Canvas`.
+        """
+        
         return self._get_valign()
 
 
@@ -62,6 +97,9 @@ class Placement:
     
 
     def _get_tuck(self) -> Tuck:
+        """
+        Bindings for chafa_placement_get_tuck
+        """
         _Chafa.chafa_placement_get_tuck.argtypes = [ctypes.c_void_p]
 
         _Chafa.chafa_placement_get_tuck.restype  = ctypes.c_uint
@@ -71,6 +109,9 @@ class Placement:
     
 
     def _set_tuck(self, new_tuck: Tuck):
+        """
+        Bindings for chafa_placement_set_tuck
+        """
         _Chafa.chafa_placement_set_tuck.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
@@ -80,6 +121,9 @@ class Placement:
 
 
     def _get_halign(self) -> Align:
+        """
+        Bindings for chafa_placement_get_halign
+        """
         _Chafa.chafa_placement_get_halign.argtypes = [ctypes.c_void_p]
 
         _Chafa.chafa_placement_get_halign.restype  = ctypes.c_uint
@@ -89,6 +133,9 @@ class Placement:
     
 
     def _set_halign(self, new_halign: Align):
+        """
+        Bindings for chafa_placement_set_halign
+        """
         _Chafa.chafa_placement_set_halign.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint
@@ -98,6 +145,9 @@ class Placement:
 
 
     def _get_valign(self) -> Align:
+        """
+        Bindings for chafa_placement_get_valign
+        """
         _Chafa.chafa_placement_get_valign.argtypes = [ctypes.c_void_p]
 
         _Chafa.chafa_placement_get_valign.restype  = ctypes.c_uint
@@ -107,6 +157,9 @@ class Placement:
     
 
     def _set_valign(self, new_valign: Align):
+        """
+        Bindings for chafa_placement_set_valign
+        """
         _Chafa.chafa_placement_set_valign.argtypes = [
             ctypes.c_void_p,
             ctypes.c_uint

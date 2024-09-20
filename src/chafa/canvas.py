@@ -49,7 +49,15 @@ class Canvas:
 
 
     @property
-    def placement(self):
+    def placement(self) -> Placement:
+        """
+        The :py:class:`Placement` of an :py:class:`Image`
+        containing a :py:class:`Frame` on the canvas. Use 
+        this as an alternative to :py:meth:`draw_all_pixels` 
+        and for control over the image's alignment with :py:class:`Align` 
+        and :py:class:`Tuck`.
+        """
+
         return self._placement
     
 
