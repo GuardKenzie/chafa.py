@@ -246,7 +246,7 @@ An enumerator for optimizations. When enabled, these may produce more compact ou
 
 
 Tuck
-----
+____
 An enumerator for tucking styles. To be used in a :py:class:`Placement` to specify what to do if the image doesn't fit within the :py:class:`Canvas`'s bounds.
 
 .. py:class:: Tuck
@@ -272,7 +272,7 @@ An enumerator for tucking styles. To be used in a :py:class:`Placement` to speci
     .. versionadded:: 1.2.0
 
 Align
------
+_____
 An enumerator for :py:class:`Placement`'s available vertical- and horizontal alignments.
 
 .. py:class:: Align
