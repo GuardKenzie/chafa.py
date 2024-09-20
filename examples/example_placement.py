@@ -6,7 +6,7 @@ from PIL import Image
 config = chafa.CanvasConfig()
 
 # Set canvas height and width
-config.width = 120
+config.width = 70
 config.height = 20
 
 # Set cell dimensions for accurate aspect ratio
@@ -22,12 +22,6 @@ image = Image.open(Path(__file__).parent / "snake.jpg")
 width  = image.width
 height = image.height
 bands  = len(image.getbands())
-
-config.calc_canvas_geometry(
-    width,
-    height,
-    11/24
-)
 
 # Put image into correct format
 pixels = image.tobytes()

@@ -10,6 +10,8 @@ If you are the sort of person who likes getting their hands dirty right away, ta
 
 All the examples will be using this image and calling it ``snake.jpg``
 
+Some more examples might be found in the `examples folder <https://github.com/GuardKenzie/chafa.py/tree/main/examples>`_ on GitHub.
+
 .. image:: ../snake.jpg
     :width: 300
     :align: center
@@ -17,14 +19,17 @@ All the examples will be using this image and calling it ``snake.jpg``
 
 .. toctree::
    :maxdepth: 2
-   :caption: Here's all the examples we got
+   :caption: Here's all the examples on the webpage.
 
    reading_an_image
    aspect_ratio
    detecting_capabilities
    raw_color
-   emitting_sequences
+   emitting_control_sequences
    converting_to_html
+   using_placement
+   
+
 
 
 
