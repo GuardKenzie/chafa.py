@@ -37,6 +37,7 @@ test-skip = "cp38-macosx*"
 environment-pass = "CHAFA_VERSION"
 
 manylinux-x86_64-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
 
 test-requires = ["pytest", "Pillow"]
 test-command  = "pytest -rP {package}/tests"
@@ -60,23 +61,23 @@ before-all = [
 
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 
-[[tool.cibuildwheel.overrides]]
-select = "*linux_aarch64"
+# [[tool.cibuildwheel.overrides]]
+# select = "*linux_aarch64"
 
-before-all = [
-    "yum group install -y 'Development Tools'",
-    "yum install -y epel-release",
-    "yum install -y ImageMagick-devel",
-    "cd libs",
-    "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
-    "cd libchafa_src",
-    "mkdir m4",
-    "cp /usr/share/aclocal/pkg.m4 m4/",
-    "./autogen.sh --without-tools",
-    "make",
-    "cd ../",
-    "cp libchafa_src/chafa/.libs/*chafa.so linux/"
-]
+# before-all = [
+#     "yum group install -y 'Development Tools'",
+#     "yum install -y epel-release",
+#     "yum install -y ImageMagick-devel",
+#     "cd libs",
+#     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
+#     "cd libchafa_src",
+#     "mkdir m4",
+#     "cp /usr/share/aclocal/pkg.m4 m4/",
+#     "./autogen.sh --without-tools",
+#     "make",
+#     "cd ../",
+#     "cp libchafa_src/chafa/.libs/*chafa.so linux/"
+# ]
 
 
 [tool.cibuildwheel.macos]
