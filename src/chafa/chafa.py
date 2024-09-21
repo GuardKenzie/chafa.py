@@ -3,22 +3,13 @@ import sys
 import platform
 from io import UnsupportedOperation
 
-if platform.system() == "Linux":
+SYSTEM = platform.system()
+
+if SYSTEM == "Linux" or SYSTEM == "Darwin":
     import termios
 
-
-def get_device_attributes():
-    """
-    A functino that returns an array containing the current
-    terminal's device attributes, fetched by reading the string
-    provided by emitting the ``\\e[c`` control sequence. (See
-    `Xterm Control Sequences on invisible-island.net 
-    <https://invisible-island.net/xterm/ctlseqs/ctlseqs.html>_`.
-
-    :rtype: Tuple[int]
-    """
-    
-    if platform.system() != "Linux":
+def _read_escape_sequence(escape_code, terminator, sep=";"):
+    if SYSTEM != "Linux" and SYSTEM != "Darwin":
         return tuple()
 
     try:
@@ -36,7 +27,7 @@ def get_device_attributes():
     new_term[3] = new_lflags
 
     # Emit sequence
-    sys.stdout.write("\033[c")
+    sys.stdout.write(escape_code)
     sys.stdout.flush()
     
     termios.tcsetattr(stdin_fileno, termios.TCSANOW, new_term)
@@ -45,7 +36,7 @@ def get_device_attributes():
     char = sys.stdin.read(1)
     attributes = []
 
-    while char != "c":
+    while char != terminator:
         attributes.append(char)
         char = sys.stdin.read(1)
 
@@ -54,7 +45,7 @@ def get_device_attributes():
 
     # Split attributes by ; and turn them into integers
     if len(attributes) >= 4:
-        attributes = "".join(attributes[3:]).split(";")
+        attributes = "".join(attributes[3:]).split(sep)
 
         # Convert all attributes to ints unless we can't, then we skip
         out = []
@@ -71,3 +62,42 @@ def get_device_attributes():
 
     return out
 
+def get_device_attributes():
+    """
+    A function that returns an array containing the current
+    terminal's device attributes, fetched by reading the string
+    provided by emitting the ``\\e[c`` control sequence. (See
+    `Xterm Control Sequences on invisible-island.net 
+    <https://invisible-island.net/xterm/ctlseqs/ctlseqs.html>_`.
+
+    .. note::
+        Returns an empty tuple on Windows
+
+    :rtype: Tuple[int]
+    """
+
+    return _read_escape_sequence("\033[c", "c")
+
+
+def get_cell_geometry():
+    """
+    A function that returns the cell geometry of the terminal in pixels. Format: ``(height, width)``.
+
+    .. note::
+        Returns an empty tuple on Windows
+
+    :rtype: Tuple[int]
+    """
+    return _read_escape_sequence("\033[16t", "t")
+
+def get_terminal_geometry():
+    """
+    A function that returns the size of the terminal text area in character cells. 
+    Format``(height, width)``.
+
+    .. note::
+        Returns an empty tuple on Windows
+
+    :rtype: Tuple[int]
+    """
+    return _read_escape_sequence("\033[18t", "t")
