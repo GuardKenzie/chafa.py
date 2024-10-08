@@ -86,8 +86,7 @@ environment = { MACOSX_DEPLOYMENT_TARGET="13.0" }
 
 before-all = [
     "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
-    "sudo rm /usr/local/bin/2to3",
-    "brew install --force --overwrite make imagemagick libtool pkg-config glib automake",
+    "brew install --force --overwrite make python@3.12 imagemagick libtool pkg-config glib automake",
     "ln -s $(which glibtoolize) /usr/local/bin/libtoolize",
     "git clone --branch $CHAFA_VERSION https://github.com/hpjansson/chafa libchafa_src",
     "cd libchafa_src",
