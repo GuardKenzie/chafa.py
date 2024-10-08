@@ -6,7 +6,7 @@
     <em>Terminal graphics with Python!</em>
   </p>
   <p>
-      <a href="https://chafapy.mage.black/">📙 Docs</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/tutorial.html">🌱 Tutorial</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/examples.html">💾 Examples</a>
+      <a href="https://chafapy.mage.black/">📙 Docs</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/tutorial.html">🌱 Tutorial</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="https://chafapy.mage.black/usage/examples/examples.html">💾 Examples</a>
   </p>
  <p>—</p>
   <p>
