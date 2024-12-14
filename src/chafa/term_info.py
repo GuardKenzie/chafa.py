@@ -159,14 +159,21 @@ class TermInfo():
         # Check for kitty
         kitty_capable = self.have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_KITTY_IMMEDIATE_IMAGE_V1)
 
+        # Check for ITERM2
+        iterm2_capable = self.have_seq(TermSeq.CHAFA_TERM_SEQ_BEGIN_ITERM2_IMAGE)
+
         if kitty_capable:
             pixel_mode = PixelMode.CHAFA_PIXEL_MODE_KITTY
 
         elif sixel_capable:
             pixel_mode = PixelMode.CHAFA_PIXEL_MODE_SIXELS
+        
+        elif iterm2_capable:
+            pixel_mode = PixelMode.CHAFA_PIXEL_MODE_ITERM2
 
         else:
             pixel_mode = PixelMode.CHAFA_PIXEL_MODE_SYMBOLS
+
 
         # Init capabilities
         terminal_capabilities = self.TerminalCapabilities(canvas_mode, pixel_mode)
