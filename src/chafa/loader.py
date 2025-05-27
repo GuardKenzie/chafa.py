@@ -110,6 +110,7 @@ class Loader:
         ]
 
         _MagickWand.DestroyPixelWand.argtypes = [ctypes.c_void_p]
+        _MagickWand.DestroyMagickWand.argtypes = [ctypes.c_void_p]
 
         _MagickWand.MagickGetImageWidth. argtypes = [ctypes.c_void_p]
         _MagickWand.MagickGetImageHeight.argtypes = [ctypes.c_void_p]
@@ -167,6 +168,9 @@ class Loader:
             CharPixel,
             pixels
         )
+
+        # Clean up wand to release resources
+        _MagickWand.DestroyMagickWand(magick_wand)
 
         self._height        = height
         self._width         = width
