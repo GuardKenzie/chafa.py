@@ -257,3 +257,51 @@ class TermInfo():
         res = _Chafa.chafa_term_info_chain(self._term_info, inner._term_info)
 
         return res
+    
+
+    def best_canvas_mode(self) -> CanvasMode:
+        """
+        TODO: Docs
+        """
+
+        return CanvasMode(self._best_canvas_mode())
+
+
+    def _best_canvas_mode(self):
+        """
+        wrapper for chafa_term_info_get_best_canvas_mode
+        """
+
+        _Chafa.chafa_term_info_get_best_canvas_mode.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_term_info_get_best_canvas_mode.restype = ctypes.c_uint
+
+        res = _Chafa.chafa_term_info_get_best_canvas_mode(self._term_info)
+
+        return res
+
+
+    def best_pixel_mode(self) -> PixelMode:
+        """
+        TODO: Docs
+        """
+
+        return PixelMode(self._best_pixel_mode())
+
+
+    def _best_pixel_mode(self):
+        """
+        wrapper for chafa_term_info_get_best_pixel_mode
+        """
+
+        _Chafa.chafa_term_info_get_best_pixel_mode.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_term_info_get_best_pixel_mode.restype = ctypes.c_uint
+
+        res = _Chafa.chafa_term_info_get_best_pixel_mode(self._term_info)
+
+        return res
