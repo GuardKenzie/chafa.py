@@ -1,9 +1,9 @@
 ## Term info
-- [ ] update detect to use the above
 - [ ] **PROPERTY** inherit seq
 - [/] chain
 - [/] best canvas mode
 - [/] best pixel mode
+- [X] ~~update detect to use the above~~ deprecated detect_capabilities in favour of best canvas and pixel modes
 - [ ] **PROPERTY** is pixel passthrough needed
 - [ ] **PROPERTY** name
 - [ ] **PROPERTY** quirks

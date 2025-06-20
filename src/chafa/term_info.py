@@ -2,6 +2,7 @@ from __future__ import annotations
 import ctypes
 import os
 import platform
+import warnings
 
 from .libraries import _Chafa
 from .chafa import get_device_attributes
@@ -107,6 +108,13 @@ class TermInfo():
         A function that tries to detect the capabilities of the
         terminal and return the appropriate canvas and pixel modes
         """
+
+        warnings.warn(
+            "TermInfo.detect_capabilities is deprecated. \
+            Developers should use TermInfo.best_pixel_mode and TermInfo.best_canvas_mode instead", 
+            DeprecationWarning
+        )
+
         # === Canvas mode ===
 
         color_direct = self.have_seq(TermSeq.CHAFA_TERM_SEQ_SET_COLOR_FGBG_DIRECT) \
