@@ -107,16 +107,13 @@ Chafa.py is available on [PyPI](https://pypi.org/project/chafa.py/). You can ins
 pip install chafa.py
 ```
 
-If you want to use the included Loader class to load images, you will also need to install [MagickWand](https://imagemagick.org/script/magick-wand.php).
-
 ### Dependencies
 
 - Python 3.8 or later
 
-### Optional Dependencies
+### Optional dependencies
 
-
-- [MagickWand](https://imagemagick.org/script/magick-wand.php) (for the [Loader](https://chafapy.mage.black/api/Loader.html) class)
+If you want to use the included Loader class to load images, you will also need [MagickWand](https://imagemagick.org/script/magick-wand.php). This is absolutely not necessary and many many alternatives exist for loading images, some of which are covered in the [tutorial](https://chafapy.mage.black/usage/tutorial).
 
 <details>
 <summary>📬 P.S. The snakes don't bite <em>(I think...)</em></summary>

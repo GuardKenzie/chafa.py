@@ -15,3 +15,7 @@
 - [ ] (Query) primary device attributes
 - [ ] (Query) text area size cells
 - [ ] (Query) text area size pixels
+
+## Tutorial
+- [ ] GIFs
+- [ ] Alternate methods of loading images (PIL, Vips)
