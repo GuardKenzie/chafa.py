@@ -1,4 +1,17 @@
-## Canvas
-- [ ] Bindings for print_rows
-- [ ] Bindings for print_rows_strv
-- [ ] **DOCS!!**
+## Term info
+- [ ] chain
+- [ ] best canvas mode
+- [ ] best pixel mode
+- [ ] update detect to use the above
+- [ ] **PROPERTY** inherit seq
+- [ ] **PROPERTY** is pixel passthrough needed
+- [ ] **PROPERTY** name
+- [ ] **PROPERTY** quirks
+- [ ] **PROPERTY** safe symbol tags
+- [ ] supports canvas and pixel mode
+
+## Enums
+- [ ] (Query) cell size px
+- [ ] (Query) primary device attributes
+- [ ] (Query) text area size cells
+- [ ] (Query) text area size pixels
