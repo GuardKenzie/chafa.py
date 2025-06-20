@@ -114,6 +114,48 @@ class TermInfo():
         TODO: docs
         """
         return self._inherited_sequences
+    
+
+    @property
+    def name(self) -> str:
+        """
+        TODO: docs
+        """
+        return self._get_name().decode()
+    
+    @name.setter
+    def name(self, name: str):
+        self._set_name(name)
+    
+
+    def _get_name(self):
+        """
+        wrapper for chafa_term_info_get_name
+        """
+
+        _Chafa.chafa_term_info_get_name.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_term_info_get_name.restype = ctypes.c_char_p
+
+        res = _Chafa.chafa_term_info_get_name(self._term_info)
+
+        return res
+
+    
+    def _set_name(self, name: str):
+        """
+        wrapper for chafa_term_info_set_name
+        """
+
+        _Chafa.chafa_term_info_set_name.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_char_p
+        ]
+
+        _Chafa.chafa_term_info_set_name(self._term_info, name.encode())
+
 
 
     def copy(self) -> TermInfo:
