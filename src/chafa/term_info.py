@@ -396,3 +396,55 @@ class TermInfo():
         res = _Chafa.chafa_term_info_get_best_pixel_mode(self._term_info)
 
         return res
+
+
+    def supports(self, mode: CanvasMode|PixelMode):
+        """
+        TODO: docs
+        """
+
+        if type(mode) == CanvasMode:
+            supported = bool(self._is_canvas_mode_supported(mode))
+
+        elif type(mode) == PixelMode:
+            supported = bool(self._is_pixel_mode_supported(mode))
+
+        else:
+            raise TypeError("Provided 'mode' is neither PixelMode or CanvasMode")
+        
+        return supported
+
+
+    def _is_canvas_mode_supported(self, canvas_mode: CanvasMode):
+        """
+        wrapper for chafa_term_info_is_canvas_mode_supported
+        """
+
+        _Chafa.chafa_term_info_is_canvas_mode_supported.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        _Chafa.chafa_term_info_is_canvas_mode_supported.restype = ctypes.c_bool
+
+        res = _Chafa.chafa_term_info_is_canvas_mode_supported(self._term_info, canvas_mode)
+
+        return res
+
+
+    def _is_pixel_mode_supported(self, pixel_mode: PixelMode):
+        """
+        wrapper for chafa_term_info_is_pixel_mode_supported
+        """
+
+        _Chafa.chafa_term_info_is_pixel_mode_supported.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        _Chafa.chafa_term_info_is_pixel_mode_supported.restype = ctypes.c_bool
+
+        res = _Chafa.chafa_term_info_is_pixel_mode_supported(self._term_info, pixel_mode)
+
+        return res
+    

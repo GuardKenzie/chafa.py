@@ -8,7 +8,7 @@
 - [ ] **PROPERTY** name
 - [ ] **PROPERTY** quirks
 - [ ] **PROPERTY** safe symbol tags
-- [ ] supports canvas and pixel mode
+- [/] supports canvas and pixel mode
 
 ## Enums
 - [ ] (Query) cell size px
