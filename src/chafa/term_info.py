@@ -8,12 +8,89 @@ from .libraries import _Chafa
 from .chafa import get_device_attributes
 from .enums import *
 
+
+class InheritedSequences():
+    """
+    TODO: Documentation
+    """
+    def __init__(self, term_info: TermInfo):
+        self.term_info = term_info
+
+
+    def __iter__(self):
+        self.seq = 0
+        return self
+
+    def __next__(self):
+        if self.seq < TermSeq.CHAFA_TERM_SEQ_MAX:
+            out = [TermSeq(self.seq).name, self[self.seq]]
+            self.seq += 1
+            return out
+        
+        else:
+            raise StopIteration
+
+
+    def __repr__(self):
+        return str(dict(self))
+
+
+    def __getitem__(self, sequence: TermSeq):
+        sequence = TermSeq(sequence)
+        
+        return self._get_inherit_seq(sequence)
+    
+
+    def __setitem__(self, sequence: TermSeq, value: bool):
+        sequence = TermSeq(sequence)
+        value = bool(value)
+
+        self._set_inherit_seq(sequence, value)
+    
+
+    def _get_inherit_seq(self, sequence: TermSeq):
+        """
+        wrapper for chafa_term_info_get_inherit_seq
+        """
+
+        _Chafa.chafa_term_info_get_inherit_seq.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        _Chafa.chafa_term_info_get_inherit_seq.restype = ctypes.c_bool
+
+        return _Chafa.chafa_term_info_get_inherit_seq(
+            self.term_info._term_info, 
+            sequence
+        )
+    
+
+    def _set_inherit_seq(self, sequence: TermSeq, value: bool):
+        """
+        wrapper for chafa_term_info_set_inherit_seq
+        """
+
+        _Chafa.chafa_term_info_set_inherit_seq.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint,
+            ctypes.c_bool
+        ]
+
+        _Chafa.chafa_term_info_set_inherit_seq(
+            self.term_info._term_info,
+            sequence,
+            value
+        )
+
+
 class TermInfo():
     def __init__(self):
         # Init term_info
         _Chafa.chafa_term_info_new.restype = ctypes.c_void_p
 
         self._term_info = _Chafa.chafa_term_info_new()
+        self._inherited_sequences = InheritedSequences(self)
 
 
     class TerminalCapabilities:
@@ -26,6 +103,12 @@ class TermInfo():
 
         def __eq__(self, other):
             return self.canvas_mode == other.canvas_mode and self.pixel_mode == other.pixel_mode
+
+
+    # == Inherited_sequences property ==
+    @property
+    def inherited_sequences(self):
+        return self._inherited_sequences
 
 
     def copy(self) -> TermInfo:
