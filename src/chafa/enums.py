@@ -247,3 +247,11 @@ class Align(IntEnum):
     CHAFA_ALIGN_END     = 1
     CHAFA_ALIGN_CENTER  = 2
     CHAFA_ALIGN_MAX     = 3
+
+
+#
+# === Quirks ===
+#
+
+class Quirks(IntEnum):
+    CHAFA_TERM_QUIRK_SIXEL_OVERSHOOT = (1 << 0)

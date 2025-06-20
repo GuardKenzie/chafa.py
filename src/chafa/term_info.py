@@ -157,6 +157,57 @@ class TermInfo():
         _Chafa.chafa_term_info_set_name(self._term_info, name.encode())
 
 
+    @property
+    def quirks(self) -> tuple[Quirks]:
+        """
+        TODO: Docs
+        """
+        enabled_quirks = self._get_quirks()
+        out = []
+
+        for quirk in Quirks:
+            if quirk & enabled_quirks:
+                out.append(quirk)
+        
+        return tuple(out)
+
+    @quirks.setter
+    def quirks(self, quirks: Iterable[Quirks]):
+        quirk_bits = 0
+
+        for quirk in quirks:
+            quirk = Quirks(quirk)
+            quirk_bits = quirk_bits | quirk
+        
+        self._set_quirks(quirk_bits)
+    
+
+    def _get_quirks(self):
+        """
+        wrapper for chafa_term_info_get_quirks
+        """
+
+        _Chafa.chafa_term_info_get_quirks.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_term_info_get_quirks.restype = ctypes.c_byte
+
+        return _Chafa.chafa_term_info_get_quirks(self._term_info)
+
+
+    def _set_quirks(self, quirks):
+        """
+        wrapper for chafa_term_info_set_quirks
+        """
+
+        _Chafa.chafa_term_info_set_quirks.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_byte
+        ]
+
+        _Chafa.chafa_term_info_set_quirks(self._term_info, quirks)
+
 
     def copy(self) -> TermInfo:
         """
