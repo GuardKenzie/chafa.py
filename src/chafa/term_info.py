@@ -4,6 +4,8 @@ import os
 import platform
 import warnings
 
+from typing import Iterable
+
 from .libraries import _Chafa
 from .chafa import get_device_attributes
 from .enums import *
@@ -107,7 +109,10 @@ class TermInfo():
 
     # == Inherited_sequences property ==
     @property
-    def inherited_sequences(self):
+    def inherited_sequences(self) -> Iterable:
+        """
+        TODO: docs
+        """
         return self._inherited_sequences
 
 
