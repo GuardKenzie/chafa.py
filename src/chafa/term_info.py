@@ -226,3 +226,34 @@ class TermInfo():
 
         return res
     
+
+    def chain(self, inner: TermInfo) -> TermInfo:
+        """
+        TODO: docs
+        """
+
+        # Construct placeholder term info
+        chained_info = TermInfo()
+
+        # Chain the infos together and assign the new one to the placeholder
+        chained_pointer = self._chain(inner)
+        chained_info._term_info = chained_pointer
+
+        return chained_info
+
+
+    def _chain(self, inner: TermInfo):
+        """
+        wrapper for chafa_term_info_chain
+        """
+
+        _Chafa.chafa_term_info_chain.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_term_info_chain.restype = ctypes.c_void_p
+
+        res = _Chafa.chafa_term_info_chain(self._term_info, inner._term_info)
+
+        return res

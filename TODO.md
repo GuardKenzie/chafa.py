@@ -1,9 +1,9 @@
 ## Term info
-- [ ] chain
 - [ ] best canvas mode
 - [ ] best pixel mode
 - [ ] update detect to use the above
 - [ ] **PROPERTY** inherit seq
+- [/] chain
 - [ ] **PROPERTY** is pixel passthrough needed
 - [ ] **PROPERTY** name
 - [ ] **PROPERTY** quirks
