@@ -191,7 +191,7 @@ class TermInfo():
             ctypes.c_void_p
         ]
 
-        _Chafa.chafa_term_info_get_quirks.restype = ctypes.c_byte
+        _Chafa.chafa_term_info_get_quirks.restype = ctypes.c_int
 
         return _Chafa.chafa_term_info_get_quirks(self._term_info)
 
@@ -203,7 +203,7 @@ class TermInfo():
 
         _Chafa.chafa_term_info_set_quirks.argtypes = [
             ctypes.c_void_p,
-            ctypes.c_byte
+            ctypes.c_uint
         ]
 
         _Chafa.chafa_term_info_set_quirks(self._term_info, quirks)
