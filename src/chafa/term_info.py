@@ -157,27 +157,30 @@ class TermInfo():
         _Chafa.chafa_term_info_set_name(self._term_info, name.encode())
 
 
+    # === Quirks property ===
+
     @property
-    def quirks(self) -> tuple[Quirks]:
+    def quirks(self) -> tuple[quirks]:
         """
-        TODO: Docs
+        TODO: docs
         """
         enabled_quirks = self._get_quirks()
         out = []
 
         for quirk in Quirks:
-            if quirk & enabled_quirks:
+            if quirk & enabled_quirks == quirk:
+                enabled_quirks ^= quirk
                 out.append(quirk)
         
         return tuple(out)
 
     @quirks.setter
-    def quirks(self, quirks: Iterable[Quirks]):
+    def quirks(self, new_quirks: Iterable[Quirks]):
         quirk_bits = 0
 
-        for quirk in quirks:
+        for quirk in new_quirks:
             quirk = Quirks(quirk)
-            quirk_bits = quirk_bits | quirk
+            quirk_bits |= quirk
         
         self._set_quirks(quirk_bits)
     
