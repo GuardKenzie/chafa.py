@@ -29,5 +29,4 @@ from .frame import Frame
 from .image import Image
 
 from .chafa import get_device_attributes
-from .chafa import get_cell_geometry
-from .chafa import get_terminal_geometry
+from .chafa import read_escape_sequence

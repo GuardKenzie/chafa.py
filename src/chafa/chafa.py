@@ -8,7 +8,7 @@ SYSTEM = platform.system()
 if SYSTEM == "Linux" or SYSTEM == "Darwin":
     import termios
 
-def _read_escape_sequence(escape_code, terminator, sep=";"):
+def read_escape_sequence(escape_code, sep=";"):
     if SYSTEM != "Linux" and SYSTEM != "Darwin":
         return tuple()
 
@@ -19,6 +19,7 @@ def _read_escape_sequence(escape_code, terminator, sep=";"):
         return tuple()
 
     # Set up
+    terminator = escape_code[-1]
     old_term = termios.tcgetattr(stdin_fileno)
     new_term = termios.tcgetattr(stdin_fileno)
 
