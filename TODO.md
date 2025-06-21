@@ -11,10 +11,11 @@
 - [/] supports canvas and pixel mode
 
 ## Enums
-- [ ] (Query) cell size px
-- [ ] (Query) primary device attributes
-- [ ] (Query) text area size cells
-- [ ] (Query) text area size pixels
+- [/] (Query) cell size px
+- [/] (Query) primary device attributes
+- [/] (Query) text area size cells
+- [/] (Query) text area size pixels
+- [/] Lots of other ones
 
 ## Tutorial
 - [ ] GIFs

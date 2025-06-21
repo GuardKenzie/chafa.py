@@ -10,6 +10,7 @@ from .enums import ColorExtractor
 from .enums import Passthrough
 from .enums import Tuck
 from .enums import Align
+from .enums import Quirks
 
 from .symbol_map import SymbolMap
 from .symbol_map import ReadOnlySymbolMap
