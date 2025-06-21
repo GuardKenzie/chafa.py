@@ -63,6 +63,7 @@ def read_escape_sequence(escape_code, sep=";"):
 
     return out
 
+
 def get_device_attributes():
     """
     A function that returns an array containing the current
@@ -77,48 +78,4 @@ def get_device_attributes():
     :rtype: Tuple[int]
     """
 
-    return _read_escape_sequence("\033[c", "c")
-
-
-def get_terminal_geometry():
-    """
-    A function that returns the size of the terminal text area in character cells. 
-    Format: ``(height, width)``.
-
-    .. note::
-        Returns an empty tuple on Windows
-
-    :rtype: Tuple[int]
-    """
-    return _read_escape_sequence("\033[18t", "t")
-
-
-def get_terminal_pixel_geometry():
-    """
-    A function that returns the size of the terminal text area in pixels.
-    Foramt: ``(height, width)``
-
-    .. note::
-        Returns an empty tuple on Windows
-
-    :rtype: Tuple[int]
-    """
-
-    return _read_escape_sequence("\033[14t", "t")
-
-
-def get_cell_geometry():
-    """
-    A function that returns the cell geometry of the terminal in pixels. This is achieved by simply
-    dividing the terminal's reported pixel size by its reported size in characters.
-    Format: ``(height, width)``.
-
-    .. note::
-        Returns an empty tuple on Windows
-
-    :rtype: Tuple[int]
-    """
-    pixel_height, pixel_width = get_terminal_pixel_geometry()
-    character_height, character_width = get_terminal_geometry()
-
-    return (pixel_height//character_height, pixel_width//character_width)
+    return read_escape_sequence("\033[c", "c")
