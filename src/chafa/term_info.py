@@ -212,6 +212,72 @@ class TermInfo():
         _Chafa.chafa_term_info_set_quirks(self._term_info, quirks)
 
 
+    # === Safe symbol tags ===
+
+    @property
+    def safe_symbol_tags(self) -> tuple[SymbolTags]:
+        """
+        TODO: docs
+        """
+
+        safe_tags = self._get_safe_symbol_tags()
+        out = []
+
+        compound_tags = [
+            SymbolTags.CHAFA_SYMBOL_TAG_ALL,
+            SymbolTags.CHAFA_SYMBOL_TAG_HALF,
+            SymbolTags.CHAFA_SYMBOL_TAG_ALNUM,
+            SymbolTags.CHAFA_SYMBOL_TAG_BAD
+        ]
+
+        for tag in [*compound_tags, *SymbolTags]:
+            if tag == SymbolTags.CHAFA_SYMBOL_TAG_NONE:
+                continue
+
+            if tag & safe_tags == tag:
+                safe_tags ^= tag
+                out.append(tag)
+        
+        return tuple(out)
+
+    @safe_symbol_tags.setter
+    def safe_symbol_tags(self, new_symbol_tags: Iterable[SymbolTags]):
+        symbol_tag_bits = 0
+
+        for tag in new_symbol_tags:
+            tag = SymbolTags(tag)
+            symbol_tag_bits |= tag
+        
+        self._set_safe_symbol_tags(symbol_tag_bits)
+    
+
+    def _get_safe_symbol_tags(self):
+        """
+        wrapper for chafa_term_info_get_safe_symbol_tags
+        """
+
+        _Chafa.chafa_term_info_get_safe_symbol_tags.argtypes = [
+            ctypes.c_void_p
+        ]
+
+        _Chafa.chafa_term_info_get_safe_symbol_tags.restype = ctypes.c_int
+
+        return _Chafa.chafa_term_info_get_safe_symbol_tags(self._term_info)
+
+
+    def _set_safe_symbol_tags(self, safe_symbol_tags):
+        """
+        wrapper for chafa_term_info_set_safe_symbol_tags
+        """
+
+        _Chafa.chafa_term_info_set_safe_symbol_tags.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        _Chafa.chafa_term_info_set_safe_symbol_tags(self._term_info, safe_symbol_tags)
+
+
     def copy(self) -> TermInfo:
         """
         Returns a new :py:class:`TermInfo` that is a copy of this one.
