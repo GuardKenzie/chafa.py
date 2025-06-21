@@ -7,7 +7,7 @@
 - [ ] **PROPERTY** is pixel passthrough needed
 - [/] **PROPERTY** name
 - [/] **PROPERTY** quirks
-- [ ] **PROPERTY** safe symbol tags
+- [/] **PROPERTY** safe symbol tags
 - [/] supports canvas and pixel mode
 
 ## Enums
