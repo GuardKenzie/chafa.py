@@ -11,6 +11,85 @@ from .chafa import get_device_attributes
 from .enums import *
 
 
+class PixelPassthroughNeeded():
+    """
+    TODO: Documentation
+    """
+    def __init__(self, term_info: TermInfo):
+        self.term_info = term_info
+
+
+    def __iter__(self):
+        self.passthrough_index = 1 # Skip CHAFA_PIXEL_PASSTHROUGH_NONE
+        return self
+
+    def __next__(self):
+        if self.passthrough_index < Passthrough.CHAFA_PASSTHROUGH_MAX:
+            out = (
+                Passthrough(self.passthrough_index), 
+                self[self.passthrough_index]
+            )
+
+            self.passthrough_index += 1
+            return out
+        
+        else:
+            raise StopIteration
+
+
+    def __repr__(self):
+        return str(dict(self))
+
+
+    def __getitem__(self, pixel_passthrough: Passthrough):
+        pixel_passthrough = Passthrough(pixel_passthrough)
+        
+        return self._get_is_pixel_passthrough_needed(pixel_passthrough)
+    
+
+    def __setitem__(self, pixel_passthrough: Passthrough, value: bool):
+        pixel_passthrough = Passthrough(pixel_passthrough)
+        value = bool(value)
+
+        self._set_is_pixel_passthrough_needed(pixel_passthrough, value)
+
+
+    def _get_is_pixel_passthrough_needed(self, pixel_passthrough: Passthrough):
+        """
+        wrapper for chafa_term_info_get_is_pixel_passthrough_needed
+        """
+
+        _Chafa.chafa_term_info_get_is_pixel_passthrough_needed.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+
+        _Chafa.chafa_term_info_get_is_pixel_passthrough_needed.restype = ctypes.c_bool
+
+        return _Chafa.chafa_term_info_get_is_pixel_passthrough_needed(
+            self.term_info._term_info, 
+            pixel_passthrough
+        )
+    
+
+    def _set_is_pixel_passthrough_needed(self, passthrough: Passthrough, value: bool):
+        """
+        wrapper for chafa_term_info_set_is_pixel_passthrough_needed
+        """
+
+        _Chafa.chafa_term_info_set_is_pixel_passthrough_needed.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint,
+            ctypes.c_bool
+        ]
+
+        _Chafa.chafa_term_info_set_is_pixel_passthrough_needed(
+            self.term_info._term_info,
+            passthrough,
+            value
+        )
+
+
 class InheritedSequences():
     """
     TODO: Documentation
@@ -93,6 +172,7 @@ class TermInfo():
 
         self._term_info = _Chafa.chafa_term_info_new()
         self._inherited_sequences = InheritedSequences(self)
+        self._pixel_passthrough_needed = PixelPassthroughNeeded(self)
 
 
     class TerminalCapabilities:
@@ -114,6 +194,15 @@ class TermInfo():
         TODO: docs
         """
         return self._inherited_sequences
+
+
+    # == Pixel_passthrough_needed property ==
+    @property
+    def pixel_passthrough_needed(self) -> Iterable:
+        """
+        TODO: docs
+        """
+        return self._pixel_passthrough_needed
     
 
     @property
