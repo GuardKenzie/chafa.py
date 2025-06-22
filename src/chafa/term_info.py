@@ -104,7 +104,7 @@ class InheritedSequences():
 
     def __next__(self):
         if self.seq < TermSeq.CHAFA_TERM_SEQ_MAX:
-            out = [TermSeq(self.seq).name, self[self.seq]]
+            out = (TermSeq(self.seq), self[self.seq])
             self.seq += 1
             return out
         
